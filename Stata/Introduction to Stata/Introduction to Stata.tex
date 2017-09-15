@@ -13,8 +13,8 @@
 	\usecolortheme{crane}
 }
 
-\title{ISRC Workshop}
-\subtitle[Intro to Stata]{Introduction to Stata}
+\title[Introduction to Stata]{Introduction to Stata}
+\subtitle[ISRC Workshop]{Iowa Social Research Center (ISRC) Workshop}
 \author[Wallace]{Desmond D. Wallace}
 \institute[University of Iowa]{Department of Political Science\\The University of Iowa\\Iowa City, IA}
 
@@ -219,109 +219,66 @@
 		\end{itemize}
 \end{frame}
 
-\subsection{Hypothesis}
+\section{Do-Files}
+
+\subsection{Introduction}
 
 \begin{frame}
-	\frametitle{Interdependent Responsiveness}
-		\textit{\underline{Interdependent Responsiveness Hypothesis}: The effect public opinion has on policy output, in the presence of interdependence, is different compared to not accounting for interdependence.}
+	\frametitle{What are Do-files?}
+		\begin{itemize}
+			\item Typically, the Stata command line only allows the user to run individual commands, not collectively.
+			\item A Do-file is a file that allows the user to run a number of commands at once.
+			\item Do-files allow the user to keep a record of their analysis.
+		\end{itemize}
 \end{frame}
 
-\section{Research Design}
-\subsection{Methodology}
+\subsection{Components}
 
 \begin{frame}
-	\frametitle{m-STAR Model}
-		\[y=Wy+\phi My+X\beta+\epsilon\]
-		\[W\equiv\sum^{R}_{r=1}\rho_{r}W_{r}\]
-\end{frame}
-
-\subsection{Data}
-
-\begin{frame}
-	\frametitle{Dependent Variables}
-		\[\alert{y}=Wy+\phi My+X\beta+\epsilon\]
-		\begin{enumerate}
-			\item Policy Priority Scores (Jacoby and Schneider (2009))
-			\item \alert{Policy Liberalism Scores (Caughey and Warshaw (2016))}
-		\end{enumerate}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Spatial Lag Variables}
-		\[y=\alert{Wy}+\phi My+X\beta+\epsilon\]
-		\[W=\rho_{1}W_{1}+\rho_{2}W_{2}+\rho_{3}W_{3}\]
-		\begin{enumerate}
-			\item Learning -- Geographic Contiguity (Dichotomous)
-			\item Imitation -- Government Partisan Composition (Dichotomous)
-			\item Competition -- Gross State Product per Capita (Absolute difference)
-		\end{enumerate}
+	\frametitle{Commands}
+		\begin{itemize}
+			\item Do-files can consist of commands that require either a single line, or multiple lines.
+			\item Commands that span a single line are the same as typing the command into the command line on the main Stata window.
+			\item Commands that span multiple lines requires a delimiter (i.e. a character, or group of characters, Stata recognizes signifying the end of the command).
+			\item The default delimiter is a carriage return (CR)
+			\item Can treat carriage return as a comment using three forward slashes \texttt{///}.
+			\item Commands that run multiple lines cannot be executed in the main Stata command line.
+		\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Independent Variable and Controls}
-		\[y=Wy+\phi My+\alert{X\beta}+\epsilon\]
-		\begin{enumerate}
-			\item Citizen Policy Liberalism (Caughey and Warshaw (2015))
-			\item Controls
-			\begin{enumerate}
-				\item Political (Govt. Ideology, self-ID Liberals and Democrats)
-				\item Socioeconomic (Disposable personal income, minority population percentage, educational attainment)
-				\item Temporal Quadratic Polynomial Function (Time, $\mbox{Time}^2$)
-			\end{enumerate}
-		\end{enumerate}
+	\frametitle{Comments}
+		\begin{itemize}
+			\item Do-files allow the user to insert any necessary comments with respect to the Do-file.
+			\item Ways to include comments:
+				\begin{itemize}
+					\item An asterisk -- \texttt{*}
+					\item Enclosed with -- \texttt{/* */}
+				\end{itemize}
+			\item Lines that are commented are not executed by Stata.
+		\end{itemize}
 \end{frame}
 
-\section{Results}
-\subsection{Model}
+\subsection{Execution}
 
 \begin{frame}
-	\frametitle{Model Results}
-	{\scriptsize\begin{table}[]
-			\centering
-			\caption{DV -- Policy Liberalism Score}
-			\label{tab:tab1}
-			\begin{tabular}{cccccc}
-				& (1)                                                            & (2)                                                            & (3)                                                             & (4)                                                             & (5)                                                            \\
-				& b/se                                                           & b/se                                                           & b/se                                                            & b/se                                                            & b/se                                                           \\
-				Geographic Contiguity      & \begin{tabular}[c]{@{}l@{}}0.553***\\ (0.027)\end{tabular} &                                                                &                                                                 & \begin{tabular}[c]{@{}l@{}}0.057\\ (0.063)\end{tabular}     &                                                                \\
-				Govt. Partisan Composition       &                                                                & \begin{tabular}[c]{@{}l@{}}-0.005\\ (0.057)\end{tabular}   &                                                                 & \begin{tabular}[c]{@{}l@{}}0.501***\\ (0.026)\end{tabular}  &                                                                \\
-				GSP per capita    &                                                                &                                                                & \begin{tabular}[c]{@{}l@{}}-2.986***\\ (0.394)\end{tabular} & \begin{tabular}[c]{@{}l@{}}-3.028***\\ (0.358)\end{tabular} &                                                                \\
-				Citizen Policy Liberalism & \begin{tabular}[c]{@{}l@{}}0.380***\\ (0.138)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.904***\\ (0.155)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.782***\\ (0.147)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.381***\\ (0.133)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.904***\\ (0.155)\end{tabular}
-			\end{tabular}
-	\end{table}}
+	\frametitle{Execution}
+		\begin{itemize}
+		\item There are two ways to execute commands in a Do-file.
+			\begin{itemize}
+				\item Method 1: Execute the entire file.
+				\item Method 2: Execute the file in pieces via highlighting the specific code you want to execute.
+			\end{itemize}
+		\item You can also nest Do-files within other Do-files.
+		\end{itemize}
 \end{frame}
 
-\subsection{Interpretation}
-
 \begin{frame}
-	\frametitle{Average Direct, Indirect, and Total Effects}
-	{\normalsize\begin{table}[]
-			\centering
-			\caption{DV -- Policy Liberalism Score}
-			\label{tab:tab2}
-			\begin{tabular}{@{}llccl@{}}
-				&                                       & \multicolumn{2}{c}{\textbf{Model Type}}     &  \\
-				&                                       & \textit{Spatial}     & \textit{Non-spatial} &  \\
-				& \multicolumn{1}{c}{\textit{Avg. Direct}}   & 0.400             & 0.904             &  \\
-				\multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Effects\\ Type\end{tabular}}} & \multicolumn{1}{c}{\textit{Avg. Indirect}} & -0.294             & 0                    &  \\
-				& \multicolumn{1}{c}{\textit{Avg. Total}}    & 0.107             & 0.904             &  \\
-			\end{tabular}
-	\end{table}}
-	{\footnotesize\begin{itemize}
-			\item Avg. Direct: Average of main diagonal elements of marginal change matrix.
-			\item Avg. Indirect: Average of off-diagonal elements of marginal change matrix.
-			\item Avg. Total: Average of all elements of marginal change matrix.
-	\end{itemize}}
-\end{frame}
-
-\section{Conclusions}
-
-\begin{frame}
-	\frametitle{Summarized Results}
+	\frametitle{Commands}
 	\begin{itemize}
-		\item States' response to citizen policy liberalism shocks in another state is to make opposite policy decisions.
-		\item Interdependence has a negative effect on policy responsiveness.
-		\item Implication: Need to account for interdependence when studying responsiveness and representation.
+		\item \texttt{\underline{doed}it} launches the Do-file editor with a blank do-file.
+		\item \texttt{\underline{doed}it [\textit{filename}]} launches the Do-file editor with the specified do-file.
+		\item \texttt{do \textit{filename}} executes all commands stored in specified do-file. 
 	\end{itemize}
 \end{frame}
 
