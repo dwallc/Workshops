@@ -393,6 +393,37 @@
 			\end{itemize}
 \end{frame}
 
+\section{Log Files}
+\subsection{Description}
+
+\begin{frame}
+	\frametitle{What is a Log file?}
+		\begin{itemize}
+			\item A file that keeps a ``permanent'' record of the output displayed in the Results window
+			\item When a log file is open, Stata will write the results of executed commands to both the Results window and the log file
+			
+				
+		\end{itemize}
+\end{frame}
+
+\subsection{Commands}
+
+\begin{frame}
+	\frametitle{Commands}
+		\begin{itemize}
+			\item Basic Command: \texttt{log using \textit{filename}}
+				\begin{itemize}
+					\item \textit{filename} is the name user gives to the log file
+				\end{itemize}
+			\item Most Common Options: \texttt{text} and \texttt{replace}
+				\begin{itemize}
+					\item \texttt{text} gives the log file a .txt file extension, which allows the file to be opened in another text editor (e.g. Notepad, Notepad++, Sublime Text, Atom)
+					\item \texttt{replace} tells Stata to overwrite the file if a file with the same filename already exists
+				\end{itemize}
+			\item To close an open log file, use \texttt{log close}
+		\end{itemize}
+\end{frame}
+
 \section{Resources}
 \subsection{Features}
 

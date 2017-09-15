@@ -17,18 +17,6 @@ log using "Introduction to Stata.log", text replace		/* Open new log file.	*/
 
 
 	/************************************************/
-	/* Where are we?. How do we change directories?	*/
-	/************************************************/
-
-
-pwd 				/* print working directory. */
-ls 					/* list contents. */
-
-cd "D:\Dropbox\GitHub\Workshops\Stata\Introduction to Stata"	/* change directory. */	
-	
-
-
-	/************************************************/
 	/* Opening data in various ways. 				*/
 	/************************************************/
 
