@@ -1,0 +1,195 @@
+\documentclass{beamer}
+\setbeamertemplate{caption}[numbered]
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\graphicspath{{../Maps/}}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\mode<presentation>
+{
+	\usetheme{AnnArbor}
+	\usecolortheme{crane}
+}
+
+\title[2017 APSA Annual Meeting]{State Policy Responsiveness and Interdependent Relationships}
+\author[Desmond D. Wallace]{Desmond D. Wallace}
+\institute[University of Iowa]{Department of Political Science\\The University of Iowa\\Iowa City, IA}
+
+\date{September 1, 2017}
+
+\begin{document}
+	
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\section{Introduction}
+\subsection{Motivation}
+
+\begin{frame}
+	\frametitle{Motivation}
+		\begin{itemize}
+			\item Policy responsiveness measured within states.
+			\item Entire literatures consider policy interdependence/diffusion.
+			\item How to reconcile?
+		\end{itemize}
+\end{frame}
+
+\subsection{Research Question}
+
+\begin{frame}
+	\frametitle{Research Question}
+		\begin{itemize}
+			\item Does policy interdependence influence the effect public opinion has on policy output?
+		\end{itemize}
+\end{frame}
+
+\section{Theory}
+\subsection{Mechanisms}
+
+\begin{frame}
+	\frametitle{Interdependence Mechanisms}
+		\begin{enumerate}
+			\item Learning -- States making policy decisions that have proven successful in other states (Berry and Baybeck 2005; Shipan and Volden 2008).
+			\item Imitation -- One state mimics the actions of another state, for the purpose of looking like the other state (Shipan and Volden 2008).
+			\item Competition -- A state makes decisions motivated by attempting to achieve an economic advantage over other states.
+		\end{enumerate}
+\end{frame}
+
+\subsection{Hypothesis}
+
+\begin{frame}
+	\frametitle{Interdependent Responsiveness}
+		\textit{\underline{Interdependent Responsiveness Hypothesis}: The effect public opinion has on policy output, in the presence of interdependence, is different compared to not accounting for interdependence.}
+\end{frame}
+
+\section{Research Design}
+\subsection{Methodology}
+
+\begin{frame}
+	\frametitle{m-STAR Model}
+		\[y=Wy+\phi My+X\beta+\epsilon\]
+		\[W\equiv\sum^{R}_{r=1}\rho_{r}W_{r}\]
+\end{frame}
+
+\subsection{Data}
+
+\begin{frame}
+	\frametitle{Dependent Variables}
+		\[\alert{y}=Wy+\phi My+X\beta+\epsilon\]
+		\begin{enumerate}
+			\item Policy Priority Scores (Jacoby and Schneider (2009))
+			\item \alert{Policy Liberalism Scores (Caughey and Warshaw (2016))}
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Spatial Lag Variables}
+		\[y=\alert{Wy}+\phi My+X\beta+\epsilon\]
+		\[W=\rho_{1}W_{1}+\rho_{2}W_{2}+\rho_{3}W_{3}\]
+		\begin{enumerate}
+			\item Learning -- Geographic Contiguity (Dichotomous)
+			\item Imitation -- Government Partisan Composition (Dichotomous)
+			\item Competition -- Gross State Product per Capita (Absolute difference)
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Independent Variable and Controls}
+		\[y=Wy+\phi My+\alert{X\beta}+\epsilon\]
+		\begin{enumerate}
+			\item Citizen Policy Liberalism (Caughey and Warshaw (2015))
+			\item Controls
+			\begin{enumerate}
+				\item Political (Govt. Ideology, self-ID Liberals and Democrats)
+				\item Socioeconomic (Disposable personal income, minority population percentage, educational attainment)
+				\item Temporal Quadratic Polynomial Function (Time, $\mbox{Time}^2$)
+			\end{enumerate}
+		\end{enumerate}
+\end{frame}
+
+\section{Results}
+\subsection{Model}
+
+\begin{frame}
+	\frametitle{Model Results}
+	{\scriptsize\begin{table}[]
+			\centering
+			\caption{DV -- Policy Liberalism Score}
+			\label{tab:tab1}
+			\begin{tabular}{cccccc}
+				& (1)                                                            & (2)                                                            & (3)                                                             & (4)                                                             & (5)                                                            \\
+				& b/se                                                           & b/se                                                           & b/se                                                            & b/se                                                            & b/se                                                           \\
+				Geographic Contiguity      & \begin{tabular}[c]{@{}l@{}}0.553***\\ (0.027)\end{tabular} &                                                                &                                                                 & \begin{tabular}[c]{@{}l@{}}0.057\\ (0.063)\end{tabular}     &                                                                \\
+				Govt. Partisan Composition       &                                                                & \begin{tabular}[c]{@{}l@{}}-0.005\\ (0.057)\end{tabular}   &                                                                 & \begin{tabular}[c]{@{}l@{}}0.501***\\ (0.026)\end{tabular}  &                                                                \\
+				GSP per capita    &                                                                &                                                                & \begin{tabular}[c]{@{}l@{}}-2.986***\\ (0.394)\end{tabular} & \begin{tabular}[c]{@{}l@{}}-3.028***\\ (0.358)\end{tabular} &                                                                \\
+				Citizen Policy Liberalism & \begin{tabular}[c]{@{}l@{}}0.380***\\ (0.138)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.904***\\ (0.155)\end{tabular} & \begin{tabular}[c]{@{}l@{}}0.782***\\ (0.147)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.381***\\ (0.133)\end{tabular}  & \begin{tabular}[c]{@{}l@{}}0.904***\\ (0.155)\end{tabular}
+			\end{tabular}
+	\end{table}}
+\end{frame}
+
+\subsection{Interpretation}
+
+\begin{frame}
+	\frametitle{Single-State Shock First Differences}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=0.8\textwidth]{CH4_mSTAR_DCgeogContiggovtCompgspPCPLInd_IA12LR.png}
+		\caption{Shock -- 1 SD to Iowa's Citizen Policy Liberalism}
+		\label{fig:fig_1}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Country-Wide Shock First Differences}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=0.8\textwidth]{CH4_mSTAR_DCgeogContiggovtCompgspPCPLInd_12LR.png}
+		\caption{Shock -- 1 SD to All States' Citizen Policy Liberalism}
+		\label{fig:fig_2}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Average Direct, Indirect, and Total Effects}
+	{\normalsize\begin{table}[]
+			\centering
+			\caption{DV -- Policy Liberalism Score}
+			\label{tab:tab2}
+			\begin{tabular}{@{}llccl@{}}
+				&                                       & \multicolumn{2}{c}{\textbf{Model Type}}     &  \\
+				&                                       & \textit{Spatial}     & \textit{Non-spatial} &  \\
+				& \multicolumn{1}{c}{\textit{Avg. Direct}}   & 0.400             & 0.904             &  \\
+				\multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Effects\\ Type\end{tabular}}} & \multicolumn{1}{c}{\textit{Avg. Indirect}} & -0.294             & 0                    &  \\
+				& \multicolumn{1}{c}{\textit{Avg. Total}}    & 0.107             & 0.904             &  \\
+			\end{tabular}
+	\end{table}}
+	{\footnotesize\begin{itemize}
+			\item Avg. Direct: Average of main diagonal elements of marginal change matrix.
+			\item Avg. Indirect: Average of off-diagonal elements of marginal change matrix.
+			\item Avg. Total: Average of all elements of marginal change matrix.
+	\end{itemize}}
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}
+	\frametitle{Summarized Results}
+	\begin{itemize}
+		\item States' response to citizen policy liberalism shocks in another state is to make opposite policy decisions.
+		\item Interdependence has a negative effect on policy responsiveness.
+		\item Implication: Need to account for interdependence when studying responsiveness and representation.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{LARGE}
+			Any Questions?
+		\end{LARGE}
+	\end{center}
+\end{frame}
+
+\end{document}
