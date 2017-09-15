@@ -282,6 +282,147 @@
 	\end{itemize}
 \end{frame}
 
+\section{Basic Commands}
+\subsection{Opening Data}
+
+\begin{frame}
+	\frametitle{Opening the Data}
+		\begin{itemize}
+			\item The command for opening a dataset in Stata is \texttt{use}.
+			\item If a dataset is already open, opening a new dataset requires including the option \texttt{clear} with the \texttt{use} command.
+			\item Examples
+				\begin{itemize}
+					\item Example: \texttt{use \textit{filename}} works if there is no data in Stata's memory.
+					\item Example: \texttt{use \textit{filename}, clear} works if data is already in memory.
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\subsection{Data Inspection}
+
+\begin{frame}
+	\frametitle{\texttt{describe}}
+		\texttt{\underline{d}escribe} provides basic information about a Stata dataset. \\
+		\texttt{\underline{d}escribe [\textit{varlist}]} provides basic information about specified variables.
+			\begin{itemize}
+			\item Number of observations and variables
+			\item Size of file (in bytes)
+			\item Most recent timestamp
+			\item Summary Information
+				\begin{itemize}
+					\item Variable Name
+					\item Storage Type
+					\item Display Format
+					\item Value Label
+					\item Variable Label
+				\end{itemize}
+			\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{summarize}} 
+		\texttt{\underline{sum}marize} gives summary statistics for the variables in the dataset. \\
+		\texttt{\underline{sum}marize [\textit{varlist}]} provides summary statistics for specified variables.
+			\begin{itemize}
+				\item Number of Observations
+				\item Mean
+				\item Standard Deviation
+				\item Minimum
+				\item Maximum
+			\end{itemize}
+		The option \texttt{detail} provides additional statistics.
+			\begin{itemize}
+				\item Skewness
+				\item Kurtosis
+				\item Four largest (smallest) values
+				\item Various percentiles (1, 5, 10, 25, 50, 75, 90, 95, 99)
+			\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{tabulate} (One-way)}
+		\begin{itemize}
+			\item \texttt{\underline{tab}ulate \textit{varname}} or \texttt{tab1 \textit{varlist}} produces a frequency table for a variable, or list of variables.
+				\begin{itemize}
+					\item Example: \texttt{tab \textit{var1}}
+				\end{itemize}
+			\item However, using \texttt{tab} alone will not provide frequencies with respect to missing observations.
+			\item Frequencies of missing observations requires including the option \texttt{\underline{m}issing}.
+				\begin{itemize}
+					\item Example: \texttt{tab \textit{var1}, m}
+				\end{itemize}
+			\item Default is to produce a frequency table featuring value labels
+			\item Creating a frequency table without value labels requires including the option \texttt{\underline{nol}abel}
+				\begin{itemize}
+					\item Example: \texttt{tab1 \textit{var1 var2 var3}, nol}
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{tabulate} (Two-way)}
+		\begin{itemize}
+			\item \texttt{\underline{tab}ulate \textit{varname1} \textit{varname2}} or \texttt{tab2 \textit{varlist}} produces a contingency table for a pair of variables.
+				\begin{itemize}
+					\item Example: \texttt{tab \textit{var1} \textit{var2}}
+				\end{itemize}
+			\item Can report row, column, and cell relative frequencies using \texttt{\underline{r}ow}, \texttt{\underline{co}lumn}, and \texttt{\underline{ce}ll} options.
+			\item Can report various measures of association (e.g., Chi-Squared ($\chi^2$), Cramer's V) (See \texttt{help tabulate twoway} for full list of options)
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{codebook}}
+		\texttt{codebook} examines the variable names, labels, and data to produce a codebook describing the dataset. \\
+		\texttt{codebook [\textit{varlist}]} provides a codebook for the specified variables.
+			\begin{itemize}
+				\item Variable Name and Variable Label
+				\item Type
+				\item Value Label
+				\item Range (Smallest and Largest Values)
+				\item Unique Values
+				\item Units
+				\item Missing
+				\item Tabulation (Small number of unique values)
+					\begin{itemize}
+						\item Frequency
+						\item Numeric Value
+						\item Value Label
+					\end{itemize}
+			\end{itemize}
+\end{frame}
+
+\section{Resources}
+\subsection{Features}
+
+\begin{frame}
+	\frametitle{New Features in Stata 15}
+		Stata 15 includes a number of refinements and new features, including:
+			\begin{itemize}
+				\item \texttt{bayes:} prefix for estimating Bayesian regression models \\(Example: \texttt{bayes:~regress \textit{depvar} \textit{indvar1} \textit{indvar2}})
+				\item Markdown and dynamic documents -- Integrating Stata code into documents (e.g., results graphs)
+				\item Including transparency features into graphs
+				\item Number of new methods
+					\begin{itemize}
+						\item Spatial Autoregressive Models
+						\item Bayesian Multilevel Models
+						\item Nonlinear Multilevel Models
+					\end{itemize}
+			\end{itemize}
+		\href{https://www.stata.com/new-in-stata/}{Click here} for the full list of new features.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Available Resources}
+		\begin{itemize}
+			\item \href{http://www.stata-press.com/manuals/documentation-set/}{Stata Documentation}
+			\item \href{http://www.stata-press.com/}{Stata Press}
+			\item \href{https://stats.idre.ucla.edu/stata/}{UCLA Institute for Digital Research and Education}
+			\item \href{http://www.stata.com/contactadmin/link.php?M=6471092&N=1178&L=1430&F=H}{Stata Cheat Sheets}
+			\item \href{http://ppc.uiowa.edu/isrc/workshops}{ISRC Workshops}
+		\end{itemize}
+\end{frame}
+
 \begin{frame}
 	\begin{center}
 		\begin{LARGE}
