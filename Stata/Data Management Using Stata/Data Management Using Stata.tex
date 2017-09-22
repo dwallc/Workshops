@@ -123,7 +123,8 @@
 				\end{itemize}
 			\item \texttt{egen} command used to create variables based on special functions.
 				\begin{itemize}
-					\item \texttt{egen [\textit{type}] \textit{newvar} = \textit{fcn(arguments)} [if] [in]}
+					\item \texttt{egen [\textit{type}] \textit{newvar} = \textit{fcn(arguments)} [if] [in], by(\textit{varlist})}
+					\item \texttt{by} option is used to calculate values over specified variables.
 					\item Functions written for use with \texttt{egen} are ONLY for \texttt{egen}
 				\end{itemize}
 			\item See \texttt{help generate} and \texttt{help egen} for more information.
@@ -183,8 +184,10 @@
 			\item Recall, the \texttt{summarize} command is used to report summary statistics for variables.
 			\item Can use the \texttt{collapse} command to create a dataset of summary statistics.
 				\begin{itemize}
-					\item \texttt{collapse [(\textit{stat})] \textit{varlist} [ [(\textit{stat})] \textellipsis~] [if] [in]}
+					\item \texttt{collapse [(\textit{stat})] \textit{varlist} [ [(\textit{stat})] \textellipsis~] [if] [in], by(\textit{varlist})}
+					\item \texttt{by} option is used to calculate summary statistics over specified variables.
 					\item If \textit{stat} is not specified, default statistic calculated is the mean.
+					\item \textbf{NOTE: Only the variables specified in \texttt{collapse} command remain in memory.}
 					\item See \texttt{help collapse} for more information, including full list of statistics.
 				\end{itemize}
 		\end{itemize}
