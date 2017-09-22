@@ -45,35 +45,60 @@ export excel using Data\gapminder.xlsx, ///
 		*delimiter(;) replace /*	Semicolon-delimited file	*/
 
 
-	/************************************************/
-	/* Basic data summaries and tabulations. 		*/
-	/* If we are in the right directory, we can 	*/
-	/* open up the data set. 						*/
-	/************************************************/
-
-  describe
-  summarize
-  summarize, detail
-
-tab female /* nominal variable */
-tab pid3_p /* categorical variable */
-
-  tab1 state female race natlec  /* tab1 is short for tabulation, One-way tables of frequencies */
-
-  tab1 female-educ		/* Illustrate varlist. A varlist is a list of variable names. */
-
-  tab natlec female		/* cross-tabulation, tab dependent independent variables */
-  tab natlec female, row
-  tab natlec female, row nofreq
-
-	/*	Variable Codebook	*/
+	/********************************/
+	/* Basic data manipulation. 	*/
+	/********************************/
 	
-	codebook female-educ /* Categorical variables */
+	/*	Sorting Data via sort Command	*/
 	
-	codebook income /* Ordinal variable treated as an interval variable */
+sort continent
+sort year country
+
+	/*	Sorting Data via gsort Command	*/
 	
-	codebook state /* String variable */
-  
+gsort +country
+gsort +country -year
+gsort -pop /*	Which countries have the largest populations?	*/
+gsort -year -pop /*	Countries with largest populations in 2007?	*/
+gsort -year -lifeexp /*	Countries with largest life expectancies in 2007?	*/
+
+	/*	Subsetting Data via drop/keep Commands	*/
+	
+	preserve /*	Preserving the data in its current state	*/
+keep if year==2007
+gsort -pop /*	Countries with largest populations in 2007?	*/
+list country pop in 1/10 /*	Display the values of variables	*/
+	restore /*	Restores data to previous state	*/
+	
+	preserve
+keep if year==2007
+drop pop gdppercap
+gsort -lifeexp /*	Countries with largest life expectancies in 2007?	*/
+list country lifeexp in 1/10
+	restore
+	
+	/*	Creating Variables via gen/replace/egen Commands	*/
+	
+gen gdp = pop * gdppercap
+	*gen gdp = . /*	Creates variable of missing values	*/
+	*replace gdp = pop * gdppercap /*	Replacing missing values with	*/
+								   /*	product of gdp and gdppercap.	*/
+egen avggdp = mean(gdp) /*	Average GDP	*/
+egen avggdp_year = mean(gdp), by(year) /*	Average GDP for each year	*/
+
+	/*	Summarizing Data via collapse Command	*/
+	
+	preserve
+collapse (mean) gdp /*	Average GDP	*/
+list
+	restore
+	
+	preserve
+collapse (mean) gdp, by(year) /*	Average GDP for each year	*/
+list
+	restore
+	
+
 log close
 clear
 exit			/* if you use -exit, STATA-, it will close the Stata window. */
