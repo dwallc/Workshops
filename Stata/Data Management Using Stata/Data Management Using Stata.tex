@@ -107,23 +107,87 @@
 		\end{itemize}
 \end{frame}
 
+\subsection{Creating Variables}
+
 \begin{frame}
-	\frametitle{Descriptions}
+	\frametitle{Generating Variables}
 		\begin{itemize}
-			\item Do-file Editor -- Launches the Do-file editor
-			\item Data Editor/Browser -- Launches the Data viewer
-			\item Variables Manager -- Lists the variables in the current dataset; allows for the editing of variables
-			\item More -- Display results that do not fit in the results window
-			\item Break -- Stops the execution of a command
-			\item Search Help -- Searches for help for Stata-written and user-written commands
+			\item \texttt{\underline{g}enerate} command creates a new variable.
+				\begin{itemize}
+					\item \texttt{generate [\textit{type}] =\textit{exp} [if] [in]}
+					\item If \textit{type} is not specified, variable type is determined by \textit{exp}
+				\end{itemize}
+			\item \texttt{replace} command replaces the contents of an existing variable.
+				\begin{itemize}
+					\item \texttt{replace \textit{oldvar} =\textit{exp} [if] [in]}
+				\end{itemize}
+			\item \texttt{egen} command used to create variables based on special functions.
+				\begin{itemize}
+					\item \texttt{egen [\textit{type}] \textit{newvar} = \textit{fcn(arguments)} [if] [in]}
+					\item Functions written for use with \texttt{egen} are ONLY for \texttt{egen}
+				\end{itemize}
+			\item See \texttt{help generate} and \texttt{help egen} for more information.
 		\end{itemize}
 \end{frame}
 
-\subsection{Data Browser}
+\subsection{Recoding Variables}
 
 \begin{frame}
-	\frametitle{PC}
-		%\includegraphics[scale=0.75]{data_editor_pc}
+	\frametitle{Recoding Variables}
+		\begin{itemize}
+			\item Use the \texttt{recode} command to change values of categorical variables.
+				\begin{itemize}
+					\item \texttt{recode \textit{varlist} (\textit{rule}) [(\textit{rule}) ...], \textit{\underline{gen}erate(\textit{newvar}) options}}
+					\item \texttt{recode \textit{varlist} (\textit{erule}) [(\textit{erule}) ...], \textit{\underline{gen}erate(\textit{newvar}) options}}
+				\end{itemize}
+			\item Use the \texttt{generate} option to save recoded variable to new variable.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recoding Variable Rules}
+		\begin{itemize}
+			\item \textit{rule}
+				\begin{enumerate}
+					\item \texttt{\# = \#}
+					\item \texttt{\# \# = \#}
+					\item \texttt{\#/\# = \#}
+					\item \texttt{\underline{nonm}issing = \#}
+					\item \texttt{\underline{mis}sing = \#}
+				\end{enumerate}
+			\item \textit{erule}
+				\begin{enumerate}
+					\item \texttt{\# | \#/\# = el [``label'']}
+					\item \texttt{\underline{nonm}issing = el [``label'']}
+					\item \texttt{\underline{mis}sing = el [``label'']}
+					\item \texttt{else | * = el [``label'']}
+				\end{enumerate}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recoding Variable Rules}
+		\begin{itemize}
+			\item Keywords \texttt{missing}, \texttt{nonmissing}, and \texttt{else} must be the last rules specified.
+			\item \texttt{else} cannot be combined with \texttt{missing} or \texttt{nonmissing}.
+			\item Must use the \texttt{generate} option when recoding a variable, and specifying value labels.
+			\item See \texttt{help recode} for more information.
+		\end{itemize}
+\end{frame}
+
+\subsection{Summarizing Data}
+
+\begin{frame}
+	\frametitle{Summarizing Data}
+		\begin{itemize}
+			\item Recall, the \texttt{summarize} command is used to report summary statistics for variables.
+			\item Can use the \texttt{collapse} command to create a dataset of summary statistics.
+				\begin{itemize}
+					\item \texttt{collapse [(\textit{stat})] \textit{varlist} [ [(\textit{stat})] \textellipsis~] [if] [in]}
+					\item If \textit{stat} is not specified, default statistic calculated is the mean.
+					\item See \texttt{help collapse} for more information, including full list of statistics.
+				\end{itemize}
+		\end{itemize}
 \end{frame}
 
 \begin{frame}
