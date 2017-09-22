@@ -74,23 +74,36 @@
 		\end{itemize}
 \end{frame}
 
-\subsection{Toolbar}
+\section{Data Manipulation}
+\subsection{Sorting Data}
 
 \begin{frame}
-	\frametitle{PC and MAC}
-		PC: %\includegraphics[scale=0.75]{toolbar_pc} \\
-		MAC: %\includegraphics[scale=0.25]{toolbar_mac}
+	\frametitle{Sorting Data}
+		\begin{itemize}
+			\item Use the \texttt{sort} and \texttt{gsort} commands to arrange data.
+				\begin{itemize}
+					\item \texttt{sort} arranges data in ascending order only.
+					\item \texttt{gsort [+|-] \textit{varname} [[+|-] \textit{varname} \textellipsis]}
+						\begin{itemize}
+							\item + -- Sort in ascending order
+							\item - -- Sort in descending order
+						\end{itemize}
+				\end{itemize}
+		\end{itemize}
 \end{frame}
 
+\subsection{Subsetting Data}
+
 \begin{frame}
-	\frametitle{Descriptions}
+	\frametitle{Subsetting Data}
 		\begin{itemize}
-			\item Open -- Open a Stata-related file
-			\item Save -- Save a Stata-related file
-			\item Print -- Print output displayed in the results window
-			\item Log -- Begin, close, suspend, or resume a log file
-			\item Viewer -- Displays help files
-			\item Graph -- Launches the graph window
+			\item Use \texttt{drop} or \texttt{keep} in combination with an \texttt{if} or \texttt{in} statement to subset observations.
+				\begin{itemize}
+					\item \texttt{drop [in \textit{range}] if \textit{exp}} eliminates observations from memory satisfying specified condition(s).
+					\item \texttt{keep [in \textit{range}] if \textit{exp}} keeps observations from memory satisfying specified condition(s).
+				\end{itemize}
+			\item Use \texttt{drop \textit{varlist}} to eliminate variables or \texttt{keep \textit{varlist}} to keep variables
+			\item \textbf{NOTE: \texttt{drop} and \texttt{keep} are NOT reversible.}
 		\end{itemize}
 \end{frame}
 
