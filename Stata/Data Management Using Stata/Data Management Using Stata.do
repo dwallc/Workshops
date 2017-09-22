@@ -6,20 +6,19 @@ set more off					/* Get rid of -MORE- in display.*/
 	}
 log using "Data Management Using Stata.log", text replace		/* Open new log file.	*/
 
-/*	****************************************************************	*/
-/*     	File Name:	Data Management Using Stata.do									*/
-/*     	Date:   	September 2017											*/
-/*      Author: 	Desmond D. Wallace										*/
-/*      Purpose:	Basic data management and	*/
+/*	****************************************************	*/
+/*     	File Name:	Data Management Using Stata.do			*/
+/*     	Date:   	September 2017							*/
+/*      Author: 	Desmond D. Wallace						*/
+/*      Purpose:	Basic data management and				*/
 /*					manipulation commands in Stata.			*/
 /*      Input File:	Data/gapminder.csv						*/
-/*      Output File:	Data Management Using Stata.log 								*/
-/*	****************************************************************	*/
+/*      Output File:	Data Management Using Stata.log		*/
+/*	****************************************************	*/
 
-
-	/************************************************/
-	/* Opening data in various ways. 				*/
-	/************************************************/
+	/************************************/
+	/* Opening Data in Various Ways.	*/
+	/************************************/
 
 	 /* Open Stata format data and clear any open data. */
 
@@ -44,9 +43,8 @@ export excel using Data\gapminder.xlsx, ///
 	*export delimited using Data\gapminder.csv, ///
 		*delimiter(;) replace /*	Semicolon-delimited file	*/
 
-
 	/********************************/
-	/* Basic data manipulation. 	*/
+	/* Basic Data Manipulation. 	*/
 	/********************************/
 	
 	/*	Sorting Data via sort Command	*/
@@ -97,6 +95,54 @@ list
 collapse (mean) gdp, by(year) /*	Average GDP for each year	*/
 list
 	restore
+	
+	/****************************/
+	/* Basic Data Combination. 	*/
+	/****************************/
+	
+	/*	Appending Datasets via append Command	*/
+	
+		/*	Create separate datasets featuring 2002 and	*/
+		/*	2007 data respectively						*/
+
+		preserve
+	keep if year==2002
+	save Data/gapminder2002, replace
+		restore, preserve /*	Restore, then immediately preserve data	*/
+	keep if year==2007
+	save Data/gapminder2007, replace
+		restore
+		
+drop if year==2002 | year==2007
+append using Data/gapminder2002 Data/gapminder2007
+
+		/*	Remove subsetted datasets	*/
+		
+	erase Data/gapminder2002.dta /*	Removes a file from disk	*/
+	erase Data/gapminder2007.dta
+	
+	/*	Merging Datasets via merge Command	*/
+	
+		/*	Create separate datasets featuring certain	*/
+		/*	varables from 2002.							*/
+		
+		preserve
+	keep if year==2002
+	keep country continent
+	save Data\gapminder2002A, replace
+		restore, preserve
+	keep if year==2002
+	keep country year
+	save Data\gapminder2002B, replace
+		restore
+		
+use Data\gapminder2002A, clear
+merge 1:1 country using Data\gapminder2002B
+
+		/*	Remove subsetted datasets	*/
+		
+	erase Data/gapminder2002A.dta
+	erase Data/gapminder2002B.dta
 	
 
 log close
