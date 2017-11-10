@@ -158,18 +158,30 @@ log using "Data Visualization Using Stata.log", text replace		/* Open new log fi
 	scatter y1 x1 /* Places y1 variable on y-axis and x1 variable
 						on x-axis */
 						
-	scatter y1 x1, mcolor(%30) /* Changes transparency of markers */
-	
-	graph save "Graphs\DVgraph02", replace /* Saves graph as a Stata-type
+	graph save "Graphs\DVgraph02a", replace /* Saves graph as a Stata-type
 													file */
 												
-	graph export "Graphs\DVgraph02.pdf", as(pdf) replace /* Saves graph
+	graph export "Graphs\DVgraph02a.pdf", as(pdf) replace /* Saves graph
 															as pdf */
 															
-	graph export "Graphs\DVgraph02.png", as(png) replace /* Saves graph
+	graph export "Graphs\DVgraph02a.png", as(png) replace /* Saves graph
 															as png */
 															
-	graph export "Graphs\DVgraph02.svg", as(svg) replace /* Saves graph
+	graph export "Graphs\DVgraph02a.svg", as(svg) replace /* Saves graph
+															as svg */
+						
+	scatter y1 x1, mcolor(%30) /* Changes transparency of markers */
+	
+	graph save "Graphs\DVgraph02b", replace /* Saves graph as a Stata-type
+													file */
+												
+	graph export "Graphs\DVgraph02b.pdf", as(pdf) replace /* Saves graph
+															as pdf */
+															
+	graph export "Graphs\DVgraph02b.png", as(png) replace /* Saves graph
+															as png */
+															
+	graph export "Graphs\DVgraph02b.svg", as(svg) replace /* Saves graph
 															as svg */
 							
 	scatter y1 x1, by(z) /* Creates separate graphs for each value
