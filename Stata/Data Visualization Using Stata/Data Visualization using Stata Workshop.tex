@@ -1,0 +1,304 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\graphicspath{ {Graphs/} }
+\usepackage{verbatim}
+\usepackage{hyperref}
+\mode<presentation>
+{
+	\usetheme{Berkeley}
+	\usecolortheme{crane}
+}
+
+\title{Data Visualization using Stata}
+\author{Desmond D. Wallace}
+\institute{Department of Political Science\\The University of Iowa\\Iowa City, IA}
+
+\date{March 20, 2017}
+
+\begin{document}
+
+\begin{frame}
+ \titlepage
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Table of Contents}
+%	\tableofcontents
+%\end{frame}
+
+\section{Visualizing Data}
+
+\subsection{Introduction}
+\begin{frame}
+ \frametitle{Why Visualize Data?}
+
+   \begin{itemize}
+   	\item One can communicate information clearly and effectively via graphics.
+   	\item Effective data visuals helps users analyze and reason with data.
+   	\item Make complex data accessible, understandable and usable.
+   	\item Display patterns and/or relationships in one's dataset.
+   	\item One can visualize patterns and/or relationships with respect to discrete and/or continuous variables.
+   \end{itemize}
+\end{frame}
+
+\subsection{Univariate Graphs}
+\begin{frame}
+	\frametitle{\texttt{graph \textit{type}} -- Available Types}
+	
+	\begin{itemize}
+		\item Bar Graphs
+		\item Box Plots
+		\item Distribution Graphs
+		\begin{itemize}
+			\item Histograms
+			\item Kernel Density Estimation Plots
+		\end{itemize}
+		\item Dot Charts (Not Covered)
+		\item Pie Charts (Not Covered)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bar Charts -- Introduction}
+	
+	\begin{itemize}
+		\item Constructs bars used to visualize the distribution of a categorical variable.
+		\item Similar to a histogram.
+		\item Default is to construct a bar for each variable level.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bar Charts -- Syntax}
+	
+	\begin{itemize}
+		\item Basic: \texttt{graph bar (\textit{stat}) \textit{yvars}}, where \textit{yvars} is a variable list
+		\item Displays specified summary statistic for variable(s); default is the mean
+		\item Other statistics include the median, count, various percentiles, etc.
+		\item Can specify multiple (\textit{stat}) \textit{yvars}
+		\item Can display summary statistic of specified variable based on levels of a categorical variable via the \texttt{over(\textit{varname})} option
+		\item Advanced: \texttt{graph bar (\textit{stat}) \textit{yvars}, over(\textit{varname})}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bar Charts -- Syntax}
+	
+	\begin{itemize}
+		\item \textit{yvars} is optional when \texttt{over(\textit{varname})} is specified (Stata 14 only)
+		\item Acceptable syntax: \texttt{graph bar, over(\textit{varname})}
+		\item Percentage is now treated as default statistic, calculated based on levels of \textit{varname}
+		\item Can change the statistic to \texttt{count}, which reports the frequency totals for each level of \textit{varname}
+		\item Replace \texttt{bar} with \texttt{hbar} to produce horizontal bar graph.
+		\item See \texttt{help graph bar} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Box Plots -- Introduction}
+	
+	\begin{itemize}
+		\item Displays a box and ``whiskers'' that visualizes the distribution of a continuous variable
+		\item Box
+		\begin{itemize}
+			\item Bordered at the 25th and 75th percentiles (Q1 and Q3)
+			\item An additional \textit{median} line at the 50th percentile
+		\end{itemize}
+		\item ``Whiskers''
+		\begin{itemize}
+			\item Lower Adjacent Value (LAV) -- Smallest observation greater than or equal to the lower inner fence (LIF), which is $\mbox{Q1}-1.5\times \mbox{IQR}$, where $\mbox{IQR}=\mbox{Q3}-\mbox{Q1}$
+			\item Upper Adjacent Value (UAV) -- Largest observation smaller than or equal to the upper inner fence (UIF), which is $\mbox{Q3}+1.5\times \mbox{IQR}$
+		\end{itemize}
+		\item Any observation falling smaller (larger) than the adjacent values appears as dots 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Box Plots -- Syntax}
+	
+	\begin{itemize}
+		\item Basic: \texttt{graph box \textit{yvars}}, where \textit{yvars} is a variable list
+		\item Can display box plots of specified variable(s) based on levels of a categorical variable via the \texttt{over(\textit{varname})} option
+		\item Advanced: \texttt{graph box \textit{yvars}, over(\textit{varname})}
+		\item Replace \texttt{box} with \texttt{hbox} to produce horizontal box plot(s).
+		\item See \texttt{help graph box} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Histograms}
+	
+	\begin{itemize}
+		\item A graph that shows the distribution of a variable that takes on many values (Acock 2014).
+		\item Syntax: \texttt{\underline{hist}ogram \textit{varname}, \textit{options}}
+		\item Can be used for both discrete and continuous variables
+		\item Use the command \texttt{help \underline{hist}ogram} for more information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Kernel Density Estimation Plots}
+	
+	\begin{itemize}
+		\item Non-parametric method for estimating the PDF (PMF) of a random variable.
+		\item Syntax: \texttt{kdensity \textit{varname}, \textit{options}}
+		\item Can be used for both discrete and continuous variables
+		\item Use the command \texttt{help kdensity} for more information
+	\end{itemize}
+\end{frame}
+
+\subsection{Bivariate Graphs}
+\begin{frame}
+	\frametitle{\texttt{graph twoway \textit{type}} -- Introduction}
+	
+	\begin{itemize}
+		\item Used to display relationships between two numeric-type variables
+		\item Represents over 30 different types of graphs, which can be grouped into multiple categories
+		\item Easy to overlay \texttt{twoway}-type plots
+		\begin{itemize}
+			\item Enclose graph type and variables in parentheses $()$
+			\item Separate graphs via double vertical bars $||$
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{graph twoway \textit{type}} -- Available Types Not Covered}
+	
+	\begin{itemize}
+		\item Area Plots
+		\item Bar Plots
+		\item Range Plots
+		\item Contour Plots
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{graph twoway \textit{type}} -- Available Types Covered}
+	
+	\begin{itemize}
+		\item Scatterplots
+		\item Regression Fits and Confidence Intervals
+		\item Line Plots
+		\item Distribution Plots
+		\begin{itemize}
+			\item Histogram
+			\item Kernel Density Plot
+		\end{itemize}
+		\item Functions
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Scatterplots -- Introduction}
+	
+	\begin{itemize}
+		\item Utilize horizontal and vertical axes to plot data
+		\item Communicates how much one variable is affected by another
+		\item Visual representation of the correlation between two variables
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Scatterplots -- Syntax}
+	
+	\begin{itemize}
+		\item Basic: \texttt{scatter \textit{varlist}}, where \textit{varlist} is a variable list
+		\item At least two variables need to be specified; last variable specified is treated as ``independent'' variable (located on the $x$-axis).
+		\item Can generate scatterplots based on levels of a categorical variable via the \texttt{by(\textit{varname})} option
+		\item Advanced: \texttt{scatter \textit{varlist}, by(\textit{varname})}
+		\item See \texttt{help scatter} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Regression Fits and Confidence Intervals -- Introduction}
+	
+	\begin{itemize}
+		\item Regression is a way to summarize the relationship between variables.
+		\item Assuming the relationship between Y and the independent variable(s) is linear.
+		\item \textbf{Regression tries to accurately predict the average value of Y for a case with some known combination of the independent variables.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Regression Fits and Confidence Intervals -- Syntax}
+	
+	\begin{itemize}
+		\item Graph the linear fit with \texttt{twoway lfit \textit{depvar} \textit{indvar}}
+		\item Graph the linear fit with corresponding confidence interval with \texttt{twoway lfitci \textit{depvar} \textit{indvar}}
+		\item Can overlay these graphs with scatter plots of independent and dependent variables of interest.
+		\item See \texttt{help twoway lfit} and \texttt{help twoway lfitci} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Line Plots -- Introduction}
+	
+	\begin{itemize}
+		\item Shows frequency of data along a number line
+		\item Similar to a scatterplot, except the points are connected
+		\item Visual representation of a variable's trend
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Line Plots -- Syntax}
+	
+	\begin{itemize}
+		\item Basic: \texttt{twoway line \textit{varlist}}, where \textit{varlist} is a variable list
+		\item At least two variables need to be specified; last variable specified is treated as ``independent'' variable (located on the $x$-axis).
+		\item The default is to construct the graph based on the ordering of the dataset
+		\item Either sort the dataset using the \texttt{sort} command, or use the \texttt{sort} option along with the \texttt{twoway line} command
+		\item See \texttt{help twoway line} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Histograms and Kernel Density -- \texttt{twoway} Version}
+	
+	\begin{itemize}
+		\item Same as \texttt{hist} and \texttt{kdensity}, except
+		\begin{itemize}
+			\item Allows overlaying of a normal density or a kernel estimate of the density
+			\item If a density estimate is overlaid, it scales the density to reflect the scaling of the bars
+		\end{itemize}
+		\item Basic Syntax
+		\begin{itemize}
+			\item Histogram: \texttt{twoway histogram \textit{varname}}
+			\item Kernel Density: \texttt{twoway kdensity \textit{varname}}
+		\end{itemize}
+		\item See \texttt{help histogram} and \texttt{help kdensity} for additional information
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Line Plot of Function}
+	
+	\begin{itemize}
+		\item Stata allows for one to generate a plot of a specified function
+		\item Only variables allowed are $y$ and $x$; these variables do not have to be part of the dataset in memory
+		\item Syntax: \texttt{twoway function [[y]=] f(x)}, where $f(x)$ is some function of x
+		\item See \texttt{twoway function} for additional information
+	\end{itemize}
+\end{frame}
+
+\subsection{Editing Graphs}
+\begin{frame}
+	\frametitle{Graph Editor vs. Commands}
+	
+	\begin{itemize}
+		\item Two ways to edit Stata graphs: commands and the Graph editor
+		\item Whenever possible, best to use commands to make changes to your graphs
+		\item Situations can arise, however, where the graph editor is better suited than using the commands (e.g. adding objects, modifying objects)
+		\item Changes made via the graph editor can be recorded, and applied to future graphs
+		\item See \textit{A Visual Guide to Stata Graphics, Third Edition}, pages 82-88, for a more detailed discussion 
+	\end{itemize}
+\end{frame}
+
+
+
+\end{document}
