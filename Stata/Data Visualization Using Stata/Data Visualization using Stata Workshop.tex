@@ -158,28 +158,79 @@
 		\end{itemize}
 \end{frame}
 
+\section{Bivariate Graphs}
+\subsection{Introduction}
+
 \begin{frame}
-	\frametitle{Descriptions}
+	\frametitle{Introduction}
 		\begin{itemize}
-			\item Do-file Editor -- Launches the Do-file editor
-			\item Data Editor/Browser -- Launches the Data viewer
-			\item Variables Manager -- Lists the variables in the current dataset; allows for the editing of variables
-			\item More -- Display results that do not fit in the results window
-			\item Break -- Stops the execution of a command
-			\item Search Help -- Searches for help for Stata-written and user-written commands
+			\item Used to display relationships between two numeric-type variables
+			\item Represents over 30 different types of graphs, which can be grouped into multiple categories
+			\item Easy to overlay \texttt{twoway}-type plots
+				\begin{itemize}
+					\item Enclose graph type and variables in parentheses $()$
+					\item Separate graphs via double vertical bars $||$
+				\end{itemize}
 		\end{itemize}
 \end{frame}
 
-\subsection{Data Browser}
-
 \begin{frame}
-	\frametitle{PC}
-		%\includegraphics[scale=0.75]{data_editor_pc}
+	\frametitle{Available Types Not Covered}
+		\begin{itemize}
+			\item Area Plots
+			\item Bar Plots
+			\item Range Plots*
+			\item Regression Fits and Confidence Intervals*
+			\item Functions*
+			\item Contour Plots
+		\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{MAC}
-	%	\includegraphics[scale=0.35]{data_editor_mac}
+	\frametitle{Available Types Covered}
+		\begin{itemize}
+			\item Scatterplots
+			\item Line Plots
+			\item Distribution Plots
+				\begin{itemize}
+					\item Histogram
+					\item Kernel Density Plot
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\subsection{Scatterplots}
+
+\begin{frame}
+	\frametitle{Introduction}
+		\begin{itemize}
+			\item Utilize horizontal and vertical axes to plot data
+			\item Communicates how much one variable is affected by another
+			\item Visual representation of the correlation between two variables
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Syntax}
+		\begin{itemize}
+			\item Basic: \texttt{scatter \textit{varlist}}, where \textit{varlist} is a variable list
+			\item At least two variables need to be specified; last variable specified is treated as ``independent'' variable (located on the $x$-axis).
+			\item Can generate scatterplots based on levels of a categorical variable via the \texttt{by(\textit{varname})} option
+			\item Advanced: \texttt{scatter \textit{varlist}, by(\textit{varname})}
+			\item See \texttt{help scatter} for additional information
+		\end{itemize}
+\end{frame}
+
+\subsection{Scatterplot Examples}
+
+\begin{frame}
+	\frametitle{PDF}
+		\includegraphics[scale=0.7]{DVgraph02a.pdf}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PNG}
+		\includegraphics[scale=0.3]{DVgraph02a.png}
 \end{frame}
 
 \begin{frame}
