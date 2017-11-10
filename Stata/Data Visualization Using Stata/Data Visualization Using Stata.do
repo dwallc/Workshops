@@ -4,25 +4,26 @@ set more off					/* Get rid of -MORE- in display.*/
   if "`logon'" == "on" {
 	log close
 	}
-log using comp03graph.log, text replace		/* Open new log file.	*/
+	
+log using "Data Visualization Using Stata.log", text replace		/* Open new log file.	*/
 
 
-/*	****************************************************************	*/
-/*     	File Name:	comp03graph.do										*/
-/*     	Date:   	March 20, 2017										*/
+/*	*********************************************************************/
+/*     	File Name:	Data Visualization Using Stata.do					*/
+/*     	Date:   	November 10, 2017									*/
 /*      Author: 	Desmond D. Wallace									*/
 /*      Purpose:	Exploring Graphing Capabilities in Stata.			*/
-/*      Input File:	comp03data01.dta,									*/
-/*      		comp03data02.dta,										*/
-/*      Output File: comp03graph.log, 									*/
-/*			comp03graph01.gph,											*/
-/*			comp03graph01.pdf,											*/
-/*	****************************************************************	*/
+/*      Input File:	Data/DVdata01.dta,									*/
+/*      			Data/DVdata02.dta,									*/
+/*      Output File: Data Visualization Using Stata.log, 				*/
+/*					 Graphs/DVgraph01.gph,								*/
+/*					 Graphs/DVgraph01.pdf,								*/
+/*					 Graphs/DVgraph01.svg								*/
+/*	*********************************************************************/
 
-
-		/* Open the comp03data01 data file, and clear the memory. */
+		/*	Open the DVdata01 data file, and clear the memory.	*/
 		
-	use comp03data01, clear /* Works if file is located in current working
+	use Data/DVdata01, clear /* Works if file is located in current working
 								directory. */
 
 	/************************************/
@@ -34,11 +35,17 @@ log using comp03graph.log, text replace		/* Open new log file.	*/
 			
 	graph bar age /* Creates a single bar representing the variable's mean */
 	
-	graph save "Graphs\comp03graph01", replace /* Saves graph as a Stata-type
+	graph save "Graphs\DVgraph01", replace /* Saves graph as a Stata-type
 													file */
 												
-	graph export "Graphs\comp03graph01.pdf", as(pdf) replace /* Saves graph
-																as pdf */
+	graph export "Graphs\DVgraph01.pdf", as(pdf) replace /* Saves graph
+															as pdf */
+															
+	graph export "Graphs\DVgraph01.png", as(png) replace /* Saves graph
+															as png */
+															
+	graph export "Graphs\DVgraph01.svg", as(svg) replace /* Saves graph
+															as svg */
 	
 	graph bar (mean) age /* Same as above. */
 	
@@ -143,20 +150,34 @@ log using comp03graph.log, text replace		/* Open new log file.	*/
 	
 		/* Open the comp03data02 data file, and clear the memory. */
 		
-	use comp03data02, clear
+	use Data/DVdata02, clear
 	
 		/* Scatterplots, Fit, and CI Fit plots display the relationship
 			between two variables. */
 			
 	scatter y1 x1 /* Places y1 variable on y-axis and x1 variable
 						on x-axis */
+						
+	scatter y1 x1, mcolor(%30) /* Changes transparency of markers */
+	
+	graph save "Graphs\DVgraph02", replace /* Saves graph as a Stata-type
+													file */
+												
+	graph export "Graphs\DVgraph02.pdf", as(pdf) replace /* Saves graph
+															as pdf */
+															
+	graph export "Graphs\DVgraph02.png", as(png) replace /* Saves graph
+															as png */
+															
+	graph export "Graphs\DVgraph02.svg", as(svg) replace /* Saves graph
+															as svg */
 							
 	scatter y1 x1, by(z) /* Creates separate graphs for each value
 							of the z variable */
 								
-	scatter y2 x2
+	scatter y2 x2, mcolor(%30)
 		
-	scatter y2 x2, by(z)
+	scatter y2 x2, by(z) mcolor(%30)
 		
 		/* You can also use graphs to graphically represent
 			a regression relationship */
