@@ -177,33 +177,7 @@ log using "Data Visualization Using Stata.log", text replace		/* Open new log fi
 								
 	scatter y2 x2, mcolor(%30)
 		
-	scatter y2 x2, by(z) mcolor(%30)
-		
-		/* You can also use graphs to graphically represent
-			a regression relationship */
-			
-	twoway lfit y1 x1 /* Only graphs the fitted values resulting when
-							y1 is regressed on x1 */
-							
-	twoway (scatter y1 x1) (lfit y1 x1) /* Overlays the fitted line with
-											a scatterplot */
-											
-	twoway (scatter y1 x1) (lfit y1 x1), by(z) /* Same as above, except for
-													each value of z */
-													
-		/* You can also graph the corresponding confidence
-			interval along with the fitted values */
-			
-	twoway lfitci y2 x2 /* Graphs the fitted line along with
-							the 95% confidence interval */
-							
-	twoway (scatter y2 x2) (lfitci y2 x2) /* Overlays the fitted line and
-												confidence interval with
-												a scatterplot */
-												
-	twoway (scatter y2 x2) (lfitci y2 x2), by(z) /* Same as above, except for
-														each value of z */
-														
+	scatter y2 x2, by(z) mcolor(%30)														
 														
 		/* Line plots are useful for visualizing a variable's
 			frequency along a number line. */
@@ -251,18 +225,7 @@ log using "Data Visualization Using Stata.log", text replace		/* Open new log fi
 							its kernel-density estimate */
 							
 	twoway (histogram y1) (kdensity y1) /* Overlays kernel-density plot
-											on a histogram */
-											
-											
-		/* Finally, one can graph the relationship between
-			variables x and y as a function. */
-			
-	twoway function y=x /* y equals x over the domain [0, 1] */
-	
-	twoway function y=x^2, range(-1 1) /* y equals the squared value of
-											x over the domain [-1, 1] */
-										
-
+											on a histogram */										
 
 log close
 clear
