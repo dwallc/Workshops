@@ -93,7 +93,7 @@
 		\end{itemize}
 \end{frame}
 
-\subsection{Examples}
+\subsection{Bar Graph Examples}
 
 \begin{frame}
 	\frametitle{PDF}
@@ -105,24 +105,35 @@
 		\includegraphics[scale=0.3]{DVgraph01.png}
 \end{frame}
 
+\subsection{Box Plots}
+
 \begin{frame}
-	\frametitle{SVG}
-		\includegraphics[scale=0.3]{DVgraph01.svg}
+	\frametitle{Introduction}
+		\begin{itemize}
+			\item Displays a box and ``whiskers'' that visualizes the distribution of a continuous variable
+			\item Box
+				\begin{itemize}
+					\item Bordered at the 25th and 75th percentiles (Q1 and Q3)
+					\item An additional \textit{median} line at the 50th percentile
+				\end{itemize}
+			\item ``Whiskers''
+				\begin{itemize}
+					\item Lower Adjacent Value (LAV) -- Smallest observation greater than or equal to the lower inner fence (LIF), which is $\mbox{Q1}-1.5\times \mbox{IQR}$, where $\mbox{IQR}=\mbox{Q3}-\mbox{Q1}$
+					\item Upper Adjacent Value (UAV) -- Largest observation smaller than or equal to the upper inner fence (UIF), which is $\mbox{Q3}+1.5\times \mbox{IQR}$
+				\end{itemize}
+			\item Any observation falling smaller (larger) than the adjacent values appears as dots
+		\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Descriptions}
-		\begin{enumerate}
-			\item Command -- Type commands
-			\item Results -- Executed commands and resulting output
-			\begin{enumerate}
-				\item Current and Command log status
-			\end{enumerate}
-			\item Review -- Past commands from current session
-			\item Variables -- Variable list of current dataset
-			\item Properties -- Displays dataset and variable properties
-		\end{enumerate}
-		Note: Grey Bar at Bottom of the Screen -- Displays current working directory
+	\frametitle{Syntax}
+		\begin{itemize}
+			\item Basic: \texttt{graph box \textit{yvars}}, where \textit{yvars} is a variable list
+			\item Can display box plots of specified variable(s) based on levels of a categorical variable via the \texttt{over(\textit{varname})} option
+			\item Advanced: \texttt{graph box \textit{yvars}, over(\textit{varname})}
+			\item Replace \texttt{box} with \texttt{hbox} to produce horizontal box plot(s).
+			\item See \texttt{help graph box} for additional information
+		\end{itemize}
 \end{frame}
 
 \subsection{Toolbar}
