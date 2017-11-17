@@ -112,23 +112,23 @@
 \begin{frame}
 	\frametitle{\texttt{coefplot} Example}
 		\texttt{reg realrinc age i.female}\\
-		\texttt{coefplot}
+		\texttt{coefplot, title("Model Results") xline(0)}
 \end{frame}
 
 \begin{frame}
 	\frametitle{\texttt{coefplot} Example}
-		\includegraphics[scale=0.3]{coefplot.png}
+		\includegraphics[scale=0.3]{MIVcoef01.png}
 \end{frame}
 
 \begin{frame}
 	\frametitle{\texttt{coefplot} Example}
 		\texttt{reg realrinc age i.female}\\
-		\texttt{coefplot, drop(\_cons)}
+		\texttt{coefplot, title("Model Results") xline(0) drop(\_cons)}
 \end{frame}
 
 \begin{frame}
 	\frametitle{\texttt{coefplot} Example}
-		%\includegraphics[scale=0.3]{coefplotDrop.png}
+		\includegraphics[scale=0.3]{MIVcoef02.png}
 \end{frame}
 
 \section{Interpretation}
@@ -189,11 +189,11 @@
 
 \begin{frame}
 	\frametitle{Marginal Effects}
-		%\begin{figure}[p]
-		%	\centering
-		%	\includegraphics[width=1\textwidth]{Graphs/mfxOLS.png}
-		%	\label{fig:fig1}
-		%\end{figure}
+		\begin{figure}[p]
+			\centering
+			\includegraphics[scale=0.3]{Graphs/mfxOLS.png}
+			\label{fig:fig1}
+		\end{figure}
 \end{frame}
 
 \section{\texttt{margins} and \texttt{marginsplot}}

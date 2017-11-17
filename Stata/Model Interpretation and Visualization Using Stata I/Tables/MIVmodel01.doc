@@ -1,0 +1,22 @@
+{\rtf1\fs24
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx5472\clbrdrt\brdrs\cellx6912
+\ql \cell\qc (1)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx5472\cellx6912
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx5472\clbrdrb\brdrs\cellx6912
+\ql VARIABLES\cell\qc \cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx5472\cellx6912
+\ql \cell\qc \cell\row
+\ql age of respondent\cell\qc 243.8***\cell\row
+\ql \cell\qc (38.68)\cell\row
+\ql Is R female (yes=1 no=0)? = 1, Female\cell\qc -7,629***\cell\row
+\ql \cell\qc (1,114)\cell\row
+\ql Constant\cell\qc 14,141***\cell\row
+\ql \cell\qc (1,896)\cell\row
+\ql \cell\qc \cell\row
+\ql Observations\cell\qc 1,201\cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx5472\clbrdrb\brdrs\cellx6912
+\ql R-squared\cell\qc 0.070\cell\row
+\pard\qc
+Standard errors in parentheses\par
+*** p<0.01, ** p<0.05, * p<0.1\par
+}
