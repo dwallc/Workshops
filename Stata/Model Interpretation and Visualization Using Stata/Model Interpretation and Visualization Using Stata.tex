@@ -1,0 +1,328 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\graphicspath{ {Graphs/} }
+\usepackage{verbatim}
+\usepackage{hyperref}
+\mode<presentation>
+{
+	\usetheme{Berkeley}
+	\usecolortheme{crane}
+}
+
+\title{Model Interpretation and Visualization Using Stata}
+\author{Desmond D. Wallace}
+\institute{Department of Political Science\\The University of Iowa\\Iowa City, IA}
+
+\date{April 24, 2017}
+
+\begin{document}
+
+\begin{frame}
+ \titlepage
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Table of Contents}
+%	\tableofcontents
+%\end{frame}
+
+\section{Regression Basics}
+
+\begin{frame}
+	\frametitle{Regression Highlights}
+	\begin{itemize}
+		\item Regression is a way to summarize the relationship between variables.
+		\item Assuming there is a relationship between Y and the independent variable(s).
+		\item Relationship may be linear (OLS) or non-linear (CLDV).
+		\item \textbf{Regression helps our understanding of how our dependent variable of interest changes when one or more independent variables vary, while holding remaining variables fixed.}
+	\end{itemize}
+\end{frame}
+
+\section{\texttt{margins} and \texttt{marginsplot}}
+
+\begin{frame}
+	\frametitle{\texttt{margins}}
+	\begin{itemize}
+		\item Computes predicted values and marginal effects from last estimated regression model
+		\item Reports computed statistic, standard error, test statistic, $p$-value and 95\% CI.
+		\item \texttt{at(atspec)} option allows for the calculation of predicted values and marginal effects at specific values of independent variable(s).
+		\item \texttt{dydx()} option allows for calculating marginal effects.
+		\item Factor variables (\texttt{i.\underline{varname}}) can go after the \texttt{margins} command or within the \texttt{at(atspec)} option.
+		\item Continuous variables can only be specified within the \texttt{at(atspec)} option.
+		\item \texttt{atmeans} option sets variables not specified to be held at their mean value.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{marginsplot}}
+	\begin{itemize}
+		\item Graphs the results of last estimated \texttt{margins} command
+		\item \textbf{Needs to be executed immediately after \texttt{margins}}
+		\item Resulting graph includes an overall title, a title for the $y$-axis, $x$-axis features the name of the variable (variable label if one is included).
+		\item The featured values on the $x$-axis are the values specified from the \texttt{margins} command.
+	\end{itemize}
+\end{frame}
+
+\section{Interpreting OLS Results}
+
+\begin{frame}
+	\frametitle{Coefficients}
+	\begin{itemize}
+		\item Can directly interpret coefficient estimates.
+		\item \textit{A one unit change in $X_{k}$ leads to a $\beta_{k}$ change in $Y$ (holding all other variables constant).}
+		\item Assumes $X_{k}$ is not a constituent term for an interaction variable. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Predicted (Fitted) Values}
+	\begin{itemize}
+		\item The result of substituting values of interest for the independent variable(s).
+		\item $E[Y|X]=X\hat{\beta}$
+		\item Can calculate standard errors to determine if $E[Y|X=x]$ is statistically significantly different from zero.
+		\item $Var\left(E[Y|X]\right)\approx\nabla G(X)^{T}\Sigma\nabla G(X)$ 
+		\begin{itemize}
+			\item $\nabla G(X)$ is a column vector of partial derivatives w.r.t. the beta coefficient(s) for the prediction function.
+			\item $\Sigma$ is the variance-covariance matrix from the estimated model.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Predicted (Fitted) Values -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins} -- Overall predicted value with all independent variables held at their mean value.
+		\item \texttt{margins, at(varname=\#)} -- Predicted value when one or more independent variables are fixed to a specific value and remaining independent variables held at their mean value.
+		\item \texttt{margins, at(varname=numlist)} -- Predicted value(s) when one or more independent variables are fixed to multiple values and remaining independent variables held at their mean value.
+		\item \texttt{margins varname} -- Overall predicted value(s) for categories of \texttt{varname} with remaining independent variables held at their mean value.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Measuring the change in the dependent variable for a change in one independent variable, holding remaining independent variables constant.
+		\begin{itemize}
+			\item \textit{Marginal Change} is the partial derivative, or instantaneous rate of change, in the dependent variable w.r.t. an independent variable, holding remaining variables constant.
+			\item \textit{Discrete Change} or \textit{First Difference} is the difference in the prediction from one specified value of an independent variable to another specified value, holding remaining variables constant.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Marginal Change: $\frac{\partial E[Y|X]}{\partial x_{k}}=\frac{\partial X\beta}{\partial x_{k}}=\beta_{k}$
+		\item Discrete Change: $\frac{\Delta E[Y|X]}{\Delta x_{k}}=E[Y|X, x_{k}+1]-E[Y|X, x_{k}]=\beta_{k}$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item $\frac{\partial E[Y|X]}{\partial x_{k}}=\frac{\Delta E[Y|X]}{\Delta x_{k}}=\beta_{k}$, assuming there is no interaction terms.
+		\item The standard error of the marginal effect is the same as the standard error of the estimated beta coefficient.
+		\item \textit{For a unit increase in $x_{k}$, the expected change in $Y$ equals $\beta_{k}$, holding all other variables constant.}
+		\item \textit{Having characteristic $x_{k}$ (as opposed to not having the characteristic) results in an expected change of $\beta_{k}$ in $Y$, holding all other variables constant.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=1\textwidth]{Graphs/ols_mfx.png}
+		\label{fig:fig1}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins, dydx(varname)} -- Average marginal effect a one-unit increase in \texttt{varname} has on the dependent variable, holding all other variables constant.
+	\end{itemize}
+\end{frame}
+
+\section{Interpreting BRM Results}
+
+\begin{frame}
+	\frametitle{Coefficients}
+	\begin{itemize}
+		\item Indicates the direction of a variable's effect.
+		\begin{itemize}
+			\item $\beta_{k}<0$: Lower probability of dependent variable taking value of 1.
+			\item $\beta_{k}>0$: Higher probability of dependent variable taking value of 1.
+		\end{itemize}
+		\item Interpreting magnitude of the effect is more difficult.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Coefficients -- Logit Models}
+	\begin{itemize}
+		\item Log Odds Interpretation
+		\begin{itemize}
+			\item \textit{For a unit change in $x_{k}$, I expect the log of the odds of the outcome to change by $\beta_{k}$ units, holding all other variables constant.}
+			\item Just like OLS, does not depend on the values of $x_{k}$, or values of other independent variables.
+			\item Problem: Little substantive meaning.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Coefficients -- Logit Models}
+	\begin{itemize}
+		\item Odds Ratios Interpretation
+		\begin{itemize}
+			\item \textit{For a unit change in $x_{k}$, I expect the odds of the outcome to change by a factor of $e^{\beta_{k}}$, holding all other variables constant.}
+			\item $e^{\beta_{k}}<1$: Odds are ``$e^{\beta_{k}}$ times smaller''.
+			\item $e^{\beta_{k}}>1$: Odds are ``$e^{\beta_{k}}$ times larger''.
+			\item Computed by changing one variable, while holding remaining variables constant.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Predicted Probabilities}
+	\begin{itemize}
+		\item Probability of observing the outcome given specific values of the independent variable(s) is the cumulative density estimated at the linear prediction $\mathbf{XB}$.
+		\item $Pr\left(y=1|X=x\right)=F(X\beta)$
+		\begin{itemize}
+			\item Probit -- $F=\mbox{normal cdf}$
+			\item Logit -- $F=\mbox{logistic cdf}$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Predicted Probabilities -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins} -- Overall predicted probability with all independent variables held at their mean value.
+		\item \texttt{margins, at(varname=\#)} -- Predicted probability when one or more independent variables are fixed to a specific value and remaining independent variables held at their mean value.
+		\item \texttt{margins, at(varname=numlist)} -- Predicted probabilities when one or more independent variables are fixed to multiple values and remaining independent variables held at their mean value.
+		\item \texttt{margins varname} -- Overall predicted probabilities for categories of \texttt{varname} with remaining independent variables held at their mean value.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Measuring the change in the probability of an outcome for a change in one independent variable, holding remaining independent variables constant at specific values.
+		\begin{itemize}
+			\item \textit{Marginal Change} is the rate of change in the probability for an infinitely small change in $x_{k}$, holding other variables at specific values.
+			\item \textit{Discrete Change} or \textit{First Difference} is the actual change in the predicted probability for a given change in $x_{k}$, holding other variables at specific values.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Marginal Change: 
+		\begin{itemize}
+			\item General: $\frac{\partial Pr\left(y=1|X=x*\right)}{\partial x_{k}}=f(X\beta)\beta_{k}$
+			\begin{itemize}
+				\item Probit -- $f=\mbox{normal pdf}$
+				\item Logit -- $f=\mbox{logistic pdf}$
+			\end{itemize}
+			\item Logit only: $\frac{\partial Pr\left(y=1|X=x*\right)}{\partial x_{k}}=Pr\left(y=1|X=x*\right)\left[1-Pr\left(y=1|X=x*\right)\right]\beta_{k}$
+		\end{itemize}
+		\item Categorical Variables: $\frac{\Delta Pr\left(y=1|X=x\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}=Pr\left(y=1|X=x, x_{k}=x^{end}_{k}\right)-Pr\left(y=1|X=x, x_{k}=x^{start}_{k}\right)$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item $\frac{\partial Pr\left(y=1|X=x*\right)}{\partial x_{k}}\approx\frac{\Delta Pr\left(y=1|X=x\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}$, the more linear the probability curve is in the region where the change is occurring.
+		\item In general, $\frac{\partial Pr\left(y=1|X=x*\right)}{\partial x_{k}}\neq\frac{\Delta Pr\left(y=1|X=x\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Average Marginal Effect (AME) -- The marginal effect of $x_{k}$ for each observation at its observed values $x_{i}$, and taking the average of these effects.
+		\begin{itemize}
+			\item Marginal Change
+			\begin{itemize}
+				\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\partial Pr\left(y=1|X=x_{i}\right)}{\partial x_{k}}$
+				\item \textit{The average marginal effect of $x_{k}$ is...}
+			\end{itemize}
+			\item Discrete Change
+			\begin{itemize}
+				\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\Delta Pr\left(y=1|X=x_{i}\right)}{x_{k}}$
+				\item \textit{On average, increasing $x_{k}$ by $\delta$ increases the probability by...}
+				\item \textit{On average, increasing $x_{k}$ from \underline{start-value} to \underline{end-value} increases the probability by...}
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Marginal Effect at the Mean (MEM) -- The marginal effect of $x_{k}$ with all independent variables held at their means.
+		\begin{itemize}
+			\item Marginal Change
+			\begin{itemize}
+				\item $\frac{\partial Pr\left(y=1|X=\bar{x_{k}}\right)}{\partial x_{k}}$
+				\item \textit{For someone who is average on all characteristics, the marginal change of $x_{k}$ is...}
+			\end{itemize}
+			\item Discrete Change
+			\begin{itemize}
+				\item $\frac{\Delta Pr\left(y=1|X=\bar{x_{k}}\right)}{x_{k}}$
+				\item \textit{For someone who is average on all characteristics, increasing $x_{k}$ by $\delta$ changes the probability by...}
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{itemize}
+		\item Marginal Effect at Representative Values (MER) -- The marginal effect of $x_{k}$ with independent variables held at specific values.
+		\begin{itemize}
+			\item Specify values that are instructive for the substantive questions under consideration.
+			\item MEM is a special case of MER.
+			\item If not all variables are specified, MERs will be calculated for the variables specified, and averaged across the values for the unspecified variables.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=1\textwidth]{Graphs/brm_mfx.png}
+		\label{fig:fig2}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Average Marginal Effects -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins, dydx(varname)} -- Average marginal (discrete) change \texttt{varname} has on the dependent variable.
+		\item \texttt{margins, dydx(varname) at(varname=\#)} -- Average marginal (discrete) change \texttt{varname} has on the dependent variable when \texttt{varname} takes on a specific value.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Average Marginal Effects -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins, dydx(varname1) at(varname2=\#)} -- Average marginal (discrete) change \texttt{varname1} has on the dependent variable when \texttt{varname2} takes on a specific value(s).
+		\item \texttt{margins varname2, dydx(varname1)} -- Average marginal (discrete) change \texttt{varname1} has on the dependent variable when \texttt{varname2} takes on specific value(s).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conditional Marginal Effects -- \texttt{margins} Syntax}
+	\begin{itemize}
+		\item \texttt{margins, dydx(varname) atmeans} -- Conditional marginal (discrete) change \texttt{varname} has on the dependent variable when remaining variables are held to their mean values.
+		\item \texttt{margins, dydx(varname) at(varlist=\#)} -- Conditional marginal (discrete) change \texttt{varname} has on the dependent variable when \texttt{varlist} takes on specific values.
+	\end{itemize}
+\end{frame}
+
+\end{document}
