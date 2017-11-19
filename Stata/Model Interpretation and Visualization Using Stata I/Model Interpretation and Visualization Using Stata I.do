@@ -16,8 +16,12 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 /*					Model Results in Stata.										*/
 /*      Input File:	Data\MIVdata01.dta											*/
 /*      Output File: Model Interpretation and Visualization Using Stata I.log, 	*/
+/*					 Tables\MIVmodel01.doc,										*/
 /*					 Tables\MIVmodel01.tex,										*/
+/*					 Tables\MIVmodel01.dta,										*/
+/*					 Tables\MIVmodel02.doc,										*/
 /*					 Tables\MIVmodel02.tex,										*/
+/*					 Tables\MIVmodel02.dta,										*/
 /*					 Graphs\MIVcoef01.png,										*/
 /*					 Graphs\MIVcoef02.png,										*/
 /*					 Graphs\mfxOLS.png											*/
@@ -30,7 +34,8 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 	
 	/*	Install outreg2, if necessary	*/
 
-*net install outreg2.pkg
+*search outreg2 /*	Click on the fifth link, then click on the	*/
+				/*	blue "Click here to install" link.			*/
 
 	/*	Open the MIVdata01 data file, and clear the memory.	*/
 	
@@ -58,7 +63,8 @@ capture outreg2 using Tables\MIVmodels01.dta, dta(saveold) replace ///
 	
 	/*	Install coefplot, if necessary	*/
 
-*net install outreg2.pkg
+*search coefplot /*	Click on the fifth link, then click on the	*/
+				 /*	blue "Click here to install" link.			*/
 
 	/*	Use coefplot to create a regression plot	*/
 	
@@ -82,7 +88,7 @@ coefplot, title("Model Results") xline(0) drop(_cons) /*	Remove constant	*/
 	/****************************************/
 				
 	/*	Estimate a regression model predicting a respondent's	*/
-	/*	education based on multiple variables. 					*/
+	/*	incoe based on their age and gender. 					*/
 			
 regress realrinc age i.female
 
@@ -122,7 +128,7 @@ marginsplot /*	Graphs the result from the previously executed	*/
 		
 	margins, at(age=(33 47 61)) atmeans /*	Calculates predicted means at	*/
 										/*	the 25th, 50th, and 75th		*/
-										/*	percentiles of the 'educ'		*/
+										/*	percentiles of the 'age'		*/
 										/*	variable, and explicitly		*/
 										/*	setting the remaining			*/
 										/*	independent variables at		*/
@@ -140,7 +146,7 @@ marginsplot /*	Graphs the result from the previously executed	*/
 									
 	margins, at(age=(18(1)89)) ///
 		atmeans noatlegend /*	Calculating predicted means for each	*/
-						   /*	value of 'educ' while holding the		*/
+						   /*	value of 'age' while holding the		*/
 						   /*	remaining variables at their mean 		*/
 						   /*	value. In addition, I am not			*/
 						   /*	producing the _at legend to				*/
@@ -220,7 +226,7 @@ marginsplot /*	Graphs the result from the previously executed	*/
 	marginsplot, recast(line) recastci(rarea) ///
 		plotopts(color(black)) ///
 		ciopts(color(gs12))
-			
+		
 log close
 clear
 exit														
