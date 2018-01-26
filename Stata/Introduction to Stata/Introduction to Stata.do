@@ -6,31 +6,28 @@ set more off					/* Get rid of -MORE- in display.*/
 	}
 log using "Introduction to Stata.log", text replace		/* Open new log file.	*/
 
-/*	****************************************************************	*/
-/*     	File Name:	Introduction to Stata.do									*/
-/*     	Date:   	September 2017											*/
-/*      Author: 	Desmond D. Wallace										*/
-/*      Purpose:	Basic data manipulation commands in Stata.			*/
-/*      Input File:	Data/introData.dta						*/
-/*      Output File:	Introduction to Stata.log 								*/
-/*	****************************************************************	*/
+/*	*************************************************************/
+/*     	File Name:	Introduction to Stata.do					*/
+/*     	Date:   	January 26, 2018							*/
+/*      Author: 	Desmond D. Wallace							*/
+/*      Purpose:	Basic data manipulation commands in Stata.	*/
+/*      Input File:	Data/introData.dta							*/
+/*      Output File:	Introduction to Stata.log 				*/
+/*	*************************************************************/
 
 
-	/************************************************/
-	/* Opening data in various ways. 				*/
-	/************************************************/
-
+	/************************************/
+	/*	Opening data in various ways.	*/
+	/************************************/
 
 	 	  /* Open Stata format data and clear any open data. */
 
 use Data/introData.dta, clear
 
 
-	/************************************************/
-	/* Basic data summaries and tabulations. 		*/
-	/* If we are in the right directory, we can 	*/
-	/* open up the data set. 						*/
-	/************************************************/
+	/******************************************/
+	/*	Basic data summaries and tabulations. */
+	/******************************************/
 
   describe
   summarize
