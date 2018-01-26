@@ -6,14 +6,14 @@ set more off					/* Get rid of -MORE- in display.*/
 	}
 log using "Introduction to Stata.log", text replace		/* Open new log file.	*/
 
-/*	*************************************************************/
-/*     	File Name:	Introduction to Stata.do					*/
-/*     	Date:   	January 26, 2018							*/
-/*      Author: 	Desmond D. Wallace							*/
-/*      Purpose:	Basic data manipulation commands in Stata.	*/
-/*      Input File:	Data/introData.dta							*/
-/*      Output File:	Introduction to Stata.log 				*/
-/*	*************************************************************/
+/*	*********************************************************/
+/*	File Name:	Introduction to Stata.do					*/
+/*	Date:   	January 26, 2018							*/
+/*	Author: 	Desmond D. Wallace							*/
+/*	Purpose:	Basic data manipulation commands in Stata.	*/
+/*	Input File:	Data/introData.dta							*/
+/* 	Output File:	Introduction to Stata.log 				*/
+/*	*********************************************************/
 
 
 	/************************************/

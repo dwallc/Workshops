@@ -6,15 +6,16 @@ set more off					/* Get rid of -MORE- in display.*/
 	}
 log using "Data Management Using Stata.log", text replace		/* Open new log file.	*/
 
-/*	****************************************************	*/
-/*     	File Name:	Data Management Using Stata.do			*/
-/*     	Date:   	September 2017							*/
-/*      Author: 	Desmond D. Wallace						*/
-/*      Purpose:	Basic data management and				*/
-/*					manipulation commands in Stata.			*/
-/*      Input File:	Data/gapminder.csv						*/
-/*      Output File:	Data Management Using Stata.log		*/
-/*	****************************************************	*/
+/*	*************************************************/
+/*	File Name:	Data Management Using Stata.do		*/
+/*	Date:   	January 26, 2018					*/
+/*	Author: 	Desmond D. Wallace					*/
+/*	Purpose:	Basic data management and			*/
+/*					manipulation commands			*/
+/*					in Stata.						*/
+/*	Input File:	Data/gapminder.csv					*/
+/*	Output File:	Data Management Using Stata.log	*/
+/*	*************************************************/
 
 	/************************************/
 	/* Opening Data in Various Ways.	*/
@@ -43,6 +44,7 @@ export excel using Data\gapminder.xlsx, ///
 	*export delimited using Data\gapminder.csv, ///
 		*delimiter(;) replace /*	Semicolon-delimited file	*/
 
+		
 	/********************************/
 	/* Basic Data Manipulation. 	*/
 	/********************************/
@@ -95,6 +97,7 @@ list
 collapse (mean) gdp, by(year) /*	Average GDP for each year	*/
 list
 	restore
+	
 	
 	/****************************/
 	/* Basic Data Combination. 	*/
