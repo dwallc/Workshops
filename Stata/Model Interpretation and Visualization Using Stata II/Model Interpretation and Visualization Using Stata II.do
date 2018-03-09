@@ -12,8 +12,9 @@ log using "Model Interpretation and Visualization Using Stata II.log", ///
 /*	File Name:	Model Interpretation and Visualization Using Stata II.do		*/
 /*	Date:   	March 9, 2018													*/
 /*	Author: 	Desmond D. Wallace												*/
-/*	Purpose:	Interpreting and Visualizing Regression							*/
-/*					Model Results in Stata.										*/
+/*	Purpose:	Interpreting and visualizing regression							*/
+/*					model results in Stata for									*/
+/*					non-linear relationships.									*/
 /*	Input Files:	Data\MIVdata01.dta											*/
 /*	Output Files:	Model Interpretation and Visualization Using Stata I.log	*/
 /*	*****************************************************************************/
@@ -32,28 +33,68 @@ use Data\MIVdata01, clear
 	
 reg realrinc age
 
-	/*	Calculate marginal effects and elasticities from level-level model	*/
+	/*	Calculate marginal effects and elasticities	*/
+	/*	from level-level model								*/
 	
 		/*	Marginal Effect - dy/dx	*/
 		
+			/*	Average	*/
+		
 	margins, dydx(age) /*	Interpretation: A 1-year increase in age yields	*/
 					   /*	a $255.8004 increase in income.					*/
+					   
+			/*	Conditional	*/
+			
+	margins, dydx(age) at(age=(18(5)89)) noatlegend
+	
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+		ciopts(color(gs12))
 	
 		/*	Semi-Elasticity - dy/ex	*/
+		
+			/*	Average	*/
 		
 	margins, dyex(age) /*	Interpretation: A 1-unit increase in ln(age)	*/
 					   /*	yields a $11149.15 increase in income.			*/
 					   
+			/*	Conditional	*/
+			
+	margins, dyex(age) at(age=(18(5)89)) noatlegend
+	
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+		ciopts(color(gs12))
+					   
 		/*	Semi-Elasticity - ey/dx	*/
 		
-	margins, dyex(age) /*	Interpretation: A 1-unit increase in age yields	*/
+			/*	Average	*/
+		
+	margins, eydx(age) /*	Interpretation: A 1-year increase in age yields	*/
 					   /*	a 0.0127487 unit increase in ln(income).		*/
+					   
+			/*	Conditional	*/
+			
+	margins, eydx(age) at(age=(18(5)89)) noatlegend
+	
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+		ciopts(color(gs12))
 					   
 		/*	Elasticity - ey/ex	*/
 		
-	margins, dyex(age) /*	Interpretation: A proportional increase in age	*/
-					   /*	yields a 52.36568 percent increase in income.	*/
+			/*	Average	*/
+		
+	margins, eyex(age) /*	Interpretation: A 1-nit increase in ln(age)	*/
+					   /*	yields a 0.5236568 increase in ln(income).	*/
 					   
+			/*	Conditional	*/
+			
+	margins, eyex(age) at(age=(18(5)89)) noatlegend
+	
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+		ciopts(color(gs12))
+	
+	/*	Note that semi-elasticities and elasticities are a function of x.	*/
+	/*	In other words, resulting values vary based on specified values.	*/
+	
 	/*	Calculate marginal effects from level-log model	*/
 	
 		/*	Generate log transformed version of 'age' variable	*/
@@ -64,7 +105,7 @@ reg realrinc age
 		
 	reg realrinc age_ln
 	
-		/*	Marginal Effect - dy/dx	*/
+		/*	Average Marginal Effect - dy/dx	*/
 		
 	margins, dydx(age_ln) /*	Interpretation: A 1-unit increase in	*/
 						  /*	ln(age) yields a $13137.79 increase		*/
@@ -85,35 +126,93 @@ reg realrinc age
 	margins, dydx(age) /*	Interpretation: A 1-year increase in age	*/
 					   /*	yields a 0.0156458 unit increase in			*/
 					   /*	ln(income).									*/
+					   
+	/*	Calculate marginal effects from log-log model	*/
+	
+		/*	Estimate log-log model	*/
+		
+	reg realrinc_ln age_ln
+	
+		/*	Marginal Effect - dy/dx	*/
+		
+	margins, dydx(age_ln) /*	Interpretation: A 1-unit increase in	*/
+						  /*	ln(age) yields a 0.8771319 unit 		*/
+						  /*	increase in ln(income).					*/
 
+	/*	NOTE: Average Marginal effects (dy/dx) calculated from linear-log,	*/
+	/*	log-linear, and log-log models do equal the average					*/
+	/*	semi-elasticities  and elasticities calculated from 				*/
+	/*	the linear-linear model.											*/
+	
+	
 	/********************************/
-	/* Part II - Regression Plots	*/
+	/* Part II - Quadratic Terms	*/
 	/********************************/
 	
-	/*	Install coefplot, if necessary	*/
+	/*	Assume that there is a curvilinear relationship	*/
+	/*	between independent variable (age) and			*/
+	/*	dependent variable (income). To account for		*/
+	/*	such a relationship, one can include a squared	*/
+	/*	term of the 'age' variable.						*/
 
-*search coefplot /*	Click on the fifth link, then click on the	*/
-				 /*	blue "Click here to install" link.			*/
-
-	/*	Use coefplot to create a regression plot	*/
+	/*	Estimate regression model regressing income on gender, parental	*/
+	/*	education, age, and age squared.								*/
 	
-coefplot, title("Model Results") /*	Basic plot	*/
+reg realrinc paeduc maeduc i.female c.age##c.age
 
-coefplot, title("Model Results") xline(0) /*	Vertical line to help	*/
-										  /*	identify whether a		*/
-										  /*	coefficient estimate is	*/
-										  /*	statistically			*/
-										  /*	significant.			*/
-										  
-	graph export Graphs/MIVcoef01.png, as(png) replace
-				   
-coefplot, title("Model Results") xline(0) drop(_cons) /*	Remove constant	*/
+	/*	Calculate predicted values for varying values of paternal	*/
+	/*	education, for both males and females while holding age		*/
+	/*	at its mean value.											*/
+	
+margins female, at(paeduc=(0(1)20)) atmeans
 
-	graph export Graphs/MIVcoef02.png, as(png) replace
+	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+		ci2opts(color(orange))
+		
+	/*	Re-do above sequence, but do not utilize factor notation for	*/
+	/*	quadratic term.													*/
+	
+		/*	Generate squared age variable	*/
+		
+	gen age_sq = age^2
+	
+reg realrinc paeduc maeduc i.female age age_sq
+
+margins female, at(paeduc=(0(1)20)) atmeans
+
+	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+		ci2opts(color(orange))
+		
+	/*	Calculate predicted values for varying ages	*/
+	
+		/*	Factor Notation Version	*/
+		
+	reg realrinc paeduc maeduc i.female c.age##c.age
+	
+margins female, at(age=(18(1)30)) atmeans
+
+	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+		ci2opts(color(orange))
+		
+		/*	Generated Variable Version	*/
+		
+	reg realrinc paeduc maeduc i.female age age_sq
+	
+margins female, at(age=(18(1)30)) atmeans
+
+	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+		ci2opts(color(orange))
+		
+	/*	NOTE: While the coefficient estimates will be the same, the fitted	*/
+	/*	values generated from each model will differ. This is due to the	*/
+	/*	interaction term in the factor notation model is held at			*/
+	/*	mean(age)*mean(age) while the interaction term in the generated		*/
+	/*	variable version is held at mean(age_sq). 							*/
+	/*	mean(age)*mean(age) != mean(age_sq)									*/
 
 
 	/****************************************/
-	/* Part III - Predicted (Fitted) Values	*/
+	/* Part III - Interactions	*/
 	/****************************************/
 				
 	/*	Estimate a regression model predicting a respondent's	*/
