@@ -4,38 +4,24 @@ set more off					/* Get rid of '-MORE-' in display.*/
   if "`logon'" == "on" {
 	log close
 	}
-log using "Model Interpretation and Visualization Using Stata I.log", ///
+log using "Model Interpretation and Visualization Using Stata II.log", ///
 	text replace		/* Open new log file.	*/
 
 
-/*	*************************************************************************	*/
-/*     	File Name:	Model Interpretation and Visualization Using Stata I.do		*/
-/*     	Date:   	November 17, 2017											*/
-/*      Author: 	Desmond D. Wallace											*/
-/*      Purpose:	Interpreting and Visualizing Regression						*/
+/*	*****************************************************************************/
+/*	File Name:	Model Interpretation and Visualization Using Stata II.do		*/
+/*	Date:   	March 9, 2018													*/
+/*	Author: 	Desmond D. Wallace												*/
+/*	Purpose:	Interpreting and Visualizing Regression							*/
 /*					Model Results in Stata.										*/
-/*      Input File:	Data\MIVdata01.dta											*/
-/*      Output File: Model Interpretation and Visualization Using Stata I.log, 	*/
-/*					 Tables\MIVmodel01.doc,										*/
-/*					 Tables\MIVmodel01.tex,										*/
-/*					 Tables\MIVmodel01.dta,										*/
-/*					 Tables\MIVmodel02.doc,										*/
-/*					 Tables\MIVmodel02.tex,										*/
-/*					 Tables\MIVmodel02.dta,										*/
-/*					 Graphs\MIVcoef01.png,										*/
-/*					 Graphs\MIVcoef02.png,										*/
-/*					 Graphs\mfxOLS.png											*/
-/*	************************************************************************	*/
+/*	Input Files:	Data\MIVdata01.dta											*/
+/*	Output Files:	Model Interpretation and Visualization Using Stata I.log	*/
+/*	*****************************************************************************/
 
 
-	/********************************/
-	/* Part I - Regression Tables	*/
-	/********************************/
-	
-	/*	Install outreg2, if necessary	*/
-
-*search outreg2 /*	Click on the fifth link, then click on the	*/
-				/*	blue "Click here to install" link.			*/
+	/****************************************/
+	/* Part I - Logarithm Transformations	*/
+	/****************************************/
 
 	/*	Open the MIVdata01 data file, and clear the memory.	*/
 	
@@ -44,18 +30,29 @@ use Data\MIVdata01, clear
 	/*	Estimate regression model predicting a respondent's income	*/
 	/*	based on their age and gender.								*/
 	
-reg realrinc age i.female
+reg realrinc age
 
-	/*	Use outreg2 to create a regression table	*/
+	/*	Calculate marginal effects and elasticities	*/
 	
-capture outreg2 using Tables\MIVmodel01.doc, replace ///
-	ctitle(" ") label /*	Word Version	*/
-
-capture outreg2 using Tables\MIVmodels01.tex, tex(fragment) replace ///
-	ctitle(" ") label /*	LaTeX Version	*/
-
-capture outreg2 using Tables\MIVmodels01.dta, dta(saveold) replace ///
-	label /*	Stata Version	*/
+		/*	Marginal Effect - dy/dx	*/
+		
+	margins, dydx(age) /*	Interpretation: A 1-year increase in age yields	*/
+					   /*	a $255.8004 increase in income.					*/
+	
+		/*	Semi-Elasticity - dy/ex	*/
+		
+	margins, dyex(age) /*	Interpretation: A proportional increase in age	*/
+					   /*	yields a $11149.15 increase in income.			*/
+					   
+		/*	Semi-Elasticity - ey/dx	*/
+		
+	margins, dyex(age) /*	Interpretation: A 1-unit increase in age yields	*/
+					   /*	a 1.27487 percent increase in income.			*/
+					   
+		/*	Elasticity - ey/ex	*/
+		
+	margins, dyex(age) /*	Interpretation: A proportional increase in age	*/
+					   /*	yields a 52.36568 percent increase in income.	*/
 
 	/********************************/
 	/* Part II - Regression Plots	*/
