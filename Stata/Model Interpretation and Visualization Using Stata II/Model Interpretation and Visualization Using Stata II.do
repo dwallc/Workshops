@@ -32,7 +32,7 @@ use Data\MIVdata01, clear
 	
 reg realrinc age
 
-	/*	Calculate marginal effects and elasticities	*/
+	/*	Calculate marginal effects and elasticities from level-level model	*/
 	
 		/*	Marginal Effect - dy/dx	*/
 		
@@ -41,18 +41,50 @@ reg realrinc age
 	
 		/*	Semi-Elasticity - dy/ex	*/
 		
-	margins, dyex(age) /*	Interpretation: A proportional increase in age	*/
+	margins, dyex(age) /*	Interpretation: A 1-unit increase in ln(age)	*/
 					   /*	yields a $11149.15 increase in income.			*/
 					   
 		/*	Semi-Elasticity - ey/dx	*/
 		
 	margins, dyex(age) /*	Interpretation: A 1-unit increase in age yields	*/
-					   /*	a 1.27487 percent increase in income.			*/
+					   /*	a 0.0127487 unit increase in ln(income).		*/
 					   
 		/*	Elasticity - ey/ex	*/
 		
 	margins, dyex(age) /*	Interpretation: A proportional increase in age	*/
 					   /*	yields a 52.36568 percent increase in income.	*/
+					   
+	/*	Calculate marginal effects from level-log model	*/
+	
+		/*	Generate log transformed version of 'age' variable	*/
+		
+	gen age_ln = ln(age)
+	
+		/*	Estimate level-log model	*/
+		
+	reg realrinc age_ln
+	
+		/*	Marginal Effect - dy/dx	*/
+		
+	margins, dydx(age_ln) /*	Interpretation: A 1-unit increase in	*/
+						  /*	ln(age) yields a $13137.79 increase		*/
+						  /*	in income.								*/
+						  
+	/*	Calculate marginal effects from log-level model	*/
+	
+		/*	Generate log transformed version of 'realrinc' variable	*/
+		
+	gen realrinc_ln = ln(realrinc)
+	
+		/*	Estimate level-log model	*/
+		
+	reg realrinc_ln age
+	
+		/*	Marginal Effect - dy/dx	*/
+		
+	margins, dydx(age) /*	Interpretation: A 1-year increase in age	*/
+					   /*	yields a 0.0156458 unit increase in			*/
+					   /*	ln(income).									*/
 
 	/********************************/
 	/* Part II - Regression Plots	*/
