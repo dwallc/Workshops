@@ -1,4 +1,5 @@
-# Model Interpretation and Visualization Using R
+# Model Interpretation and Visualization Using R I
+# Introduction t margins package
 
 ## Load Required Packages
 
@@ -11,8 +12,6 @@ ipak <- function(pkg){
 
 packages <- c("tidyverse",
               "rio",
-              "texreg",
-              "coefplot",
               "margins")
 
 ipak(packages)
