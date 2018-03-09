@@ -8,24 +8,24 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 	text replace		/* Open new log file.	*/
 
 
-/*	*************************************************************************	*/
-/*     	File Name:	Model Interpretation and Visualization Using Stata I.do		*/
-/*     	Date:   	November 17, 2017											*/
-/*      Author: 	Desmond D. Wallace											*/
-/*      Purpose:	Interpreting and Visualizing Regression						*/
+/*	*****************************************************************************/
+/*	File Name:	Model Interpretation and Visualization Using Stata I.do			*/
+/*	Date:   	March 9, 2018													*/
+/*	Author: 	Desmond D. Wallace												*/
+/*	Purpose:	Interpreting and Visualizing Regression							*/
 /*					Model Results in Stata.										*/
-/*      Input File:	Data\MIVdata01.dta											*/
-/*      Output File: Model Interpretation and Visualization Using Stata I.log, 	*/
-/*					 Tables\MIVmodel01.doc,										*/
-/*					 Tables\MIVmodel01.tex,										*/
-/*					 Tables\MIVmodel01.dta,										*/
-/*					 Tables\MIVmodel02.doc,										*/
-/*					 Tables\MIVmodel02.tex,										*/
-/*					 Tables\MIVmodel02.dta,										*/
-/*					 Graphs\MIVcoef01.png,										*/
-/*					 Graphs\MIVcoef02.png,										*/
-/*					 Graphs\mfxOLS.png											*/
-/*	************************************************************************	*/
+/*	Input Files:	Data\MIVdata01.dta											*/
+/*	Output Files:	Model Interpretation and Visualization Using Stata I.log, 	*/
+/*					Tables\MIVmodel01.doc,										*/
+/*					Tables\MIVmodel01.tex,										*/
+/*					Tables\MIVmodel01.dta,										*/
+/*					Tables\MIVmodel02.doc,										*/
+/*					Tables\MIVmodel02.tex,										*/
+/*					Tables\MIVmodel02.dta,										*/
+/*					Graphs\MIVcoef01.png,										*/
+/*					Graphs\MIVcoef02.png,										*/
+/*					Graphs\mfxOLS.png											*/
+/*	*****************************************************************************/
 
 
 	/********************************/
@@ -48,15 +48,16 @@ reg realrinc age i.female
 
 	/*	Use outreg2 to create a regression table	*/
 	
-capture outreg2 using Tables\MIVmodel01.doc, replace ///
-	ctitle(" ") label /*	Word Version	*/
+outreg using Tables\MIVmodel01.doc, replace ///
+	ctitle(" ") varlabel /*	Word Version	*/
 
-capture outreg2 using Tables\MIVmodels01.tex, tex(fragment) replace ///
-	ctitle(" ") label /*	LaTeX Version	*/
+outreg using Tables\MIVmodels01.tex, tex(fragment) replace ///
+	ctitle(" ") vaarlabel /*	LaTeX Version	*/
 
-capture outreg2 using Tables\MIVmodels01.dta, dta(saveold) replace ///
-	label /*	Stata Version	*/
+outreg using Tables\MIVmodels01.dta, dta(saveold) replace ///
+	varlabel /*	Stata Version	*/
 
+	
 	/********************************/
 	/* Part II - Regression Plots	*/
 	/********************************/
@@ -104,8 +105,8 @@ graph twoway line yhat age if female==0, sort || ///
 										  /*	age for males and			*/
 										  /*	females.					*/
 			
-	graph export Graphs/mfxOLS.png, as(png) replace /*	Save graph as	*/
-													/*	.png file.		*/
+	graph export Graphs/predOLS.png, as(png) replace /*	Save graph as	*/
+													 /*	.png file.		*/
 	
 	/*	Calculate predicted means via the margins command and	*/
 	/*	graph results via the marginsplot command. 				*/
@@ -185,6 +186,7 @@ marginsplot /*	Graphs the result from the previously executed	*/
 		ci1opts(color(ltblue)) ///
 		ci2opts(color(orange))
 		
+		
 	/********************************/
 	/* Part IV - Marginal Effects	*/
 	/********************************/
@@ -226,6 +228,7 @@ marginsplot /*	Graphs the result from the previously executed	*/
 	marginsplot, recast(line) recastci(rarea) ///
 		plotopts(color(black)) ///
 		ciopts(color(gs12))
+		
 		
 log close
 clear
