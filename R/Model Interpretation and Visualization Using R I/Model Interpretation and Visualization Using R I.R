@@ -30,6 +30,8 @@ MIVdata01 <- import("./Data/MIVdata01.dta")
 model01 <- lm(realrinc ~ age + as.factor(female),
               data = MIVdata01)
 
+summary(model01)
+
 ## Calculate marginal effects using margins
 
 ### Specifically Age Variable
