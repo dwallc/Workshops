@@ -34,52 +34,53 @@ summary(model01)
 
 ## Calculate marginal effects using margins
 
+summary(margins(model01))
+
+summary(margins(model01,
+                at = list(age = 18)))
+
 ### Specifically Age Variable
 
-margins(model01)
+summary(margins(model01,
+                change = "dydx",
+                variable = "age"))
 
-margins(model01,
-        at = list(age = 18))
+summary(margins(model01,
+                change = "sd",
+                variable = "age"))
 
-margins(model01,
-        change = "dydx",
-        variable = "age")
+summary(margins(model01,
+                change = "minmax",
+                variable = "age"))
 
-margins(model01,
-        change = "sd",
-        variable = "age")
+summary(margins(model01,
+                change = "iqr",
+                variable = "age"))
 
-margins(model01,
-        change = "minmax",
-        variable = "age")
-
-margins(model01,
-        change = "iqr",
-        variable = "age")
-
-margins(model01,
-        change = c(18,
-                   30))
+summary(margins(model01,
+                change = c(18,
+                           30),
+                variable = "age"))
 
 ### Specifically Female Variable
 
-margins(model01,
-        change = "dydx",
-        variable = "female")
+summary(margins(model01,
+                change = "dydx",
+                variable = "female"))
 
-margins(model01,
-        change = "sd",
-        variable = "female")
+summary(margins(model01,
+                change = "sd",
+                variable = "female"))
 
-margins(model01,
-        change = "minmax",
-        variable = "female")
+summary(margins(model01,
+                change = "minmax",
+                variable = "female"))
 
-margins(model01,
-        change = "iqr",
-        variable = "female")
+summary(margins(model01,
+                change = "iqr",
+                variable = "female"))
 
-margins(model01,
-        change = c(0,
-                   1),
-        variable = "female")
+summary(margins(model01,
+                change = c(0,
+                           1),
+                variable = "female"))
