@@ -34,6 +34,8 @@ use Data\MIVdata02, clear
 probit fepres children i.hsgrad
 	
 logit fepres children i.hsgrad
+
+	estimates store results
 	
 	/*	Calculate predicted probabilities.	*/
 			
@@ -93,6 +95,18 @@ margins, dydx(hsgrad) at(children=(0(1)8))
 
 	marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
 			ciopts(color(gs12))
+			
+margins hsgrad, at(children=(0 1)) post
+
+	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
+		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
+	
+	estimates restore results
+	
+margins hsgrad, at(children=(7 8)) post
+
+	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
+		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
 			
 
 log close
