@@ -18,7 +18,7 @@ ipak(packages)
 
 ## Set Working Directory
 
-setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/Stata/Model Interpretation and Visualization Using Stata II")
+setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Model Interpretation and Visualization Using R II")
 
 ## Load data
 
