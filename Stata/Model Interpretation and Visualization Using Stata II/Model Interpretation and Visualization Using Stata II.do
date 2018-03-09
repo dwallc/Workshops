@@ -209,151 +209,103 @@ margins female, at(age=(18(1)30)) atmeans
 	/*	mean(age)*mean(age) while the interaction term in the generated		*/
 	/*	variable version is held at mean(age_sq). 							*/
 	/*	mean(age)*mean(age) != mean(age_sq)									*/
+	/*	This also applies to inclusion of continuous-continuous interaction	*/
+	/*	terms.																*/
 
 
-	/****************************************/
+	/****************************/
 	/* Part III - Interactions	*/
-	/****************************************/
+	/****************************/
 				
-	/*	Estimate a regression model predicting a respondent's	*/
-	/*	incoe based on their age and gender. 					*/
-			
-regress realrinc age i.female
-
-	/*	Plot regression lines	*/
+	/*	Interaction: Categorical-Categorical	*/
 	
-predict yhat
+		/*	Estimate a regression model featuring a categorical-categorical	*/
+		/*	interaction as an independent variable.							*/
+				
+	regress realrinc age i.female##i.marital
 
-graph twoway line yhat age if female==0, sort || ///
-	line yhat age if female==1, sort ///
-	xtitle(Age) ytitle(E(Income | Age)) ///
-	legend(label(1 Male) label(2 Female)) /*	Create graph of predicted	*/
-										  /*	means plotted against		*/
-										  /*	age for males and			*/
-										  /*	females.					*/
-			
-	graph export Graphs/mfxOLS.png, as(png) replace /*	Save graph as	*/
-													/*	.png file.		*/
+		/*	Calculate predicted values based on fixed gender and marital values	*/
+		
+	margins female, at(marital=(1(1)5)) atmeans
+
+		marginsplot, recast(bar) xdim(female marital) xlabel(, angle(45))
+		
+		/*	Calculate marginal effects for gender	*/
+		
+	margins, dydx(female) at(marital=(1(1)5)) atmeans
+
+		marginsplot, recast(bar) xlabel(, angle(45))
 	
-	/*	Calculate predicted means via the margins command and	*/
-	/*	graph results via the marginsplot command. 				*/
-			
-margins /*	Overall predicted mean with independent variables	*/
-		/*	held to their mean value. 							*/
-					
-marginsplot /*	Graphs the result from the previously executed	*/
-			/*	margins command. NOTE: marginsplot must be		*/
-			/*	executed IMMEDIATELY after margins command,		*/
-			/*	or you will receive an error.					*/
-			
-	/*	Specific Values - Continuous Variable	*/
-						
-	margins, at(age=18) /*	Predicted mean when age = 18, and	*/
-						/*	remaining independent variables		*/
-						/*	held to their mean values.			*/
-								
-	marginsplot
+	/*	Interaction: Categorical-Continuous	*/
+	
+		/*	Estimate a regression model featuring a categorical-continuous	*/
+		/*	interaction as an independent variable.							*/
+				
+	regress realrinc c.age##i.marital
+
+		/*	Calculate predicted values based on fixed marital and age values	*/
 		
-	margins, at(age=(33 47 61)) atmeans /*	Calculates predicted means at	*/
-										/*	the 25th, 50th, and 75th		*/
-										/*	percentiles of the 'age'		*/
-										/*	variable, and explicitly		*/
-										/*	setting the remaining			*/
-										/*	independent variables at		*/
-										/*	their mean value. 				*/
-												
-	marginsplot
+	margins marital, at(age=(18(1)30)) atmeans
+
+		marginsplot, recast(line) noci
 		
-	marginsplot, recast(line) recastci(rarea) ///
-		plotopts(color(black)) ///
-		ciopts(color(gs12))	/*	Changes the plot options so that	*/
-							/*	the predicted means are plotted		*/
-							/*	as a line, and the confidence		*/
-							/*	intervals are plotted as a shaded	*/
-							/*	area. 								*/
-									
-	margins, at(age=(18(1)89)) ///
-		atmeans noatlegend /*	Calculating predicted means for each	*/
-						   /*	value of 'age' while holding the		*/
-						   /*	remaining variables at their mean 		*/
-						   /*	value. In addition, I am not			*/
-						   /*	producing the _at legend to				*/
-						   /*	preserve space. 						*/					
-									
-	marginsplot, recast(line) recastci(rarea) ///
-		plotopts(color(black)) ///
-		ciopts(color(gs12))
+		/*	Calculate marginal effects for marital	*/
+		
+	margins, dydx(marital) atmeans
+
+		marginsplot, recast(bar) xlabel(, angle(45))
+		
+	margins, dydx(marital) at(age=(18(1)30))
+
+		marginsplot, recast(line) noci
+		
+		/*	Calculate marginal effects for age	*/
+		
+	margins marital, dydx(age) atmeans
+
+		marginsplot, recast(bar) xlabel(, angle(45))
+	
+	/*	Interaction: Continuous-Continuous	*/
+	
+		/*	Estimate a regression model featuring a Continuous-continuous	*/
+		/*	interaction as an independent variable.							*/
+				
+	regress realrinc c.age##c.maeduc
+
+		/*	Calculate predicted values based on fixed maternal	*/
+		/*	education values									*/
+		
+	margins, at(maeduc=(0(1)20)) atmeans
+
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+			ciopts(color(gs12))
 			
-	/*	Specific Values - Discrete Variables	*/
+		/*	Calculate predicted values based on fixed age values	*/
+		
+	margins, at(age=(18(1)30)) atmeans
+
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+			ciopts(color(gs12))
 			
-	margins female, atmeans /*	Calculating the overall expected mean for	*/
-							/*	males and females, holding remaining		*/
-							/*	variables constant. 						*/
+		/*	Calculate marginal effects for age	*/
 		
-									
-	marginsplot
-		
-	marginsplot, recast(bar) ///
-		plotopts(color(gs12)) ///
-		ciopts(color(black)) /*	Changes the plot options so that the	*/
-							 /*	predicted means are plotted as bars. 	*/
-									
-	/*	Specific Values - Continuous and Discrete Variables	*/
+	margins, dydx(age) at(maeduc=(0(1)20))
+
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+			ciopts(color(gs12))
 			
-	margins, at((mean) age female=1) /*	Predicted mean for average	*/
-									 /*	aged female.				*/
-													
-	marginsplot
+		/*	Calculate marginal effects for maternal education	*/
 		
-	margins female, at(age=(18(1)89)) ///
-		atmeans noatlegend /*	Predicted means for males and females for	*/
-						   /*		each age. 								*/
-		
-	marginsplot, recast(line) recastci(rarea) ///
-		ci1opts(color(ltblue)) ///
-		ci2opts(color(orange))
-		
-	/********************************/
-	/* Part IV - Marginal Effects	*/
-	/********************************/
+	margins, dydx(maeduc) at(age=(18(1)30))
+
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+			ciopts(color(gs12))
 			
-	/*	Marginal Change	*/
-			
-	margins, dydx(age) /*	Average marginal effect a one-unit increase	*/
-					   /*	in age has on income, holding all other		*/
-					   /*	variables at their mean value. Notice that	*/
-					   /*	both the marginal effect and the standard	*/
-					   /*	error are the same as the coefficient		*/
-					   /*	estimate and standard error from the		*/
-					   /*	regression output. 							*/	
-								
-	marginsplot
+	qui margins, dydx(maeduc) at(age=(18(1)89))
+	
+		marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+			ciopts(color(gs12))
 		
-	margins female, dydx(age) /* Same as previous example. */
-		
-	marginsplot, recast(bar) ///
-		plotopts(color(gs12)) ///
-		ciopts(color(black))
-			
-	/*	Discrete Change	*/
-			
-	margins, dydx(female) atmeans /*	Discrete change represents the	*/
-								  /*	difference in predicted means	*/
-								  /*	for males and females, holding	*/
-								  /*	remaining variables at their	*/
-								  /*	mean values. 					*/
-											
-	marginsplot
-		
-	margins, dydx(female) at(age=(18(1)89)) ///
-		atmeans noatlegend /*	Despite varying the highest year of	*/
-						   /*	education completed, the effect		*/
-						   /*	gender has on income does not 		*/
-						   /*	change.								*/
-			
-	marginsplot, recast(line) recastci(rarea) ///
-		plotopts(color(black)) ///
-		ciopts(color(gs12))
 		
 log close
 clear
