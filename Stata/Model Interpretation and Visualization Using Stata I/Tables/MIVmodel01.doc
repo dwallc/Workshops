@@ -1,22 +1,13 @@
-{\rtf1\fs24
-\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx5472\clbrdrt\brdrs\cellx6912
-\ql \cell\qc (1)\cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx5472\cellx6912
-\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx5472\clbrdrb\brdrs\cellx6912
-\ql VARIABLES\cell\qc \cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx5472\cellx6912
-\ql \cell\qc \cell\row
-\ql age of respondent\cell\qc 243.8***\cell\row
-\ql \cell\qc (38.68)\cell\row
-\ql Is R female (yes=1 no=0)? = 1, Female\cell\qc -7,629***\cell\row
-\ql \cell\qc (1,114)\cell\row
-\ql Constant\cell\qc 14,141***\cell\row
-\ql \cell\qc (1,896)\cell\row
-\ql \cell\qc \cell\row
-\ql Observations\cell\qc 1,201\cell\row
-\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx5472\clbrdrb\brdrs\cellx6912
-\ql R-squared\cell\qc 0.070\cell\row
-\pard\qc
-Standard errors in parentheses\par
-*** p<0.01, ** p<0.05, * p<0.1\par
+{\rtf1\ansi\deff0{\fonttbl{\f0\froman Times New Roman;}{\f1\fswiss Arial;}{\f2\fmodern Courier New;}}
+\trowd\intbl\trautofit1\trgaph144\sb79\sa79\trqc\clbrdrt\brdrs\cellx2856\clbrdrt\brdrs\cellx4536\fs24 \ql  \cell \qc \cell\row
+\trowd\intbl\trautofit1\trgaph144\sb79\sa0\trqc\clbrdrt\brdrs\cellx2856\clbrdrt\brdrs\cellx4536\fs24 \pard\intbl\ql age of respondent\cell \pard\intbl\tqdec\tx1085 {\fs24 243.781}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa79\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql \cell \pard\intbl\tqdec\tx1085 {\fs20 (6.30)**}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa0\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql 1.female\cell \pard\intbl\tqdec\tx1085 {\fs24 -7,628.626}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa79\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql \cell \pard\intbl\tqdec\tx1085 {\fs20 (6.85)**}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa0\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql Constant\cell \pard\intbl\tqdec\tx1085 {\fs24 14,140.509}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa79\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql \cell \pard\intbl\tqdec\tx1085 {\fs20 (7.46)**}\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa0\trqc\cellx2856\cellx4536\fs24 \pard\intbl\ql {\i R}{\super 2}\cell \pard\intbl\tqdec\tx1085 0.07\cell\row
+\trowd\intbl\trautofit1\trgaph144\sb0\sa79\trqc\clbrdrb\brdrs\cellx2856\clbrdrb\brdrs\cellx4536\fs24 \pard\intbl\ql {\i N}\cell \pard\intbl\tqdec\tx1085 1,201\cell\row
+\pard\qc\sb79\sa79\fs19 * {\i p}<0.05; ** {\i p}<0.01\par
+\pard\sb0\sa0\fs24\par
 }
