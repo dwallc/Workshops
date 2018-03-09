@@ -16,7 +16,7 @@ log using "Model Interpretation and Visualization Using Stata II.log", ///
 /*					model results in Stata for									*/
 /*					non-linear relationships.									*/
 /*	Input Files:	Data\MIVdata01.dta											*/
-/*	Output Files:	Model Interpretation and Visualization Using Stata I.log	*/
+/*	Output Files:	Model Interpretation and Visualization Using Stata II.log	*/
 /*	*****************************************************************************/
 
 
@@ -309,4 +309,4 @@ margins female, at(age=(18(1)30)) atmeans
 		
 log close
 clear
-exit														
+exit
