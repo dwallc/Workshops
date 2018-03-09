@@ -24,7 +24,7 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 /*					Tables\MIVmodel02.dta,										*/
 /*					Graphs\MIVcoef01.png,										*/
 /*					Graphs\MIVcoef02.png,										*/
-/*					Graphs\mfxOLS.png											*/
+/*					Graphs\predOLS.png											*/
 /*	*****************************************************************************/
 
 
