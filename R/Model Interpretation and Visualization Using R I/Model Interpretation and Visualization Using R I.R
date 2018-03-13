@@ -27,19 +27,65 @@ MIVdata01 <- import("./Data/MIVdata01.dta")
 ## Estimate regression model predicting a respondent's income
 ## based on their age and gender.
 
-model01 <- lm(realrinc ~ age + as.factor(female),
+model01 <- lm(realrinc ~ age + female,
               data = MIVdata01)
 
 summary(model01)
 
 ## Calculate marginal effects using margins
 
+### Average Marginal Effects
+
 summary(margins(model01))
+
+### Plotting Average Marginal Effects
+
+plot(margins(model01))
+
+### Marginal Effects at Specific Values
+
+#### Single Value
 
 summary(margins(model01,
                 at = list(age = 18)))
 
-### Specifically Age Variable
+#### Multiple Values
+
+summary(margins(model01,
+                at = list(age = fivenum(MIVdata01$age))))
+
+summary(margins(model01,
+                at = list(female = unique(MIVdata01$female))))
+
+## Plot Predictions and Marginal Effects
+
+### Age Variable
+
+cplot(model01,
+      x = "age",
+      what = "prediction",
+      main = "Predicted Income, Given Age")
+
+cplot(model01,
+      x = "age",
+      what = "effect",
+      main = "Average Marginal Effect of Age")
+
+### Female Variable
+
+cplot(model01,
+      x = "female",
+      what = "prediction",
+      main = "Predicted Income, Given Gender")
+
+cplot(model01,
+      x = "female",
+      what = "effect",
+      main = "Average Marginal Effect of Gender")
+
+### Calculate Discrete Changes
+
+#### Age Variable
 
 summary(margins(model01,
                 change = "dydx",
@@ -62,7 +108,7 @@ summary(margins(model01,
                            30),
                 variable = "age"))
 
-### Specifically Female Variable
+#### Female Variable
 
 summary(margins(model01,
                 change = "dydx",
