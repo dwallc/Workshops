@@ -27,6 +27,8 @@ MIVdata01 <- import("./Data/MIVdata01.dta")
 ## Estimate regression model predicting a respondent's income
 ## based on their age and gender.
 
+MIVdata01[["female"]] <- factor(MIVdata01[["female"]]) # Treat as factor
+
 model01 <- lm(realrinc ~ age + female,
               data = MIVdata01)
 
@@ -81,7 +83,7 @@ cplot(model01,
 cplot(model01,
       x = "female",
       what = "effect",
-      main = "Average Marginal Effect of Gender")
+      main = "Average Marginal Effect of Gender") #Does not Work
 
 ### Calculate Discrete Changes
 
