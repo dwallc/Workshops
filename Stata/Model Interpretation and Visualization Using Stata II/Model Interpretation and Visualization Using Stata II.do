@@ -82,7 +82,7 @@ reg realrinc age
 		
 			/*	Average	*/
 		
-	margins, eyex(age) /*	Interpretation: A 1-nit increase in ln(age)	*/
+	margins, eyex(age) /*	Interpretation: A 1-unit increase in ln(age)	*/
 					   /*	yields a 0.5236568 increase in ln(income).	*/
 					   
 			/*	Conditional	*/
