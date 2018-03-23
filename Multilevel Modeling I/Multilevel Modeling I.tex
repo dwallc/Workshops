@@ -146,11 +146,57 @@
 		\end{itemize}
 \end{frame}
 
-\subsection{Random Intercept}
+\subsection{Random Intercept Model}
 
 \begin{frame}
-	\frametitle{\texttt{outreg2} Example}
-		%\include{Tables/MIVmodels01}
+	\frametitle{Null Model}
+		\begin{itemize}
+			\item Predicting the outcome from only an intercept that varies between groups
+			\item The null model takes the following form:
+				\begin{itemize}
+					\item Level-1 Model: $y_{ij}=\beta_{0j}+\varepsilon_{ij}$
+					\item Level-2 Model: $\beta_{0j}=\gamma_{00}+U_{0j}$ where
+						\begin{itemize}
+							\item $\beta_{0j}$ -- Average (general) intercept holding across all groups (fixed effect)
+							\item $U_{0j}$ -- Group-specific effect on the intercept (random effect)
+						\end{itemize}
+					\item Full Specification: $y_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
+				\end{itemize}
+			\item Interested in general mean value for $y_{ij}$ $(\gamma_{00})$ and deviation between overall mean and group-specific effects for the intercept $(U_{0j})$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Null Model Assumptions}
+		\begin{enumerate}
+			\item Groups are a random sample from the population of all possible groups
+			\item $U_{0j}$ is randomly drawn from a population distribution with mean $0$ and variance $\tau^{2}_{0}$
+			\item $\tau^{2}_{0}$ (Variance of $U_{0j}$) and $\sigma^2$ (variance of $\varepsilon_{ij}$) are uncorrelated
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Variance of $y_{ij}$}
+		\begin{itemize}
+			\item Variance of  $y_{ij}$ is just the sum of the level-two and level-one variances
+				\begin{itemize}
+					\item $Var(y_{ij})=Var(U_{0j})+Var(\varepsilon_{ij})=\tau^{2}_{0}+\sigma^2$
+				\end{itemize}
+			\item Covariance between two observations from the same group $(ij\mbox{ and }i'j)$ is equal to the variance of the contribution $U_{0j}$ that is shared by these observations
+				\begin{itemize}
+					\item $Cov(y_{ij},y_{i'j})=Var(U_{0j})=\tau^{2}_{0}$
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Intraclass Correlation Coefficient}
+		\begin{itemize}
+			\item A measure of the proportion of variation in the dependent variable that occurs \textit{between} groups versus the total variation (\textit{between} and \textit{within})
+			\item Correlation between two randomly drawn observations from in one randomly drawn group
+			\item Ranges between $0$ (no variation between groups) and $1$ (all between-group variation but no within-group variation)
+			\item $\rho(y_{ij},y_{i'j})=\frac{\tau^{2}_{0}}{\tau^{2}_{0}+\sigma^2}$
+		\end{itemize}
 \end{frame}
 
 \subsection{Plots}
