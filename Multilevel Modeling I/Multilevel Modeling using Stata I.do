@@ -26,7 +26,7 @@ log using "Multilevel Modeling using Stata I.log", text replace
 	
 	/*	First, import the HSB All.xlsx dataset	*/
 	
-import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow
+import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 
 	rename id idGrp
 
@@ -44,11 +44,11 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow
 	
 	/*	Visually explor the 'ses' variable.	*/
 	
-twoway line ses idInd if idGrp==1224, sort
+twoway dot ses idInd if idGrp==1224, sort
 
-twoway line ses idInd if idGrp==1288, sort
+twoway dot ses idInd if idGrp==1288, sort
 
-twoway line ses idInd if idGrp==1296, sort
+twoway dot ses idInd if idGrp==1296, sort
 	
 	/*	Estimate the null model with only individual-level variation	*/
 	
@@ -84,7 +84,7 @@ twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
 	
 	/*	Estimate the model with individual- and group-level variation	*/
 	
-mixed ses, || idGrp:, stddev
+mixed ses, || idGrp:
 
 	estat icc
 
@@ -146,7 +146,7 @@ twoway (line gsp year, connect(ascending)), ///
 	
 	/*	Estimate the null model with only individual-level variation	*/
 	
-mixed gsp, stddev
+mixed gsp
 
 	/*	Calculate and plot the grand mean	*/
 
@@ -166,7 +166,7 @@ twoway (line GrandMean year, lcolor(black) lwidth(thick)) ///
 	
 	/*	Estimate the model with individual- and group-level variation	*/
 	
-mixed gsp, || region: || state: , stddev
+mixed gsp, || region: || state:
 
 	estat icc
 
