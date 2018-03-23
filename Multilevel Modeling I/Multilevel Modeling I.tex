@@ -112,11 +112,41 @@
 		\end{itemize}
 \end{frame}
 
+\subsection{Introduction}
+
 \begin{frame}
-	\frametitle{\texttt{outreg2} Example}
-		\texttt{reg realrinc age i.female}\\
-		\texttt{outreg2 using Tables/model.tex, replace tex(fragment)}
+	\frametitle{New Approach}
+		\begin{itemize}
+			\item Best approach to analyzing nested data is a statistical approach that accounts for both within-group and between-group variation \textit{simultaneously}
+			\item One approach is to conceive within-group and between-group variation as random variability
+			\item One can achieve this by including \textit{random coefficient(s)} in the statistical model
+		\end{itemize}
 \end{frame}
+
+\begin{frame}
+	\frametitle{Multilevel Model}
+		\begin{itemize}
+			\item Multilevel Model (MLM) is a model where the parameters vary at more than one level
+			\item Features more than one error term
+			\item Variation can occur wit respect to the intercept (\textit{random intercept}) and/or the slope (\textit{random slope})
+			\item This approach leads to corrected standard errors and correct model specification
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Multilevel Model}
+		\begin{itemize}
+			\item Model coefficients are now a combination of both fixed and random components
+				\begin{itemize}
+					\item Fixed Coefficient -- An unknown constant of nature
+					\item Random Coefficient -- One which varies from sample of groups to sample of groups
+				\end{itemize}
+			\item Random coefficients are not estimated, and are instead predicted
+			\item Instead of BLUE (Best Linear Unbiased Estimator)  coefficients, we know have BLUP (Best Linear Unbiased Prediction) coefficients
+		\end{itemize}
+\end{frame}
+
+\subsection{Random Intercept}
 
 \begin{frame}
 	\frametitle{\texttt{outreg2} Example}
