@@ -1,0 +1,301 @@
+\documentclass{beamer}
+\setbeamertemplate{caption}[numbered]
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\graphicspath{{Graphs/}}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\mode<presentation>
+{
+	\usetheme{AnnArbor}
+	\usecolortheme{crane}
+}
+
+\title[MLM I]{Multilevel Modeling (Part 1)}
+\subtitle[ISRC Workshop]{Basic Random-Intercept and Random-Slope Modeling}
+\author[Wallace]{Desmond D. Wallace}
+\institute[University of Iowa]{Department of Political Science\\The University of Iowa\\Iowa City, IA}
+
+\date{March 23, 2018}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Table of Contents}
+%	\tableofcontents
+%\end{frame}
+
+\section{REVIEW: Regression Basics}
+
+\begin{frame}
+	\frametitle{Regression Highlights}
+	\begin{itemize}
+		\item A way to summarize the relationship between variables.
+		\item Assuming there is a relationship between Y and the independent variable(s).
+		\item Relationship may be linear (OLS) or non-linear (CLDV).
+		\item Regression helps our understanding of how our dependent variable of interest changes when one or more independent variables vary, while holding remaining variables fixed.
+		\item PRF: $y_{i}=\beta_{0}+\beta_{1}x_{1}+\cdots+\beta_{k}x_{k}+\varepsilon_{i}$
+		\item SRF: $y_{i}=b_{0}+b_{1}x_{1}+\cdots+b_{k}x_{k}+e_{i}$
+	\end{itemize}
+\end{frame}
+
+\subsection{Regression Assumptions}
+
+\begin{frame}
+	\frametitle{Model Specification}
+		\begin{enumerate}
+			\item Linearity in the parameters
+			\item The number of observations n must be greater than the number of
+			parameters to be estimated
+			\item The regression model is correctly specified
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Independent Variable(s)}
+		\begin{enumerate}
+			\item X values are fixed in repeated sampling
+			\item Variability in X values
+			\item There is no perfect multicollinearity
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Error Term}
+		\begin{enumerate}
+			\item Zero mean value of error $(e_i)$
+			\item \textbf{Homoscedasticity or equal variance} of $e_i$
+			\item No autocorrelation between the errors
+			\item Zero covariance between $e_i$ and $X_i$
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Additional Assumptions}
+		\begin{enumerate}
+			\item Errors are normally distributed
+			\item \textbf{Errors for any two observations are independent of one another}
+		\end{enumerate}
+\end{frame}
+
+\section{Multilevel Modeling}
+
+\subsection{Violating OLS Assumptions}
+
+\begin{frame}
+	\frametitle{Multi-Stage Sampling}
+		\begin{itemize}
+			\item OLS assumptions imply utilization of Simple Random Sampling (SRS)
+			\item However, due to cost-efficiency, multi-stage sampling approaches may be utilized instead.
+			\item Researcher may randomly sample grouping units instead of individuals (cluster sampling)
+			\item Examples
+				\begin{itemize}
+					\item Students nested in schools
+					\item Respondents nested in states (countries)
+					\item Patients nested in hospitals
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Applying OLS to Multilevel Data}
+		\begin{itemize}
+			\item Biased standard errors
+			\item Model Misspecification
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{outreg2} Example}
+		\texttt{reg realrinc age i.female}\\
+		\texttt{outreg2 using Tables/model.tex, replace tex(fragment)}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{outreg2} Example}
+		%\include{Tables/MIVmodels01}
+\end{frame}
+
+\subsection{Plots}
+
+\begin{frame}
+	\frametitle{Coefficient Plots}
+		\begin{itemize}
+			\item Sometimes, regression models feature many variables
+			\item Also, showing many numbers and stars can be difficult for some readers
+			\item An alternative to reporting a table is a plot of the regression results
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{coefplot}}
+		\begin{itemize}
+			\item \texttt{coefplot} is another user-written Stata program
+			\item Plots regression results in ``dot-whisker" format
+				\begin{itemize}
+					\item ``Dot" -- Coefficient Estimate
+					\item ``Whisker" -- Confidence Interval
+				\end{itemize}
+			\item Basic Syntax: \texttt{coefplot}
+			\item \texttt{coefplot} command is executed AFTER regression model is estimated
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{coefplot} Example}
+		\texttt{reg realrinc age i.female}\\
+		\texttt{coefplot, title("Model Results") xline(0)}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{coefplot} Example}
+		%\includegraphics[scale=0.3]{MIVcoef01.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{coefplot} Example}
+		\texttt{reg realrinc age i.female}\\
+		\texttt{coefplot, title("Model Results") xline(0) drop(\_cons)}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\texttt{coefplot} Example}
+		%\includegraphics[scale=0.3]{MIVcoef02.png}
+\end{frame}
+
+\section{Interpretation}
+\subsection{Coefficients}
+
+\begin{frame}
+	\frametitle{Interpreting Coefficients}
+		\begin{itemize}
+			\item Can directly interpret coefficient estimates.
+			\item \textit{A one unit change in $X_{k}$ leads to a $\beta_{k}$ change in $Y$ (holding all other variables constant).}
+			\item Assumes $X_{k}$ is not a constituent term for an interaction variable. 
+		\end{itemize}
+\end{frame}
+
+\subsection{Predicted (Fitted) Values}
+
+\begin{frame}
+	\frametitle{Predicted (Fitted) Values}
+		\begin{itemize}
+			\item The result of substituting values of interest for the independent variable(s).
+			\item $E[Y|X]=X\hat{\beta}$
+			\item Can calculate standard errors to determine if $E[Y|X=x]$ is statistically significantly different from zero.
+			\item Multiple ways to calculate fitted values in Stata.
+		\end{itemize}
+\end{frame}
+
+\subsection{Marginal Effects}
+
+\begin{frame}
+	\frametitle{Marginal and Discrete Change}
+		\begin{itemize}
+			\item Measuring the change in the dependent variable for a change in one independent variable, holding remaining independent variables constant.
+				\begin{itemize}
+					\item \textit{Marginal Change} is the partial derivative, or instantaneous rate of change, in the dependent variable w.r.t. an independent variable, holding remaining variables constant.
+					\item \textit{Discrete Change} or \textit{First Difference} is the difference in the prediction from one specified value of an independent variable to another specified value, holding remaining variables constant.
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal and Discrete Change}
+		\begin{itemize}
+			\item Marginal Change: $\frac{\partial E[Y|X]}{\partial x_{k}}=\frac{\partial X\beta}{\partial x_{k}}=\beta_{k}$
+			\item Discrete Change: $\frac{\Delta E[Y|X]}{\Delta x_{k}}=E[Y|X, x_{k}+1]-E[Y|X, x_{k}]=\beta_{k}$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal and Discrete Change}
+		\begin{itemize}
+			\item $\frac{\partial E[Y|X]}{\partial x_{k}}=\frac{\Delta E[Y|X]}{\Delta x_{k}}=\beta_{k}$, assuming there is no interaction terms.
+			\item The standard error of the marginal effect is the same as the standard error of the estimated beta coefficient.
+			\item \textit{For a unit increase in $x_{k}$, the expected change in $Y$ equals $\beta_{k}$, holding all other variables constant.}
+			\item \textit{Having characteristic $x_{k}$ (as opposed to not having the characteristic) results in an expected change of $\beta_{k}$ in $Y$, holding all other variables constant.}
+			\item When there is no interaction term present, $\mbox{Marginal Change}=\mbox{Discrete Change}$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Effects}
+		\begin{figure}[p]
+			\centering
+			%\includegraphics[scale=0.3]{Graphs/mfxOLS.png}
+			\label{fig:fig1}
+		\end{figure}
+\end{frame}
+
+\section{\texttt{margins} and \texttt{marginsplot}}
+\subsection{\texttt{margins}}
+
+\begin{frame}
+	\frametitle{\texttt{margins}}
+	\begin{itemize}
+		\item Computes predicted values and marginal effects from last estimated regression model
+		\item Reports computed statistic, standard error, test statistic, $p$-value and 95\% CI.
+		\item \texttt{at(atspec)} option allows for the calculation of predicted values and marginal effects at specific values of independent variable(s).
+		\item \texttt{dydx()} option allows for calculating marginal effects.
+		\item Factor variables (\texttt{i.\underline{varname}}) can go after the \texttt{margins} command or within the \texttt{at(atspec)} option.
+		\item Continuous variables can only be specified within the \texttt{at(atspec)} option.
+		\item \texttt{atmeans} option sets variables not specified to be held at their mean value.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Predicted (Fitted) Values -- \texttt{margins} Syntax}
+		\begin{itemize}
+			\item \texttt{margins} -- Overall predicted value with all independent variables held at their mean value.
+			\item \texttt{margins, at(varname=\#)} -- Predicted value when one or more independent variables are fixed to a specific value and remaining independent variables held at their mean value.
+			\item \texttt{margins, at(varname=numlist)} -- Predicted value(s) when one or more independent variables are fixed to multiple values and remaining independent variables held at their mean value.
+			\item \texttt{margins varname} -- Overall predicted value(s) for categories of \texttt{varname} with remaining independent variables held at their mean value.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Marginal Change -- \texttt{margins} Syntax}
+		\begin{itemize}
+			\item \texttt{margins, dydx(varname)} -- Average marginal effect a one-unit increase in \texttt{varname} has on the dependent variable, holding all other variables constant.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Discrete Change -- \texttt{margins} Syntax}
+		\begin{itemize}
+			\item \texttt{margins, at(varname=(\textit{start} \textit{end})) post} -- Calculates predicted values at specified values, and treats results as estimation results.
+			\item \texttt{lincom $\mbox{2.\_at}-\mbox{1.\_at}$} -- Calculates the difference between the prediction of the ending value and the prediction of the starting value.
+		\end{itemize}
+\end{frame}
+
+\subsection{\texttt{marginsplot}}
+
+\begin{frame}
+	\frametitle{\texttt{marginsplot}}
+	\begin{itemize}
+		\item Graphs the results of last estimated \texttt{margins} command
+		\item \textbf{Needs to be executed immediately after \texttt{margins}}
+		\item Resulting graph includes an overall title, a title for the $y$-axis, $x$-axis features the name of the variable (variable label if one is included).
+		\item The featured values on the $x$-axis are the values specified from the \texttt{margins} command.
+		\item Can use the \texttt{recast} and \texttt{recastci} options to change how results are graphed.
+	\end{itemize} 
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{LARGE}
+			Email: desmond-wallace@uiowa.edu\\
+			Any Questions?
+		\end{LARGE}
+	\end{center}
+\end{frame}
+
+\end{document}
