@@ -86,6 +86,8 @@ twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
 	
 mixed ses, || idGrp:, stddev
 
+	estat icc
+
 	drop GrandMean
 	
 	/*	Calculate and plot the group means	*/
@@ -166,6 +168,8 @@ twoway (line GrandMean year, lcolor(black) lwidth(thick)) ///
 	
 mixed gsp, || region: || state: , stddev
 
+	estat icc
+
 	/*	Calculate and plot the group means	*/
 	
 predict GrandMean, xb
@@ -201,3 +205,10 @@ twoway (line GrandMean year, lcolor(black) lwidth(thick)) ///
 	ytitle("log(Gross State Product)", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Multilevel Model of GSP for Region 7", size(medsmall))
+	
+	
+	/************/
+	/*	Cleanup	*/
+	/************/
+	
+log close
