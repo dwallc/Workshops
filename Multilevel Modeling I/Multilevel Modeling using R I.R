@@ -61,7 +61,7 @@ dataProd <- import("http://www.stata-press.com/data/r12/productivity.dta")
 
 ### Estimate Nul Random Intercept Model
 
-modelProd <- lmer(gsp ~ 1 + (1|region) + (1|state),
+modelProd <- lmer(gsp ~ 1 + (1|state) + (1|region),
                   data = dataProd,
                   REML = FALSE)
 
@@ -78,4 +78,4 @@ dataProd <- dataProd %>%
                                         re.form = ~(1|region)),
                    StateMean = predict(modelProd),
                    RegionEffect = RegionMean - GrandMean,
-                   StateEffect = StateMean  - GrandMean - RegionMean)
+                   StateEffect = StateMean - GrandMean - RegionEffect)
