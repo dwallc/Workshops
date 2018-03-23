@@ -14,7 +14,8 @@ log using "Multilevel Modeling using Stata I.log", text replace
 /*	Author:	Desmond D. Wallace											*/
 /*	Purpose:	Estimating basic random slope and random coefficient	*/
 /*					multilevel models via the 'mixed' command.	 		*/
-/*	Input File:	Data\HSB All.xlsx										*/
+/*	Input Files:	Data\HSB All.xlsx									*/
+/*					productivity.dta									*/
 /*	Output File:	Multilevel Modeling using Stata I.log				*/
 /************************************************************************/
 
