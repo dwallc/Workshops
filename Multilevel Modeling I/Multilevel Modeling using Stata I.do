@@ -42,7 +42,7 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 	
 	bro
 	
-	/*	Visually explor the 'ses' variable.	*/
+	/*	Visually explore the 'ses' variable.	*/
 	
 twoway dot ses idInd if idGrp==1224, sort
 
@@ -139,7 +139,7 @@ use "http://www.stata-press.com/data/r12/productivity.dta", clear
 
 	describe gsp year state region
 	
-	/*	Visually explor the 'gsp' variable.	*/
+	/*	Visually explore the 'gsp' variable.	*/
 	
 twoway (line gsp year, connect(ascending)), ///
 	by(region, title("log(Gross State Product) by Region", size(medsmall)))

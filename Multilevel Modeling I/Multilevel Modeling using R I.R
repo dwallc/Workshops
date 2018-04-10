@@ -35,7 +35,7 @@ ipak(packages)
 
 dataHSB <- import("./Data/HSB All R.xlsx")
 
-### Estimate Nul Random Intercept Model
+### Estimate Null Random Intercept Model
 
 modelHSB <- lmer(ses ~ 1 + (1|idGrp),
                  data = dataHSB,
@@ -59,7 +59,7 @@ dataHSB <- dataHSB %>%
 
 dataProd <- import("http://www.stata-press.com/data/r12/productivity.dta")
 
-### Estimate Nul Random Intercept Model
+### Estimate Null Random Intercept Model
 
 modelProd <- lmer(gsp ~ 1 + (1|state) + (1|region),
                   data = dataProd,
