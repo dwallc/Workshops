@@ -20,9 +20,9 @@ log using "Multilevel Modeling using Stata I.log", text replace
 /************************************************************************/
 
 
-	/********************/
-	/*	Example I - SES	*/
-	/********************/
+	/************************************/
+	/*	Example I - Math Achievement	*/
+	/************************************/
 	
 	/*	First, import the HSB All.xlsx dataset	*/
 	
@@ -44,19 +44,19 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 	
 	/*	Visually explore the 'ses' variable.	*/
 	
-twoway dot ses idInd if idGrp==1224, sort
+twoway scatter mathach idInd if idGrp==1224, sort
 
-twoway dot ses idInd if idGrp==1288, sort
+twoway scatter mathach idInd if idGrp==1288, sort
 
-twoway dot ses idInd if idGrp==1296, sort
+twoway scatter mathach idInd if idGrp==1296, sort
 	
 	/*	Estimate the null model with only individual-level variation	*/
 	
-mixed ses /*	Shows random-effects and residual-error parameter estimates	*/
-		  /*	as variances and covariances; the default.					*/
+mixed mathach /*	Shows random-effects and residual-error parameter estimates	*/
+			  /*	as variances and covariances; the default.					*/
 		  
-mixed ses, stddev /*	Shows random-effects and residual-error parameter	*/
-				  /*	estimates as standard deviations and correlations.	*/
+mixed mathach, stddev /*	Shows random-effects and residual-error parameter	*/
+					  /*	estimates as standard deviations and correlations.	*/
 				  
 	/*	Calculate and plot the grand mean	*/
 	
@@ -65,26 +65,26 @@ predict GrandMean, xb
 	label var GrandMean "GrandMean"
 	
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 	
 	/*	Estimate the model with individual- and group-level variation	*/
 	
-mixed ses, || idGrp:
+mixed mathach, || idGrp:
 
 	estat icc
 
@@ -109,24 +109,24 @@ predict idGrpMean2, fitted relevel(idGrp) /*	Same result as lines 96-105	*/
 
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter ses idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
-	ytitle("SES", margin(medsmall)) ///
+	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
+	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
-	title("SES by Group", size(medsmall))
+	title("Math Achievement by Group", size(medsmall))
 	
 	
 	/************************/

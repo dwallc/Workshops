@@ -148,7 +148,7 @@
 \subsection{Random Intercept Model}
 
 \begin{frame}
-	\frametitle{Null Model}
+	\frametitle{Null (Variance Components) Model}
 		\begin{itemize}
 			\item Predicting the outcome from only an intercept that varies between groups
 			\item The null model takes the following form:
@@ -195,6 +195,24 @@
 			\item Correlation between two randomly drawn observations from in one randomly drawn group
 			\item Ranges between $0$ (no variation between groups) and $1$ (all between-group variation but no within-group variation)
 			\item $\rho(y_{ij},y_{i'j})=\frac{\tau^{2}_{0}}{\tau^{2}_{0}+\sigma^2}$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example \#1 Math Achievement}
+		\begin{itemize}
+			\item Goal: Partition the value of students' math achievement scores into an overall mean and group-specific random effects.
+			\item Model Specification
+				\begin{itemize}
+					\item Level-1 Model (student-level): $\mbox{SES}_{ij}=\beta_{0j}+\varepsilon_{ij}$
+					\item Level-2 Model (school-level): $\beta_{0j}=\gamma_{00}+U_{0j}$
+					\item Full Model: $\mbox{SES}_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
+				\end{itemize}
+			\item Parameter Interpretation
+				\begin{itemize}
+					\item $\gamma_{00}$: Overall mean of student's math achievement scores
+					\item $U_{0j}$: Unique effect of school $j$ on mean math achievement score
+				\end{itemize}
 		\end{itemize}
 \end{frame}
 

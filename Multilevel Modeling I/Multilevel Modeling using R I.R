@@ -29,7 +29,7 @@ packages <- c("tidyverse",
 
 ipak(packages)
 
-## Example I - SES
+## Example I - Math Achievement
 
 ### First, import the HSB All.xlsx dataset
 
@@ -37,7 +37,7 @@ dataHSB <- import("./Data/HSB All R.xlsx")
 
 ### Estimate Null Random Intercept Model
 
-modelHSB <- lmer(ses ~ 1 + (1|idGrp),
+modelHSB <- lmer(mathach ~ 1 + (1|idGrp),
                  data = dataHSB,
                  REML = FALSE)
 
