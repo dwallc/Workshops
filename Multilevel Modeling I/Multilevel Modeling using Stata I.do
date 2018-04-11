@@ -24,7 +24,7 @@ log using "Multilevel Modeling using Stata I.log", text replace
 	/*	Example I - Math Achievement	*/
 	/************************************/
 	
-	/*	First, import the HSB All.xlsx dataset	*/
+	/*	Import the HSB All.xlsx dataset	*/
 	
 import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 
@@ -42,13 +42,13 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 	
 	bro
 	
-	/*	Visually explore the 'ses' variable.	*/
+	/*	Visually explore the 'mathach' variable.	*/
 	
-twoway scatter mathach idInd if idGrp==1224, sort
+twoway scatter mathach idInd if idGrp==1224
 
-twoway scatter mathach idInd if idGrp==1288, sort
+twoway scatter mathach idInd if idGrp==1288
 
-twoway scatter mathach idInd if idGrp==1296, sort
+twoway scatter mathach idInd if idGrp==1296
 	
 	/*	Estimate the null model with only individual-level variation	*/
 	
@@ -88,20 +88,18 @@ mixed mathach, || idGrp:
 
 	estat icc
 
-	drop GrandMean
-	
 	/*	Calculate and plot the group means	*/
 	
-predict GrandMean, xb
+predict GrandMean2, xb
 
-	label var GrandMean "GrandMean"
+	label var GrandMean2 "GrandMean2"
 	
 predict idGrpEffect, reffects relevel(idGrp) /*	If relevel(levelvar) is not	*/
 											 /*	specified, random effects	*/
 											 /*	are calculated for all		*/
 											 /*	levels.						*/
 
-gen idGrpMean = GrandMean + idGrpEffect
+gen idGrpMean = GrandMean2 + idGrpEffect
 
 predict idGrpMean2, fitted relevel(idGrp) /*	Same result as lines 96-105	*/
 
