@@ -151,7 +151,7 @@
 	\frametitle{Null (Variance Components) Model}
 		\begin{itemize}
 			\item Predicting the outcome from only an intercept that varies between groups
-			\item The null model takes the following form:
+			\item The 2-level null model takes the following form:
 				\begin{itemize}
 					\item Level-1 Model: $y_{ij}=\beta_{0j}+\varepsilon_{ij}$
 					\item Level-2 Model: $\beta_{0j}=\gamma_{00}+U_{0j}$ where
@@ -204,14 +204,35 @@
 			\item Goal: Partition the value of students' math achievement scores into an overall mean and group-specific random effects.
 			\item Model Specification
 				\begin{itemize}
-					\item Level-1 Model (student-level): $\mbox{SES}_{ij}=\beta_{0j}+\varepsilon_{ij}$
+					\item Level-1 Model (student-level): $\mbox{mathach}_{ij}=\beta_{0j}+\varepsilon_{ij}$
 					\item Level-2 Model (school-level): $\beta_{0j}=\gamma_{00}+U_{0j}$
-					\item Full Model: $\mbox{SES}_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
+					\item Full Model: $\mbox{mathach}_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
 				\end{itemize}
 			\item Parameter Interpretation
 				\begin{itemize}
 					\item $\gamma_{00}$: Overall mean of student's math achievement scores
 					\item $U_{0j}$: Unique effect of school $j$ on mean math achievement score
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example \#2: Gross State Product}
+		\begin{itemize}
+			\item Goal: Partition the value of states' gross domestic product into an overall mean, state-specific random effects, and region-specific random effects.
+			\item Model Specification
+				\begin{itemize}
+					\item Level-1 Model (repeated measures): $\mbox{GSP}_{ijk}=\beta_{0jk}+\varepsilon_{ijk}$
+					\item Level-2 Model (state-level): $\beta_{0jk}=\gamma_{00k}+U_{0jk}$
+					\item Level-3 Model (region-level) :
+					$\gamma_{00k}=\delta_{000}+V_{00k}$
+					\item Full Model: $\mbox{GSP}_{ijk}=\delta_{000}+V_{00k}+U_{0jk}+\varepsilon_{ijk}$
+				\end{itemize}
+			\item Parameter Interpretation
+				\begin{itemize}
+					\item $\delta_{000}$: Overall mean of GSP
+					\item $U_{0jk}$: Unique effect of state $j$ on mean GSP
+					\item $V_{00k}$: Unique effect of region $k$ on mean GSP
 				\end{itemize}
 		\end{itemize}
 \end{frame}
