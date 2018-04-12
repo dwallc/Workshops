@@ -1,0 +1,251 @@
+\documentclass{beamer}
+\setbeamertemplate{caption}[numbered]
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\graphicspath{{Graphs/}}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\mode<presentation>
+{
+	\usetheme{AnnArbor}
+	\usecolortheme{crane}
+}
+
+\title[MLM I]{Multilevel Modeling (Part 2)}
+\subtitle[ISRC Workshop]{Random-Intercept and Random-Slope Modeling with Covariates}
+\author[Wallace]{Desmond D. Wallace}
+\institute[University of Iowa]{Department of Political Science\\The University of Iowa\\Iowa City, IA}
+
+\date{April 13, 2018}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Table of Contents}
+%	\tableofcontents
+%\end{frame}
+
+\section{Multilevel Modeling}
+
+\subsection{Random Intercept Model}
+
+\begin{frame}
+	\frametitle{Including Level-1 Covariates}
+	\begin{itemize}
+		\item A way to summarize the relationship between variables.
+		\item Assuming there is a relationship between Y and the independent variable(s).
+		\item Relationship may be linear (OLS) or non-linear (CLDV).
+		\item Regression helps our understanding of how our dependent variable of interest changes when one or more independent variables vary, while holding remaining variables fixed.
+		\item PRF: $y_{i}=\beta_{0}+\beta_{1}x_{1}+\cdots+\beta_{k}x_{k}+\varepsilon_{i}$
+		\item SRF: $y_{i}=b_{0}+b_{1}x_{1}+\cdots+b_{k}x_{k}+e_{i}$
+	\end{itemize}
+\end{frame}
+
+\subsection{Regression Assumptions}
+
+\begin{frame}
+	\frametitle{Model Specification}
+		\begin{enumerate}
+			\item Linearity in the parameters
+			\item The number of observations $n$ must be greater than the number of parameters to be estimated
+			\item The regression model is correctly specified
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Independent Variable(s)}
+		\begin{enumerate}
+			\item $X$ values are fixed in repeated sampling
+			\item Variability in $X$ values
+			\item There is no perfect multicollinearity
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Error Term}
+		\begin{enumerate}
+			\item Zero mean value of error $(e_i)$
+			\item \textbf{Homoscedasticity or equal variance} of $e_i$
+			\item No autocorrelation between the errors
+			\item Zero covariance between $e_i$ and $X_i$
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Additional Assumptions}
+		\begin{enumerate}
+			\item Errors are normally distributed
+			\item \textbf{Errors for any two observations are independent of one another}
+		\end{enumerate}
+\end{frame}
+
+\section{Multilevel Modeling}
+
+\subsection{Violating OLS Assumptions}
+
+\begin{frame}
+	\frametitle{Multi-Stage Sampling}
+		\begin{itemize}
+			\item OLS assumptions imply utilization of Simple Random Sampling (SRS)
+			\item However, due to cost-efficiency, multi-stage sampling approaches may be utilized instead.
+			\item Researcher may randomly sample grouping units instead of individuals (cluster sampling)
+			\item Examples
+				\begin{itemize}
+					\item Students nested in schools
+					\item Respondents nested in states (countries)
+					\item Patients nested in hospitals
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Applying OLS to Multilevel Data}
+		\begin{itemize}
+			\item Biased standard errors
+			\item Model Misspecification
+		\end{itemize}
+\end{frame}
+
+\subsection{Introduction}
+
+\begin{frame}
+	\frametitle{New Approach}
+		\begin{itemize}
+			\item Best approach to analyzing nested data is a statistical approach that accounts for both within-group and between-group variation \textit{simultaneously}
+			\item One approach is to conceive within-group and between-group variation as random variability
+			\item One can achieve this by including \textit{random coefficient(s)} in the statistical model
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Multilevel Model}
+		\begin{itemize}
+			\item Multilevel Model (MLM) is a model where the parameters vary at more than one level
+			\item Features more than one error term
+			\item Variation can occur wit respect to the intercept (\textit{random intercept}) and/or the slope (\textit{random slope})
+			\item This approach leads to corrected standard errors and correct model specification
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Multilevel Model}
+		\begin{itemize}
+			\item Model coefficients are now a combination of both fixed and random components
+				\begin{itemize}
+					\item Fixed Coefficient -- An unknown constant of nature
+					\item Random Coefficient -- One which varies from sample of groups to sample of groups
+				\end{itemize}
+			\item Random coefficients are not estimated, and are instead predicted
+			\item Instead of BLUE (Best Linear Unbiased Estimator)  coefficients, we know have BLUP (Best Linear Unbiased Prediction) coefficients
+		\end{itemize}
+\end{frame}
+
+\subsection{Random Intercept Model}
+
+\begin{frame}
+	\frametitle{Null (Variance Components) Model}
+		\begin{itemize}
+			\item Predicting the outcome from only an intercept that varies between groups
+			\item The 2-level null model takes the following form:
+				\begin{itemize}
+					\item Level-1 Model: $y_{ij}=\beta_{0j}+\varepsilon_{ij}$
+					\item Level-2 Model: $\beta_{0j}=\gamma_{00}+U_{0j}$ where
+						\begin{itemize}
+							\item $\beta_{0j}$ -- Average (general) intercept holding across all groups (fixed effect)
+							\item $U_{0j}$ -- Group-specific effect on the intercept (random effect)
+						\end{itemize}
+					\item Full Specification: $y_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
+				\end{itemize}
+			\item Interested in general mean value for $y_{ij}$ $(\gamma_{00})$ and deviation between overall mean and group-specific effects for the intercept $(U_{0j})$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Null Model Assumptions}
+		\begin{enumerate}
+			\item Groups are a random sample from the population of all possible groups
+			\item $U_{0j}$ is randomly drawn from a population distribution with mean $0$ and variance $\tau^{2}_{0}$
+			\item $\tau^{2}_{0}$ (Variance of $U_{0j}$) and $\sigma^2$ (variance of $\varepsilon_{ij}$) are uncorrelated
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Variance of $y_{ij}$}
+		\begin{itemize}
+			\item Variance of  $y_{ij}$ is just the sum of the level-two and level-one variances
+				\begin{itemize}
+					\item $Var(y_{ij})=Var(U_{0j})+Var(\varepsilon_{ij})=\tau^{2}_{0}+\sigma^2$
+				\end{itemize}
+			\item Covariance between two observations from the same group $(ij\mbox{ and }i'j)$ is equal to the variance of the contribution $U_{0j}$ that is shared by these observations
+				\begin{itemize}
+					\item $Cov(y_{ij},y_{i'j})=Var(U_{0j})=\tau^{2}_{0}$
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Intraclass Correlation Coefficient}
+		\begin{itemize}
+			\item A measure of the proportion of variation in the dependent variable that occurs \textit{between} groups versus the total variation (\textit{between} and \textit{within})
+			\item Correlation between two randomly drawn observations from in one randomly drawn group
+			\item Ranges between $0$ (no variation between groups) and $1$ (all between-group variation but no within-group variation)
+			\item $\rho(y_{ij},y_{i'j})=\frac{\tau^{2}_{0}}{\tau^{2}_{0}+\sigma^2}$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example \#1: Math Achievement}
+		\begin{itemize}
+			\item Goal: Partition the value of students' math achievement scores into an overall mean and group-specific random effects.
+			\item Model Specification
+				\begin{itemize}
+					\item Level-1 Model (student-level): $\mbox{mathach}_{ij}=\beta_{0j}+\varepsilon_{ij}$
+					\item Level-2 Model (school-level): $\beta_{0j}=\gamma_{00}+U_{0j}$
+					\item Full Model: $\mbox{mathach}_{ij}=\gamma_{00}+U_{0j}+\varepsilon_{ij}$
+				\end{itemize}
+			\item Parameter Interpretation
+				\begin{itemize}
+					\item $\gamma_{00}$: Overall mean of student's math achievement scores
+					\item $U_{0j}$: Unique effect of school $j$ on mean math achievement score
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example \#2: Gross State Product}
+		\begin{itemize}
+			\item Goal: Partition the value of states' gross domestic product into an overall mean, state-specific random effects, and region-specific random effects.
+			\item Model Specification
+				\begin{itemize}
+					\item Level-1 Model (repeated measures): $\mbox{GSP}_{ijk}=\beta_{0jk}+\varepsilon_{ijk}$
+					\item Level-2 Model (state-level): $\beta_{0jk}=\gamma_{00k}+U_{0jk}$
+					\item Level-3 Model (region-level) :
+					$\gamma_{00k}=\delta_{000}+V_{00k}$
+					\item Full Model: $\mbox{GSP}_{ijk}=\delta_{000}+V_{00k}+U_{0jk}+\varepsilon_{ijk}$
+				\end{itemize}
+			\item Parameter Interpretation
+				\begin{itemize}
+					\item $\delta_{000}$: Overall mean of GSP
+					\item $U_{0jk}$: Unique effect of state $j$ on mean GSP
+					\item $V_{00k}$: Unique effect of region $k$ on mean GSP
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{LARGE}
+			Email: desmond-wallace@uiowa.edu\\
+			Any Questions?
+		\end{LARGE}
+	\end{center}
+\end{frame}
+
+\end{document}
