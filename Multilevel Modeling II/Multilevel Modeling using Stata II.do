@@ -154,7 +154,7 @@ twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
 	
 	/*	Estimate a random slope model with level-1 and level-2 variables	*/
 	
-mixed mathach c.ses##c.size minority female i.sector, || idGrp: ses
+mixed mathach c.ses##c.size i.minority i.female i.sector, || idGrp: ses
 
 	estat icc
 	

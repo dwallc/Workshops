@@ -30,6 +30,7 @@ packages <- c("tidyverse",
 
 ipak(packages)
 
+
 ## Example I - Math Achievement
 
 ### Import the HSB All.xlsx dataset
@@ -129,10 +130,11 @@ grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]],
 ### Calculate and plot the group means
 
 dataHSB <- dataHSB %>%
-           mutate(GrandMean2 = predict(modelHSB,
-                                       re.form = NA),
+           select(-GrandMean) %>%
+           mutate(GrandMean = predict(modelHSB,
+                                      re.form = NA),
                   idGrpMean = predict(modelHSB2),
-                  idGrpEffect2 = idGrpMean - GrandMean2) %>%
+                  idGrpEffect2 = idGrpMean - GrandMean) %>%
            inner_join(grpEffHSB,
                       by = "idGrp")
 
@@ -182,19 +184,65 @@ plotHSB9
 
 dataProd <- import("http://www.stata-press.com/data/r12/productivity.dta")
 
-### Estimate Null Random Intercept Model
+### Visually explore the 'gsp' variable
 
-modelProd <- lmer(gsp ~ 1 + (1|state) + (1|region),
-                  data = dataProd,
-                  REML = FALSE)
+plotProd1 <- ggplot(data = dataProd,
+                    aes(x = year,
+                        y = gsp)) +
+             geom_point(aes(colour = factor(state),
+                            alpha = factor(region)),
+                        show.legend = FALSE)
 
-summary(modelProd)
+plotProd1
 
-icc(modelProd)
+### Estimate the null model with only individual-level variation
 
-### Calculate GrandMean and Group-specific Means
+modelProd1 <- lm(gsp ~ 1,
+                data = dataProd) # Using ols
+
+summary(modelProd1)
+
+### Calculate and plot the grand mean
 
 dataProd <- dataProd %>%
+            mutate(GrandMean = predict(modelProd1))
+
+plotProd2 <- ggplot(data = dataProd,
+                    aes(x = year,
+                        y = gsp)) +
+             geom_point(aes(colour = factor(state),
+                            alpha = factor(region)),
+                        show.legend = FALSE) +
+             geom_line(aes(x = year,
+                           y = GrandMean),
+                       size = 2)
+
+plotProd2
+
+### Estimate the model with individual- and group-level variation
+
+modelProd2 <- lmer(gsp ~ 1 + (1|state) + (1|region),
+                   data = dataProd,
+                   REML = FALSE)
+
+summary(modelProd2)
+
+icc(modelProd2)
+
+### Create data object featuring group-specific effects
+
+grpEffProd <- ranef(modelProd2)
+
+grpEffProdState <- rownames_to_column(grpEffProd[["state"]]) %>%
+                   transmute(stateEffect = `(Intercept)`)
+
+grpEffProdRegion <- rownames_to_column(grpEffProd[["region"]]) %>%
+                    transmute(regionEffect = `(Intercept)`)
+
+### Calculate and plot the group means
+
+dataProd <- dataProd %>%
+            select(-GrandMean) %>%
             mutate(GrandMean = predict(modelProd,
                                        re.form = NA),
                    RegionMean = predict(modelProd,
@@ -202,3 +250,26 @@ dataProd <- dataProd %>%
                    StateMean = predict(modelProd),
                    RegionEffect = RegionMean - GrandMean,
                    StateEffect = StateMean - GrandMean - RegionEffect)
+
+plotProd3 <- ggplot(data = dataProd,
+                    aes(x = year,
+                        y = gsp)) +
+             geom_point(aes(colour = factor(state),
+                            alpha = factor(region)),
+                        show.legend = FALSE) +
+             geom_line(aes(x = year,
+                      y = GrandMean),
+                      size = 1) +
+             geom_line(aes(x = year,
+                           y = StateMean,
+                           colour = factor(state)),
+                       size = 1,
+                       show.legend = FALSE) +
+             geom_line(aes(x = year,
+                           y = RegionMean,
+                           colour = factor(region)),
+                       size = 2,
+                       linetype = 2,
+                       show.legend = FALSE)
+
+plotProd3
