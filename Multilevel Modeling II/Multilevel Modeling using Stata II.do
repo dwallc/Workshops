@@ -43,84 +43,54 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 	
 	/*	Visually explore the 'mathach' variable.	*/
 	
-twoway scatter mathach ses if idGrp==1224
+twoway scatter mathach ses if idGrp==2305
 
-twoway scatter mathach ses if idGrp==1288
+twoway scatter mathach ses if idGrp==4523
 
-twoway scatter mathach ses if idGrp==1296
+twoway scatter mathach ses if idGrp==6816
 	
-	/*	Estimate the null model with only individual-level variation	*/
+	/*	Estimate a random intercept model with single level-1 variable	*/
 	
-mixed mathach /*	Shows random-effects and residual-error parameter estimates	*/
-			  /*	as variances and covariances; the default.					*/
-		  
-mixed mathach, stddev /*	Shows random-effects and residual-error parameter	*/
-					  /*	estimates as standard deviations and correlations.	*/
-				  
-	/*	Calculate and plot the grand mean	*/
-	
-predict GrandMean, xb
-
-	label var GrandMean "GrandMean"
-	
-twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
-	ytitle("Math Achievement", margin(medsmall)) ///
-	legend(cols(4) size(small)) ///
-	title("Math Achievement by Group", size(medsmall))
-
-twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
-	ytitle("Math Achievement", margin(medsmall)) ///
-	legend(cols(4) size(small)) ///
-	title("Math Achievement by Group", size(medsmall))
-
-twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
-	ytitle("Math Achievement", margin(medsmall)) ///
-	legend(cols(4) size(small)) ///
-	title("Math Achievement by Group", size(medsmall))
-	
-	/*	Estimate the model with individual- and group-level variation	*/
-	
-mixed mathach, || idGrp:
+mixed mathach ses i.minority i.female, || idGrp:
 
 	estat icc
 
 	/*	Calculate and plot the group means	*/
 	
-predict GrandMean2, xb
+predict GrandMean, xb
 
-	label var GrandMean2 "GrandMean2"
+	label var GrandMean "GrandMean"
 	
-predict idGrpEffect, reffects relevel(idGrp) /*	If relevel(levelvar) is not	*/
-											 /*	specified, random effects	*/
-											 /*	are calculated for all		*/
-											 /*	levels.						*/
+predict idGrpEffect, reffects /*	If relevel(levelvar) is not	*/
+							  /*	specified, random effects	*/
+							  /*	are calculated for all		*/
+							  /*	levels.						*/
 
-gen idGrpMean = GrandMean2 + idGrpEffect
+gen idGrpMean = GrandMean + idGrpEffect
 
-predict idGrpMean2, fitted relevel(idGrp) /*	Same result as lines 96-105	*/
+predict idGrpMean2, fitted /*	Same result as lines 96-105	*/
 
 	sum idGrpMean idGrpMean2
+	
+	codebook idGrpEffect
 
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==2305, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==4523, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
 	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==6816, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
