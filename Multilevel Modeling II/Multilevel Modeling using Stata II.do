@@ -72,30 +72,30 @@ predict idGrpEffect, reffects /*	If relevel(levelvar) is not	*/
 							  /*	are calculated for all		*/
 							  /*	levels.						*/
 
-gen idGrpMean = GrandMean + idGrpEffect
+gen predMathAch = GrandMean + idGrpEffect
 
-predict idGrpMean2, fitted /*	Same result as lines 96-105	*/
+predict predMathAch2, fitted /*	Same result as lines 96-105	*/
 
-	sum idGrpMean idGrpMean2
+	sum predMathAch predMathAch2
 	
 	codebook idGrpEffect
 
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==2305, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==4523, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==6816, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
@@ -112,7 +112,7 @@ mixed mathach ses i.minority i.female, || idGrp: ses
 
 	estat icc
 	
-	drop GrandMean sesEffect idGrpEffect idGrpMean
+	drop GrandMean idGrpEffect predMathAch predMathAch2
 
 	/*	Calculate and plot the group means	*/
 	
@@ -122,26 +122,26 @@ predict GrandMean, xb
 	
 predict sesEffect idGrpEffect, reffects
 
-predict idGrpMean, fitted
+predict predMathAch, fitted
 
-	codebook idGrpMean sesEffect idGrpEffect
+	codebook predMathAch sesEffect idGrpEffect
 
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==2305, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==4523, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==6816, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
@@ -158,7 +158,7 @@ mixed mathach c.ses##c.size minority female i.sector, || idGrp: ses
 
 	estat icc
 	
-	drop GrandMean sesEffect idGrpEffect idGrpMean
+	drop GrandMean sesEffect idGrpEffect predMathAch
 	
 	/*	Use margins and marginsplot to examine the interaction	*/
 	
@@ -178,26 +178,26 @@ predict GrandMean, xb
 	
 predict sesEffect idGrpEffect, reffects
 
-predict idGrpMean, fitted
+predict predMathAch, fitted
 
-	codebook idGrpMean sesEffect idGrpEffect
+	codebook predMathAch sesEffect idGrpEffect
 
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==2305, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==4523, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
 twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(line predMathAch ses, lcolor(blue) lwidth(medthick) sort) ///
 	(scatter mathach ses, mcolor(red) msize(tiny) sort) if minority==1 & female==1 & idGrp==6816, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
