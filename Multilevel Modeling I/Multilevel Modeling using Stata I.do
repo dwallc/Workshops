@@ -8,16 +8,16 @@ set more off
 	}
 log using "Multilevel Modeling using Stata I.log", text replace
 
-/************************************************************************/
-/*	Name: Multilevel Modeling using Stata I.do							*/
-/*	Date: March 23, 2018												*/
-/*	Author:	Desmond D. Wallace											*/
-/*	Purpose:	Estimating basic random slope and random coefficient	*/
-/*					multilevel models via the 'mixed' command.	 		*/
-/*	Input Files:	Data\HSB All.xlsx									*/
-/*					productivity.dta									*/
-/*	Output File:	Multilevel Modeling using Stata I.log				*/
-/************************************************************************/
+/************************************************************/
+/*	Name: Multilevel Modeling using Stata I.do				*/
+/*	Date: March 23, 2018									*/
+/*	Author:	Desmond D. Wallace								*/
+/*	Purpose:	Estimating null random intercept multilevel	*/
+/*					models via the 'mixed' command.	 		*/
+/*	Input Files:	Data\HSB All.xlsx						*/
+/*					productivity.dta						*/
+/*	Output File:	Multilevel Modeling using Stata I.log	*/
+/************************************************************/
 
 
 	/************************************/
@@ -44,11 +44,11 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 	
 	/*	Visually explore the 'mathach' variable.	*/
 	
-twoway scatter mathach idInd if idGrp==1224
+twoway scatter mathach ses if idGrp==1224
 
-twoway scatter mathach idInd if idGrp==1288
+twoway scatter mathach ses if idGrp==1288
 
-twoway scatter mathach idInd if idGrp==1296
+twoway scatter mathach ses if idGrp==1296
 	
 	/*	Estimate the null model with only individual-level variation	*/
 	
@@ -64,20 +64,20 @@ predict GrandMean, xb
 
 	label var GrandMean "GrandMean"
 	
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
@@ -105,23 +105,23 @@ predict idGrpMean2, fitted relevel(idGrp) /*	Same result as lines 96-105	*/
 
 	sum idGrpMean idGrpMean2
 
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1224, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1288, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
 	
-twoway (line GrandMean idInd, lcolor(black) lwidth(thick) sort) ///
-	(line idGrpMean idInd, lcolor(blue) lwidth(medthick) sort) ///
-	(scatter mathach idInd, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
+twoway (line GrandMean ses, lcolor(black) lwidth(thick) sort) ///
+	(line idGrpMean ses, lcolor(blue) lwidth(medthick) sort) ///
+	(scatter mathach ses, mcolor(red) msize(tiny) sort) if idGrp==1296, ///
 	ytitle("Math Achievement", margin(medsmall)) ///
 	legend(cols(4) size(small)) ///
 	title("Math Achievement by Group", size(medsmall))
