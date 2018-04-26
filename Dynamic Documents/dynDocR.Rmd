@@ -5,17 +5,13 @@ date: "April 27, 2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # Introduction
 
 In this workshop, I will demonstrate how to create a dynamic document in R. These documents are useful for integrating statistical code with narration that explains the executed code. By either clicking a button or typing a command, one can execute the code in an R Markdown file, reproducing one's work and exporting the results in a finished report. One can export a finished report in a variety of formats, including HTML, PDF, Microsoft Word, or rich text format documents; as well as HTML- or PDF-based slides, Notebooks, and more. I will demonstrate how to export the finished document as an HTML web page, a Word document, and a PDF document (requires LaTeX installation).
 
 # Basic Example
 
-The folowing example is included as part of an .Rmd file template.
+The following example is included as part of an .Rmd file template.
 
 ## What is R Markdown?
 
@@ -37,7 +33,9 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 # Real Examples
 
-## Step #1: Set Working Directory
+## Preliminary Steps
+
+### Step #1: Set Working Directory
 
 Before one begins any research project, they should always set their working directory. One can set the working directory in R via the `setwd(dir)` function.
 
@@ -49,6 +47,27 @@ Note that the `eval = FALSE` parameter was added to the code chunk to prevent ex
 
 One of the nice features of a R markdown document is that when *kniting* this file, the working directory is set automatically to the location of the markdown file, thus making this step unnecessary.
 
-## Step #2: Load Required Packages
+### Step #2: Load Required Packages
 
-The second step is loading any required packages. Here, I use a user-created function to check if my R installation includes the set of specified packages. If it does not, then R will install the package(s) along with any associated dependent packages. After
+The second step is loading any required packages. Here, I use a user-created function to check if my R installation includes the set of specified packages. If it does not, then R will install the package(s) along with any associated dependent packages. Below is the function in question.
+
+```{r packageFunc}
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+```
+
+The code chunk below places the names of the packages I am planning to use in a character vector-type object. I then use this object as the parameter for the package-loading function.
+
+```{r packageLoad, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+packages <- c("tidyverse",
+              "rio",
+              "margins")
+
+ipak(packages)
+```
+
+If you do not see anything, it is because I specified the following parameters: `echo=FALSE`, `message=FALSE`, `results='hide'`, and `warning=FALSE`. The parameter `message=FALSE` prevents any messages generated from the code from appearing in the document. The parameter `results='hide'`prevents any output produced from the code to appear in the document. Finally, the parameter `warning=FALSE` prevents any warnings generated from the code from appearing in the document.
