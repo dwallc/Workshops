@@ -47,4 +47,6 @@ setwd(dir = "filepath")
 
 Note that the `eval = FALSE` parameter was added to the code chunk to prevent execution of the R code specified in the R code chunk.
 
-One of the nice features of a R markdown document is that when *kniting*, the working directory is set automatically to the location of the markdown file, thus making this step unnecessary.
+One of the nice features of a R markdown document is that when *kniting* this file, the working directory is set automatically to the location of the markdown file, thus making this step unnecessary.
+
+## Step #2: Load Required Packages
