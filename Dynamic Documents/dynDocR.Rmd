@@ -50,3 +50,5 @@ Note that the `eval = FALSE` parameter was added to the code chunk to prevent ex
 One of the nice features of a R markdown document is that when *kniting* this file, the working directory is set automatically to the location of the markdown file, thus making this step unnecessary.
 
 ## Step #2: Load Required Packages
+
+The second step is loading any required packages. Here, I use a user-created function to check if my R installation includes the set of specified packages. If it does not, then R will install the package(s) along with any associated dependent packages. After
