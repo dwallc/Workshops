@@ -11,11 +11,7 @@ output:
 
 In this workshop, I will demonstrate how to create a dynamic document in R. These documents are useful for integrating statistical code with narration that explains the executed code. By either clicking a button or typing a command, one can execute the code in an R Markdown file, reproducing one's work and exporting the results in a finished report. One can export a finished report in a variety of formats, including HTML, PDF, Microsoft Word, or rich text format documents; as well as HTML- or PDF-based slides, Notebooks, and more. I will demonstrate how to export the finished document as an HTML web page, a Word document, and a PDF document (requires LaTeX installation).
 
-# Basic Example
-
-The following example is included as part of an .Rmd file template.
-
-## What is R Markdown?
+# What is R Markdown?
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
