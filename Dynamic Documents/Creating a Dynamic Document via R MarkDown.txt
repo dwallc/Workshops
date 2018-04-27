@@ -1,0 +1,252 @@
+# Introduction
+
+In this workshop, I will demonstrate how to create a dynamic document in Stata.
+These documents are useful for integrating statistical code with narration that
+explains the executed code. By using the command `dyndoc`, we can create HTML
+files from text files containing text and dynamic tags. This will make it easier
+for reproducing one's work and exporting the results in a finished report.
+
+# Preliminary Steps
+
+## Step #1: Set Working Directory
+
+Before one begins any research project, they should always set their working
+directory. One can set the working directory in Stata via the `cd` command. Below\
+is an example of setting a working directory.
+
+~~~~
+<<dd_ignore>>
+<<dd_do>>
+cd "E:\Desmond's Files\Cloud Storage\Dropbox\GitHub\Workshops\Dynamic Documents"
+<</dd_do>>
+<</dd_ignore>>
+~~~~
+
+The tag `<<dd_do>>` executes a block of Stata code and optionally
+include its output while the tag `<<\dd_do>>` ends `<<dd_do>>`. The
+tag `<<dd_ignore>>` disables processing of dynamic tags  while
+`<</dd_ignore>>` ends `<<dd_ignore>>`.
+
+Unlike R markdown, Stata does not automatically set the working directory,
+unless a Stata-type file located in the same directory as the dynamic file
+is opened first.
+
+## Step #2: Load Required Packages
+
+Also, unlike R, Stata does not require the user to load additional packages at
+the start of each session. The only commands I will use here will come from the
+`estout` and `coefplot` auxillary packages. If you do not have one or
+both packages installed, execute
+the following command(s):
+
+~~~~
+<<dd_ignore>>
+<<dd_do>>
+net search estout
+net search coefplot
+<</dd_do>>
+<</dd_ignore>>
+~~~~
+
+and click on the third search result. Then, click on the blue *click to install*
+link.
+
+# Basic Tables
+
+## Summary Tables
+
+To create a table reporting summary statistics, I recommend using the `estout`
+package. To create the table, first treat the summary statistics as estimation
+results using the `estpost` command. Then, use `esttab` to create the table.
+
+~~~~
+<<dd_do>>
+use attitude, clear
+estpost sum rating complaints privileges learning raises critical advance
+esttab ., cells("Count(fmt(0)) Mean(fmt(2)) SD(fmt(2)) Min(fmt(2)) Max(fmt(2))") ///
+html
+<</dd_do>>
+~~~~
+
+Notice that executing the code chunk above yielded the printing of raw HTML
+code, which should produce a pretty table. To correct this, I will separate the
+above code chunk into two separate code chunks. The first code chunk will post
+the summary statistics while the second code chunk produces the table.
+
+~~~~
+<<dd_do: quietly>>
+estpost sum rating complaints privileges learning raises critical advance
+<</dd_do>>
+~~~~
+
+<<dd_do: nocommand>>
+esttab ., cells("Count(fmt(0)) Mean(fmt(2)) SD(fmt(2)) Min(fmt(2)) Max(fmt(2))") ///
+noobs nonumber ///
+html
+<</dd_do>>
+
+Even though this second table appears in proper format, it does not display any
+summary statistics. An alternative is to use the `tabstat` command.
+
+~~~~
+<<dd_do: nocommand>>
+tabstat rating complaints privileges learning raises critical advance, ///
+columns(statistics) stat(N mean sd min max)
+<</dd_do>>
+~~~~
+
+~~~~
+<<dd_do: quietly>>
+sum rating
+<</dd_do>>
+~~~~
+
+The statistics reported in the summary table are observation count, mean,
+standard deviation, minimum, and maximum. For example, the mean of the variable
+`rating` is <<dd_display: %9.0g r(mean)>>. To report the mean for `rating`,
+I used inline code, represented as the `dd_display` tag. This tag works in
+a similar manner as the `display` command. Inline code automatically reports
+the result, never the actual code.
+
+## Regression Tables
+
+If I want to report the results of a regression model, or multiple regression
+models, I can use the `_coef_table` command. `_coef_table` displays the actual
+regression table produced when executing a regression command. The downside is
+that I can only display one set of results at a time. Below is an example of
+creating a table featuring results from three models: two OLS models and a
+probit model.
+
+~~~~
+<<dd_do: quietly>>
+reg rating complaints privileges learning raises critical
+<</dd_do>>
+~~~~
+
+<<dd_do: nocommand>>
+_coef_table, markdown
+<</dd_do>>
+
+~~~~
+<<dd_do: quietly>>
+reg rating complaints privileges learning
+<</dd_do>>
+~~~~
+
+<<dd_do: nocommand>>
+_coef_table, markdown
+<</dd_do>>
+
+~~~~
+<<dd_do: quietly>>
+gen highRating = 0
+replace highRating = 1 if rating > 70
+probit highRating learning critical advance
+<</dd_do>>
+~~~~
+
+<<dd_do: nocommand>>
+_coef_table, markdown
+<</dd_do>>
+
+The table above reports the results from the three regression models, and we
+never had to show the output produced from the executed commands.
+
+# Basic Plots
+
+We can also embed plots of our data include our document. These plots can either
+allow us to conduct an exploratory analysis of our data, or report the results
+of our analysis.
+
+## Exploratory Analysis
+
+Suppose we were interested in the relationship between the variables
+`complaints` and `rating` from the `attitude` dataset. We can construct
+a scatterplot with `complaints` on the X-axis and `rating` on the Y-axis,
+along with the line of best fit. Below is a plot doing such.
+
+~~~~
+<<dd_do: quietly>>
+twoway lfitci rating complaints || scatter rating complaints, mcolor(blue%50)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot1.svg") replace markdown>>
+
+We can also use options to change the size of the produced figure. In producing
+the next plot, I use the parameters `height(#)` and `width(#)` to change the
+height and width of the plot. Just for fun, I change the type of confidence
+interval from the confidence interval of the conditional mean to the
+confidence interval of the individual forecast.
+
+~~~~
+<<dd_do: quietly>>
+twoway lfitci rating complaints, stdf || scatter rating complaints, mcolor(blue%50)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot2.svg") height(600) width(600) replace>>
+
+Notice that when the `markdown` option is specified in the `dd_graph` tag,
+specifications for the `height(#)` and `width(#)` options are ignored.
+
+## Regression Analysis
+
+There are numerous ways one can utilize data visualization to assist in
+reporting and interpreting regression results. For example, if we were
+giving a presentation that included regression results, we may want to
+produce a plot of our results instead of a table. There are numerous
+packages that allows for us to accomplish this. The package I will
+utilize here is `coefplot`. Below is a coefficient plot reporting
+the results from the three regression models estimated earlier.
+
+~~~~
+<<dd_do: quietly>>
+reg rating complaints privileges learning raises critical
+coefplot, xline(0)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot3.svg") replace markdown>>
+
+~~~~
+<<dd_do: quietly>>
+reg rating complaints privileges learning
+coefplot, xline(0)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot4.svg") replace markdown>>
+
+~~~~
+<<dd_do: quietly>>
+probit highRating learning critical advance
+coefplot, xline(0)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot5.svg") replace markdown>>
+
+We can also use visualization to aid with interpreting our model results. For
+example, it is very difficult to directly interpret a coefficient estimate
+from a probit model. Instead, we like to interpret probit results in the
+context of predicted probabilities. The graph below plots the predicted
+probability of experiencing a high rating (`rating` > 70) for each
+value of learning. To calculate and plot these predicted probabilities,
+I utilize the `margins` and `marginsplot` commands.
+
+~~~~
+<<dd_do: quietly>>
+probit highRating learning critical advance
+margins, at(learning=(34(1)75)) atmeans noatlegend
+marginsplot, recast(line) recastci(rarea) ciopts(color(ltblue))
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving("plot6.svg") replace markdown>>
+
+# Conclusion
+
+This document demonstrates some of the basics with respect to Dynamic Documents
+in Stata. I encourage you to visit <https://www.stata.com/new-in-stata/markdown/>
+to learn about additional features.
