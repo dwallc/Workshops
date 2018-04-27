@@ -93,3 +93,27 @@ stargazer(attitude,
 ```
 
 Because the `stargazer` function produces raw HTML code, including the parameter `results='asis'` passes the raw HTML code to the final document, where everything is in HTML code. The statistics reported in the summary table are observation count, mean, standard deviation, minimum, and maximum. For example, the mean of the variable `rating` is `r mean(attitude$rating)`. To report the mean for `rating`, I used inline code, represented as a single backtick, followed by the letter `r`, then the R code in question, and finished with another single backtick. Inline code automatically reports the result, never the actual code.
+
+If I want to report the results of a regression model, or multiple regression models, I prefer to use the `texreg` package. What makes `texreg` different from `stargazer` is that `texreg` allows the user more flexibility regarding custom model implementation. Below is an example of creating a table featuring results from three models: two OLS models and a probit model.
+
+```{r tab2Setup, results='hide'}
+##  2 OLS models
+linear.1 <- lm(rating ~ complaints + privileges + learning + raises + critical,
+               data = attitude)
+linear.2 <- lm(rating ~ complaints + privileges + learning,
+               data = attitude)
+## create an indicator dependent variable, and run a probit model
+attitude$high.rating <- (attitude$rating > 70)
+probit.model <- glm(high.rating ~ learning + critical + advance,
+                    data = attitude,
+                    family = binomial(link = "probit"))
+```
+
+```{r tab2, results='asis'}
+htmlreg(l = list(linear.1,
+                 linear.2,
+                 probit.model),
+        caption = "Results",
+        caption.above = TRUE)
+```
+
