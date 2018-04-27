@@ -198,3 +198,6 @@ cplot(probit.model,
       type = "response")
 ```
 
+# Conclusion
+
+This document demonstrates some of the basics with respect to R Markdown. I encourage you to visit <http://rmarkdown.rstudio.com> to learn about additional features.
