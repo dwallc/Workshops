@@ -65,7 +65,8 @@ packages <- c("tidyverse",
               "rio",
               "margins",
               "stargazer",
-              "texreg")
+              "texreg",
+              "dotwhisker")
 
 ipak(packages)
 ```
@@ -94,6 +95,8 @@ stargazer(attitude,
 
 Because the `stargazer` function produces raw HTML code, including the parameter `results='asis'` passes the raw HTML code to the final document, where everything is in HTML code. The statistics reported in the summary table are observation count, mean, standard deviation, minimum, and maximum. For example, the mean of the variable `rating` is `r mean(attitude$rating)`. To report the mean for `rating`, I used inline code, represented as a single backtick, followed by the letter `r`, then the R code in question, and finished with another single backtick. Inline code automatically reports the result, never the actual code.
 
+## Regression Tables
+
 If I want to report the results of a regression model, or multiple regression models, I prefer to use the `texreg` package. What makes `texreg` different from `stargazer` is that `texreg` allows the user more flexibility regarding custom model implementation. Below is an example of creating a table featuring results from three models: two OLS models and a probit model.
 
 ```{r tab2Setup, results='hide'}
@@ -109,11 +112,89 @@ probit.model <- glm(high.rating ~ learning + critical + advance,
                     family = binomial(link = "probit"))
 ```
 
-```{r tab2, results='asis'}
+```{r tab2, echo=FALSE, results='asis'}
 htmlreg(l = list(linear.1,
                  linear.2,
                  probit.model),
-        caption = "Results",
-        caption.above = TRUE)
+        caption = "Regression Results",
+        caption.above = TRUE,
+        custom.model.names = c("OLS",
+                               "OLS",
+                               "Probit"),
+        custom.coef.names = c("Constant",
+                              "Handling of Complaints",
+                              "No Special Privileges",
+                              "Opportunity to Learn",
+                              "Performance-Based Raises",
+                              "Too Critical",
+                              "Advancement"),
+        custom.note = "Dependent variable for OLS models: Overall Rating; Dependent Variable for Probit Model: High Rating")
+```
+
+The table above reports the results from the three regression models, and we never had to show the output produced from the `summary()` function.
+
+# Basic Plots
+
+As demonstrated previously, we can embed plots of our data include our document. These plots can either allow us to conduct an exploratory analysis of our data, or report the results of our analysis.
+
+## Exploratory Analysis
+
+Suppose we were interested in the relationship between the variables `complaints` and `rating` from the `attitude` dataset. We can construct a scatterplot with `complaints` on the X-axis and `rating` on the Y-axis, along with the line of best fit. Below is a plot doing such.
+
+```{r scatter}
+ggplot(attitude,
+       aes(x = complaints,
+           y = rating)) +
+        geom_point(shape = 1) +
+        geom_smooth(method = lm)
+```
+
+We can also use parameters to change the size of the produced figure. In producing the next plot, I use the parameters `fig.height` and `fig.width` to change the height and width of the plot, and the parameter `fig.align` to change the alignment. Just for fun, I changed the method in `geom_smooth()` from linear smoothing to loess (local polynomial regression) smoothing.
+
+```{r scatter2, echo=FALSE, fig.height=4, fig.width=4, fig.align='center'}
+ggplot(attitude,
+       aes(x = complaints,
+           y = rating)) +
+        geom_point(shape = 1) +
+        geom_smooth(method = loess)
+```
+
+## Regression Analysis
+
+There are numerous ways one can utilize data visualization to assist in reporting and interpreting regression results. For example, if we were giving a presentation that included regression results, we may want to produce a plot of our results instead of a table. There are numerous packages that allows for us to accomplish this. The package I will utilize here is `dotwhisker`. What is nice about `dotwhisker` is that the produced plots are really ggplot objects. Thus we can customize these plots as we would a regular ggplot-type plot. Below is a coefficient plot reporting the results from the three regression models estimated earlier.
+
+```{r coefPlot, echo=FALSE, fig.height=5, fig.width=5, fig.align='center', warning=FALSE}
+dwplot(list(linear.1,
+            linear.2,
+            probit.model)) %>%
+        relabel_predictors(c(complaints = "Handling of Complaints",
+                             privileges = "No Special Privileges",
+                             learning = "Opportunity to Learn",
+                             raises = "Performance-Based Raises",
+                             critical = "Too Critical",
+                             advance = "Advancement")) +
+        theme_bw() +
+        xlab("Coefficient Estimate") +
+        ylab("") +
+        geom_vline(xintercept = 0,
+                   colour = "grey60",
+                   linetype = 2) +
+        ggtitle("Regression Results") +
+        theme(plot.title = element_text(face = "bold"),
+              legend.position = c(0.5,
+                                  0.01),
+              legend.justification = c(0,
+                                       0),
+              legend.background = element_rect(colour = "grey80"),
+              legend.title = element_blank())
+```
+
+We can also use visualization to aid with interpreting our model results. For example, it is very difficult to directly interpret a coefficient estimate from a probit model. Instead, we like to interpret probit results in the context of predicted probabilities. The graph below plots the predicted probability of experiencing a high rating (`rating`$ > 70$) for each value of learning. To calculate and plot these predicted probabilities, I utilize the `margins` package.
+
+```{r predProb, echo=FALSE, fig.height=5, fig.width=5, fig.align='center', warning=FALSE}
+cplot(probit.model,
+      x = "learning",
+      what = "prediction",
+      type = "response")
 ```
 
