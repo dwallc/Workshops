@@ -2,7 +2,8 @@
 title: "Creating a Dynamic Document via R MarkDown"
 author: "Desmond D. Wallace"
 date: "April 27, 2018"
-output: html_document
+output:
+  word_document: default
 ---
 
 # Introduction
@@ -81,15 +82,15 @@ To create a table reporting summary statistics, I recommend using the `stargazer
 
 ```{r tab1}
 stargazer(attitude,
-          type = "html",
+          type = "text",
           title = "Summary Statistics")
 ```
 
 Notice that executing the code chunk above yielded the printing of raw HTML code, which should produce a pretty table. To correct this, I will include the parameter `results='asis'`, which will pass through results without reformatting them.
 
-```{r tab1Correct, echo=FALSE, results='asis'}
+```{r tab1Correct, echo=FALSE}
 stargazer(attitude,
-          type = "html", # Change to "larex" for pdf file
+          type = "text",
           title = "Summary Statistics")
 ```
 
@@ -112,23 +113,23 @@ probit.model <- glm(high.rating ~ learning + critical + advance,
                     family = binomial(link = "probit"))
 ```
 
-```{r tab2, echo=FALSE, results='asis'}
-htmlreg(l = list(linear.1,
-                 linear.2,
-                 probit.model),
-        caption = "Regression Results",
-        caption.above = TRUE,
-        custom.model.names = c("OLS",
-                               "OLS",
-                               "Probit"),
-        custom.coef.names = c("Constant",
-                              "Handling of Complaints",
-                              "No Special Privileges",
-                              "Opportunity to Learn",
-                              "Performance-Based Raises",
-                              "Too Critical",
-                              "Advancement"),
-        custom.note = "Dependent variable for OLS models: Overall Rating; Dependent Variable for Probit Model: High Rating")
+```{r tab2, echo=FALSE}
+screenreg(l = list(linear.1,
+                   linear.2,
+                   probit.model),
+          caption = "Regression Results",
+          caption.above = TRUE,
+          custom.model.names = c("OLS",
+                                 "OLS",
+                                 "Probit"),
+          custom.coef.names = c("Constant",
+                                "Handling of Complaints",
+                                "No Special Privileges",
+                                "Opportunity to Learn",
+                                "Performance-Based Raises",
+                                "Too Critical",
+                                "Advancement"),
+          custom.note = "Dependent variable for OLS models: Overall Rating; Dependent Variable for Probit Model: High Rating")
 ```
 
 The table above reports the results from the three regression models, and we never had to show the output produced from the `summary()` function.
@@ -161,7 +162,7 @@ ggplot(attitude,
 
 ## Regression Analysis
 
-There are numerous ways one can utilize data visualization to assist in reporting and interpreting regression results. For example, if we were giving a presentation that included regression results, we may want to produce a plot of our results instead of a table. There are numerous packages that allows for us to accomplish this. The package I will utilize here is `dotwhisker`. What is nice about `dotwhisker` is that the produced plots are really ggplot objects. Thus we can customize these plots as we would a regular ggplot-type plot. Below is a coefficient plot reporting the results from the three regression models estimated earlier.
+There are numerous ways one can utilize data visualization to assist in reporting and interpreting regression results. For example, if we were giving a presentation that included regression results, we may want to produce a plot of our results instead of a table. There are numerous packages that allows for us to accomplish this. The package I will utilize here is `dotwhisker`. What is nice about `dotwhisker` is that the produced plots are really `ggplot` objects. Thus we can customize these plots as we would a regular ggplot-type plot. Below is a coefficient plot reporting the results from the three regression models estimated earlier.
 
 ```{r coefPlot, echo=FALSE, fig.height=5, fig.width=5, fig.align='center', warning=FALSE}
 dwplot(list(linear.1,
@@ -197,6 +198,8 @@ cplot(probit.model,
       what = "prediction",
       type = "response")
 ```
+
+As the graph above demonstrates, `margins` utilizes the base R plot engine to construct graphs. To utilize a different plotting engine (e.g., `ggplot`), the `cplot()` function includes an argument called `draw`. Setting `draw = FALSE` results in the creation of a list of data frames used to create the plot.
 
 # Conclusion
 
