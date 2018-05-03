@@ -4,7 +4,6 @@ author: "Desmond D. Wallace"
 date: "April 27, 2018"
 output:
   html_document: default
-  word_document: default
 ---
 
 # Introduction
@@ -187,7 +186,7 @@ dwplot(list(linear.1,
               legend.title = element_blank())
 ```
 
-We can also use visualization to aid with interpreting our model results. For example, it is very difficult to directly interpret a coefficient estimate from a probit model. Instead, we like to interpret probit results in the context of predicted probabilities. The graph below plots the predicted probability of experiencing a high rating (`rating`$ > 70$) for each value of learning. To calculate and plot these predicted probabilities, I utilize the `margins` package.
+We can also use visualization to aid with interpreting our model results. For example, it is very difficult to directly interpret a coefficient estimate from a probit model. Instead, we like to interpret probit results in the context of predicted probabilities. The graph below plots the predicted probability of experiencing a high rating (`rating`$>70$) for each value of learning. To calculate and plot these predicted probabilities, I utilize the `margins` package.
 
 ```{r predProb, echo=FALSE, fig.height=5, fig.width=5, fig.align='center', warning=FALSE}
 cplot(probit.model,

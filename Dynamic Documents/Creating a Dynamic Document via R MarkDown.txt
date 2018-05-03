@@ -174,10 +174,11 @@ twoway lfitci rating complaints || scatter rating complaints, mcolor(blue%50)
 <<dd_graph: saving("plot1.svg") replace markdown>>
 
 We can also use options to change the size of the produced figure. In producing
-the next plot, I use the parameters `height(#)` and `width(#)` to change the
-height and width of the plot. Just for fun, I change the type of confidence
-interval from the confidence interval of the conditional mean to the
-confidence interval of the individual forecast.
+the next plot, I use the parameters `height(#)` and `width(#)` where `#`
+represents the number of pixels. To change the height and width of the
+plot. Just for fun, I change the type of confidence interval from the
+confidence interval of the conditional mean to the confidence interval
+of the individual forecast.
 
 ~~~~
 <<dd_do: quietly>>

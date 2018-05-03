@@ -78,11 +78,11 @@ To create a table reporting summary statistics, I recommend using the `stargazer
 
 ```{r tab1}
 stargazer(attitude,
-          type = "text",
+          type = "html",
           title = "Summary Statistics")
 ```
 
-Notice that executing the code chunk above yielded the printing of raw HTML code, which should produce a pretty table. To correct this, I will include the parameter `results='asis'`, which will pass through results without reformatting them.
+Notice that executing the code chunk above yielded the printing of raw HTML code, which should produce a pretty table. To correct this, I will include the parameter `results='asis'`, which will pass through results without reformatting them. In addition, I change the type of text the table will produce from HTML to ASCII text. The authors of the `stargazer` package recommends for Word users to create the table in HTML, then copy and paste the HTML table to the Word document. For the purposes of expediency, I will instead just feature a text version of the table.
 
 ```{r tab1Correct, echo=FALSE}
 stargazer(attitude,
@@ -90,7 +90,7 @@ stargazer(attitude,
           title = "Summary Statistics")
 ```
 
-Because the `stargazer` function produces raw HTML code, including the parameter `results='asis'` passes the raw HTML code to the final document, where everything is in HTML code. The statistics reported in the summary table are observation count, mean, standard deviation, minimum, and maximum. For example, the mean of the variable `rating` is `r mean(attitude$rating)`. To report the mean for `rating`, I used inline code, represented as a single backtick, followed by the letter `r`, then the R code in question, and finished with another single backtick. Inline code automatically reports the result, never the actual code.
+The statistics reported in the summary table are observation count, mean, standard deviation, minimum, and maximum. For example, the mean of the variable `rating` is `r mean(attitude$rating)`. To report the mean for `rating`, I used inline code, represented as a single backtick, followed by the letter `r`, then the R code in question, and finished with another single backtick. Inline code automatically reports the result, never the actual code.
 
 ## Regression Tables
 
@@ -186,7 +186,7 @@ dwplot(list(linear.1,
               legend.title = element_blank())
 ```
 
-We can also use visualization to aid with interpreting our model results. For example, it is very difficult to directly interpret a coefficient estimate from a probit model. Instead, we like to interpret probit results in the context of predicted probabilities. The graph below plots the predicted probability of experiencing a high rating (`rating`$ > 70$) for each value of learning. To calculate and plot these predicted probabilities, I utilize the `margins` package.
+We can also use visualization to aid with interpreting our model results. For example, it is very difficult to directly interpret a coefficient estimate from a probit model. Instead, we like to interpret probit results in the context of predicted probabilities. The graph below plots the predicted probability of experiencing a high rating (`rating`$>70$) for each value of learning. To calculate and plot these predicted probabilities, I utilize the `margins` package.
 
 ```{r predProb, echo=FALSE, fig.height=5, fig.width=5, fig.align='center', warning=FALSE}
 cplot(probit.model,
