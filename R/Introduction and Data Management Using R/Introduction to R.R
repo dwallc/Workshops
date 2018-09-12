@@ -1,9 +1,9 @@
-#########################################################################################
-#       Name:   Introduction to R.R                                                     #
-#       Date:   September 12, 2018                                                      #
-#       Author: Desmond D. Wallace                                                      #
-#       Purpose:        Introduction and basic data managmement for first time users.   #
-#########################################################################################
+#################################################################
+#       Name:   Introduction to R.R                             #
+#       Date:   September 12, 2018                              #
+#       Author: Desmond D. Wallace                              #
+#       Purpose:        Introduction to R for first time users. #
+#################################################################
 
 
 # Installation
