@@ -47,7 +47,7 @@ exData2 <- import(file = "./gapminder.dta")
 
 ### Which countries have the largest populations?
 
-arrange(gapminder,
+arrange(exData,
         desc(pop))
 
 ## filter - Return rows with matching conditions
@@ -106,14 +106,14 @@ exData %>%
 
 ## bind_rows/bind_cols - Efficiently bind multiple data frames by row and column
 
-### bind_rows - Appends objects
+### bind_rows - Appends objects vertically
 
 exData0207 <- bind_rows(exData %>%
                                 filter(year == 2002),
                         exData %>%
                                 filter(year == 2007))
 
-### bind_cols - Merges objects
+### bind_cols - Appends objects horizontally
 
 exDataAB <- bind_cols(exData %>%
                               filter(year == 2002) %>%
@@ -121,5 +121,20 @@ exDataAB <- bind_cols(exData %>%
                                      continent),
                       exData %>%
                               filter(year == 2002) %>%
-                              select(country,
-                                     year))
+                              select(year))
+
+## join functions - Join two tbls together
+
+### left_join - return all rows from x, and all columns from x and y. Rows in x
+### with no match in y will have NA values in the new columns. If there are
+### multiple matches between x and y, all combinations of the matches are returned.
+
+exDataAB2 <- left_join(x = exData %>%
+                               filter(year == 2002) %>%
+                               select(country,
+                                      continent),
+                       y = exData %>%
+                               filter(year == 2002) %>%
+                               select(country,
+                                      year),
+                       by = "country")
