@@ -1,127 +1,302 @@
 #################################################################
-#       Name:   Introduction to R.R                             #
-#       Date:   September 12, 2018                              #
+#       Name:   Basic Data Visualization Using R (base).R       #
+#       Date:   September 26, 2018                              #
 #       Author: Desmond D. Wallace                              #
-#       Purpose:        Introduction to R for first time users. #
+#       Purpose:        Create basic plots via base plotting    #
+#                       system.                                 #
 #################################################################
 
 
-# Installation
+# Install and load needed packages
 
-## Programs
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
 
-### Install R
+packages <- c("datasets")
 
-#### https://cran.r-project.org/
+## datasets - Base R datasets
 
-### Install RStudio
-
-#### https://www.rstudio.com/
-
-## Packages
-
-### CRAN Packages
-
-#### install.packages('package name')
-
-### GitHub
-
-#### devtools::install_github
-
-### Load packages
-
-#### library('package name')
-
-#### require('package name') (Used when loading package(s) within other functions)
+ipak(packages)
 
 
-# First-time Use
+# Set Working Directory
 
-## Working Directory
-
-getwd() # Current working directory
-
-## setwd('file path') # Change working directory
-
-## Can also change working directory via file menus (Session > Set Working Directory > Choose Directory...)
-
-## Can also change working directory via keyboard shortcut (Ctrl+Shift+H)
+## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Data Visualization Using R")
 
 
-# Creating Objects
+# Load airquality dataset
 
-## Matrix
+## airquality - Daily air quality measurements in New York, May to September 1973.
 
-A <- matrix(-8:7,
-            nrow = 4,
-            ncol = 4)
+exData <- airquality
 
-A # View object in R console
+str(exData) ## str - Compactly Display the Structure of an Arbitrary R Object
 
-A[2,
-  3] # Report single maxtrix element
+View(airquality)
 
-View(A) # View object in RStudio
 
-View(A[2,
-       3])
+# Create Graphs
 
-## Vector
+## Bar Graph
 
-### Class Numeric
+### Create an object containing number of days for each month (frequency count)
 
-c(1,
-  2,
-  3) # Integer
+exDataMonthsCounts <- table(exData$Month)
 
-c(1.5,
-  -2.34,
-  NA) # Double
+### Create basic plot using "artist palette" approach (Add different plot layers separately)
 
-# Class Factor
-factor(c(1,
-         2,
-         2,
-         3),
-       labels = c("Apple",
-                  "Pear",
-                  "Orange"))
+# png("./bar.png") # Saving plot to specified file
 
-# Class Character
+barplot(exDataMonthsCounts,
+        col = rainbow(5))
 
-c("R is hard.",
-  "But I can learn.")
+title(main = "Number of Days in Each Month (May Through September)",
+      sub = "Source: airquality dataset",
+      xlab = "Months",
+      ylab = "Number of Days") # Add annotation layer
 
-# Class POSIXlt (Time)
+legend(x = 5.5,
+       y = 30,
+       legend = names(exDataMonthsCounts),
+       fill = rainbow(5),
+       col = rainbow(5)) # Add legend layer
 
-as.POSIXlt("2018-9-12 13:30:00") # "%Y-%m-%d %H:%M:%S"
+# dev.off() # Turns graphics device off
 
-# Class Logical
+### Create same basic plot specifying aadditional layers within function
 
-c(TRUE,
-  TRUE,
-  FALSE)
+windows() # Opens a graphics device window
 
-# Class Data Frame
+barplot(exDataMonthsCounts,
+        main = "Number of Days in Each Month (May Through September)",
+        sub = "Source: airquality dataset",
+        xlab = "Months",
+        ylab = "Number of Days",
+        col = rainbow(5),
+        legend = names(exDataMonthsCounts))
 
-exData <- mtcars # Example dataset already installed
+### Create horizontal version
 
-View(exData)
+barplot(exDataMonthsCounts,
+        main = "Number of Days in Each Month (May Through September)",
+        sub = "Source: airquality dataset",
+        xlab = "Months",
+        ylab = "Number of Days",
+        col = rainbow(5),
+        legend = names(exDataMonthsCounts),
+        horiz = TRUE)
 
-View(mtcars$mpg)
+## Box Plot
 
-# Class Array
+### Create boxplot for all recorded temperatures
 
-array(-9:9,
-      dim = c(3,
-              3,
+boxplot(exData$Temp,
+        main = "Temperature for May - September '73",
+        sub = "Source: airquality dataset",
+        ylab = "Temperature",
+        col = "blue")
+
+### Create boxplots for each month's recorded temperatures
+
+boxplot(Temp ~ Month,
+        data = exData,
+        main = "Temperature for May - September '73",
+        sub = "Source: airquality dataset",
+        xlab = "Months",
+        ylab = "Temperature",
+        col = "green")
+
+## Histogram
+
+### Create a histogram of Temperature frequencies
+
+hist(exData$Temp,
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "gray")
+
+### Create a histogram of Temperature frequencies for each month
+
+par(mfrow = c(3,
+              2)) # Add additional plots by row
+
+hist(exData$Temp[exData$Month == 5],
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances in May",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "red")
+
+hist(exData$Temp[exData$Month == 6],
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances in June",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "yellow")
+
+hist(exData$Temp[exData$Month == 7],
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances in July",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "green")
+
+hist(exData$Temp[exData$Month == 8],
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances in August",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "blue")
+
+hist(exData$Temp[exData$Month == 9],
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances in September",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "purple")
+
+hist(exData$Temp,
+     freq = TRUE,
+     main = "Histogram of Temperature Occurances",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Frequency",
+     col = "gray")
+
+## Kernel Density
+
+### Create a kernel density plot for observed Wind
+
+plot(density(exData$Wind),
+     main = "Kernel Density of Observed Wind",
+     col = "black",
+     lwd = 3,
+     zero.line = FALSE)
+
+### Create a kernel density plot for observed Wind for each month
+
+par(mfrow = c(3,
               2))
 
-# Class List
+plot(density(exData$Wind[exData$Month == 5]),
+     main = "Kernel Density of Observed Wind in May",
+     col = "red",
+     lwd = 3,
+     zero.line = FALSE)
 
-exList <- list(c(1:5),
-               letters[1:5])
+plot(density(exData$Wind[exData$Month == 6]),
+     main = "Kernel Density of Observed Wind in June",
+     col = "yellow",
+     lwd = 3,
+     zero.line = FALSE)
 
-exList
+plot(density(exData$Wind[exData$Month == 7]),
+     main = "Kernel Density of Observed Wind in July",
+     col = "green",
+     lwd = 3,
+     zero.line = FALSE)
 
-exList[[2]]
+plot(density(exData$Wind[exData$Month == 8]),
+     main = "Kernel Density of Observed Wind in August",
+     col = "blue",
+     lwd = 3,
+     zero.line = FALSE)
+
+plot(density(exData$Wind[exData$Month == 9]),
+     main = "Kernel Density of Observed Wind in September",
+     col = "purple",
+     lwd = 3,
+     zero.line = FALSE)
+
+plot(density(exData$Wind),
+     main = "Kernel Density of Observed Wind",
+     col = "black",
+     lwd = 3,
+     zero.line = FALSE)
+
+## Scatterplot
+
+### Create a scatterplot plotting the relationship between Wind and Temperature
+
+plot(exData$Temp,
+     exData$Wind,
+     main = "Relationship between Temperature and Wind",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Wind",
+     pch = 19)
+
+### Add a line of best fit
+
+abline(lm(Wind ~ Temp,
+          data = exData),
+       col = "blue")
+
+### Distinguish scatterplot by Month
+
+plot(exData$Temp,
+     exData$Wind,
+     main = "Relationship between Temperature and Wind",
+     sub = "Source: airquality dataset",
+     xlab = "Temperature",
+     ylab = "Wind",
+     pch = 19,
+     col = exData$Month)
+
+legend(x = 60,
+       y = 8,
+       legend = unique(exData$Month),
+       col = unique(exData$Month),
+       fill = unique(exData$Month))
+
+abline(lm(Wind ~ Temp,
+          data = exData),
+       col = "blue",
+       lwd = 4)
+
+abline(lm(Wind ~ Temp,
+          data = exData,
+          subset = Month == 5),
+       col = "cyan",
+       lwd = 2,
+       lty = 2)
+
+abline(lm(Wind ~ Temp,
+          data = exData,
+          subset = Month == 6),
+       col = "magenta",
+       lwd = 2,
+       lty = 2)
+
+abline(lm(Wind ~ Temp,
+          data = exData,
+          subset = Month == 7),
+       col = "yellow",
+       lwd = 2,
+       lty = 2)
+
+abline(lm(Wind ~ Temp,
+          data = exData,
+          subset = Month == 8),
+       col = "gray",
+       lwd = 2,
+       lty = 2)
+
+abline(lm(Wind ~ Temp,
+          data = exData,
+          subset = Month == 9),
+       col = "black",
+       lwd = 2,
+       lty = 2)

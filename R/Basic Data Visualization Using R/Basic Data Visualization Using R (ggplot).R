@@ -1,127 +1,255 @@
 #################################################################
-#       Name:   Introduction to R.R                             #
-#       Date:   September 12, 2018                              #
+#       Name:   Basic Data Visualization Using R (ggplot).R     #
+#       Date:   September 26, 2018                              #
 #       Author: Desmond D. Wallace                              #
-#       Purpose:        Introduction to R for first time users. #
+#       Purpose:        Create basic plots via ggplor plotting  #
+#                       system.                                 #
 #################################################################
 
 
-# Installation
+# Install and load needed packages
 
-## Programs
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
 
-### Install R
+packages <- c("datasets",
+              "tidyverse") # Will load ggplot2 package automatically
 
-#### https://cran.r-project.org/
+## datasets - Base R datasets
+## lattice - Create Elegant Data Visualisations Using the Grammar of Graphics
 
-### Install RStudio
-
-#### https://www.rstudio.com/
-
-## Packages
-
-### CRAN Packages
-
-#### install.packages('package name')
-
-### GitHub
-
-#### devtools::install_github
-
-### Load packages
-
-#### library('package name')
-
-#### require('package name') (Used when loading package(s) within other functions)
+ipak(packages)
 
 
-# First-time Use
+# Set Working Directory
 
-## Working Directory
-
-getwd() # Current working directory
-
-## setwd('file path') # Change working directory
-
-## Can also change working directory via file menus (Session > Set Working Directory > Choose Directory...)
-
-## Can also change working directory via keyboard shortcut (Ctrl+Shift+H)
+## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Data Visualization Using R")
 
 
-# Creating Objects
+# Load airquality dataset
 
-## Matrix
+## airquality - Daily air quality measurements in New York, May to September 1973.
 
-A <- matrix(-8:7,
-            nrow = 4,
-            ncol = 4)
+exData <- airquality
 
-A # View object in R console
+str(exData) ## str - Compactly Display the Structure of an Arbitrary R Object
 
-A[2,
-  3] # Report single maxtrix element
+View(airquality)
 
-View(A) # View object in RStudio
 
-View(A[2,
-       3])
+# Create Graphs
 
-## Vector
+## Bar Graph
 
-### Class Numeric
+### Using qplot() (Quick plot)
 
-c(1,
-  2,
-  3) # Integer
+qplot(factor(Month),
+      data = exData,
+      geom = "bar",
+      main = "Number of Days in Each Month (May Through September)",
+      xlab = "Months",
+      ylab = "Number of Days",
+      fill = factor(Month)) # Create a quick plot
 
-c(1.5,
-  -2.34,
-  NA) # Double
+### Using ggplot() (Create a new ggplot)
 
-# Class Factor
-factor(c(1,
-         2,
-         2,
-         3),
-       labels = c("Apple",
-                  "Pear",
-                  "Orange"))
+ggplot(data = exData,
+       mapping = aes(x = factor(Month),
+                     fill = factor(Month))) +
+        geom_bar(stat = "count") +
+        xlab("Months") +
+        ylab("Number of Days") +
+        ggtitle("Number of Days in Each Month (May Through September)") # Equivalent to qplot() above
 
-# Class Character
+## Center plot title and change legend title
 
-c("R is hard.",
-  "But I can learn.")
+ggplot(data = exData,
+       mapping = aes(x = factor(Month),
+                     fill = factor(Month))) +
+        geom_bar(stat = "count") +
+        xlab("Months") +
+        ylab("Number of Days") +
+        ggtitle("Number of Days in Each Month (May Through September)") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_fill_discrete(name = "Months")
 
-# Class POSIXlt (Time)
+# ggsave("./bar2.png") # Automatically save last created plot
 
-as.POSIXlt("2018-9-12 13:30:00") # "%Y-%m-%d %H:%M:%S"
+## Box Plot
 
-# Class Logical
+### Create boxplots for each month's recorded temperatures
 
-c(TRUE,
-  TRUE,
-  FALSE)
+ggplot(data = exData,
+       mapping = aes(x = factor(Month),
+                     y = Temp)) +
+        geom_boxplot(fill = "green") +
+        xlab("Months") +
+        ylab("Temperature") +
+        ggtitle("Temperature for May - September '73") +
+        theme(plot.title = element_text(hjust = 0.5))
 
-# Class Data Frame
+## Histogram
 
-exData <- mtcars # Example dataset already installed
+### Create a histogram of Temperature frequencies
 
-View(exData)
+ggplot(data = exData,
+       mapping = aes(x = Temp)) +
+        geom_histogram(bins = 9,
+                       fill = "gray",
+                       colour = "black") +
+        xlab("Temperature") +
+        ylab("Frequency") +
+        ggtitle("Histogram of Temperature Occurances") +
+        theme(plot.title = element_text(hjust = 0.5))
 
-View(mtcars$mpg)
+### Create a histogram of Temperature frequencies for the month of May
 
-# Class Array
+#### Same Graph
 
-array(-9:9,
-      dim = c(3,
-              3,
-              2))
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     fill = factor(Month))) +
+        geom_histogram(position = "identity",
+                       bins = 9,
+                       colour = "black",
+                       alpha = 0.4) +
+        xlab("Temperature") +
+        ylab("Frequency") +
+        ggtitle("Histogram of Temperature Occurances") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_fill_discrete(name = "Months")
 
-# Class List
+#### Multiple Graphs
 
-exList <- list(c(1:5),
-               letters[1:5])
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     fill = factor(Month))) +
+        geom_histogram(bins = 9,
+                       colour = "black") +
+        facet_grid(. ~ factor(Month)) +
+        xlab("Temperature") +
+        ylab("Frequency") +
+        ggtitle("Histogram of Temperature Occurances") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_fill_discrete(name = "Months")
 
-exList
+## Kernel Density
 
-exList[[2]]
+### Create a kernel density plot for observed Wind
+
+ggplot(data = exData,
+       mapping = aes(x = Wind)) +
+        geom_density(size = 1.5) +
+        xlab("Wind") +
+        ylab("Density") +
+        ggtitle("Kernel Density of Observed Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) # Includes horizontal line at y = 0
+
+ggplot(data = exData,
+       mapping = aes(x = Wind)) +
+        geom_line(stat = "density",
+                  size = 1.5) +
+        xlab("Wind") +
+        ylab("Density") +
+        ggtitle("Kernel Density of Observed Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) # Does not include horizontal line at y = 0
+
+### Create a kernel density plot for observed Wind for each month
+
+#### Same Graph
+
+ggplot(data = exData,
+       mapping = aes(x = Wind,
+                     colour = factor(Month))) +
+        geom_line(stat = "density",
+                  size = 1.5) +
+        xlab("Wind") +
+        ylab("Density") +
+        ggtitle("Kernel Density of Observed Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_color_discrete(name = "Months")
+
+#### Multiple Graphs
+
+ggplot(data = exData,
+       mapping = aes(x = Wind,
+                     colour = factor(Month))) +
+        geom_line(stat = "density",
+                  size = 1.5) +
+        facet_grid(. ~ factor(Month)) +
+        xlab("Wind") +
+        ylab("Density") +
+        ggtitle("Kernel Density of Observed Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_color_discrete(name = "Months")
+
+## Scatterplot
+
+### Create a scatterplot plotting the relationship between Wind and Temperature
+
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     y = Wind)) +
+        geom_point(colour = "blue",
+                   size = 3) +
+        xlab("Temperature") +
+        ylab("Wind") +
+        ggtitle("Relationship between Temperature and Wind") +
+        theme(plot.title = element_text(hjust = 0.5))
+
+
+### Add a line of best fit
+
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     y = Wind)) +
+        geom_point(colour = "blue",
+                   size = 3) +
+        geom_smooth(method = lm,
+                    colour = "black",
+                    size = 1.5) +
+        xlab("Temperature") +
+        ylab("Wind") +
+        ggtitle("Relationship between Temperature and Wind") +
+        theme(plot.title = element_text(hjust = 0.5))
+
+### Distinguish scatterplot by Month
+
+#### Same Graph
+
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     y = Wind,
+                     colour = factor(Month))) +
+        geom_point(size = 3) +
+        geom_smooth(method = lm,
+                    size = 1.5,
+                    linetype = 2,
+                    se = FALSE) +
+        xlab("Temperature") +
+        ylab("Wind") +
+        ggtitle("Relationship between Temperature and Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_color_discrete(name = "Months")
+
+#### Multiple Graphs
+
+ggplot(data = exData,
+       mapping = aes(x = Temp,
+                     y = Wind,
+                     colour = factor(Month))) +
+        geom_point(size = 3) +
+        geom_smooth(method = lm,
+                    size = 1.5,
+                    linetype = 2,
+                    se = FALSE) +
+        facet_grid(. ~ factor(Month)) +
+        xlab("Temperature") +
+        ylab("Wind") +
+        ggtitle("Relationship between Temperature and Wind") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        scale_color_discrete(name = "Months")

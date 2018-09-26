@@ -1,127 +1,181 @@
 #################################################################
-#       Name:   Introduction to R.R                             #
-#       Date:   September 12, 2018                              #
+#       Name:   Basic Data Visualization Using R (lattice).R    #
+#       Date:   September 26, 2018                              #
 #       Author: Desmond D. Wallace                              #
-#       Purpose:        Introduction to R for first time users. #
+#       Purpose:        Create basic plots via lattice plotting #
+#                       system.                                 #
 #################################################################
 
 
-# Installation
+# Install and load needed packages
 
-## Programs
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
 
-### Install R
+packages <- c("datasets",
+              "lattice")
 
-#### https://cran.r-project.org/
+## datasets - Base R datasets
+## lattice - Lattice Graphics
 
-### Install RStudio
-
-#### https://www.rstudio.com/
-
-## Packages
-
-### CRAN Packages
-
-#### install.packages('package name')
-
-### GitHub
-
-#### devtools::install_github
-
-### Load packages
-
-#### library('package name')
-
-#### require('package name') (Used when loading package(s) within other functions)
+ipak(packages)
 
 
-# First-time Use
+# Set Working Directory
 
-## Working Directory
-
-getwd() # Current working directory
-
-## setwd('file path') # Change working directory
-
-## Can also change working directory via file menus (Session > Set Working Directory > Choose Directory...)
-
-## Can also change working directory via keyboard shortcut (Ctrl+Shift+H)
+## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Data Visualization Using R")
 
 
-# Creating Objects
+# Load airquality dataset
 
-## Matrix
+## airquality - Daily air quality measurements in New York, May to September 1973.
 
-A <- matrix(-8:7,
-            nrow = 4,
-            ncol = 4)
+exData <- airquality
 
-A # View object in R console
+str(exData) ## str - Compactly Display the Structure of an Arbitrary R Object
 
-A[2,
-  3] # Report single maxtrix element
+View(airquality)
 
-View(A) # View object in RStudio
 
-View(A[2,
-       3])
+# Create Graphs
 
-## Vector
+## Bar Graph
 
-### Class Numeric
+barchart(Day ~ factor(Month),
+         data = exData,
+         horizontal = FALSE,
+         main = "Number of Days in Each Month (May Through September)",
+         sub = "Source: airquality dataset",
+         xlab = "Months",
+         ylab = "Number of Days",
+         col = rainbow(5))
 
-c(1,
-  2,
-  3) # Integer
+barchart(Day ~ factor(Month),
+         data = exData,
+         horizontal = FALSE,
+         main = "Number of Days in Each Month (May Through September)",
+         sub = "Source: airquality dataset",
+         xlab = "Months",
+         ylab = "Number of Days",
+         col = c("red",
+                 "yellow",
+                 "green",
+                 "blue",
+                 "purple"))
 
-c(1.5,
-  -2.34,
-  NA) # Double
+## Box Plot
 
-# Class Factor
-factor(c(1,
-         2,
-         2,
-         3),
-       labels = c("Apple",
-                  "Pear",
-                  "Orange"))
+### Create boxplots for each month's recorded temperatures
 
-# Class Character
+bwplot(Temp ~ factor(Month),
+       data = exData,
+       main = "Temperature for May - September '73",
+       sub = "Source: airquality dataset",
+       xlab = "Months",
+       ylab = "Temperature",
+       col = "green",
+       horizontal = FALSE)
 
-c("R is hard.",
-  "But I can learn.")
+## Histogram
 
-# Class POSIXlt (Time)
+### Create a histogram of Temperature frequencies
 
-as.POSIXlt("2018-9-12 13:30:00") # "%Y-%m-%d %H:%M:%S"
+histogram(~ Temp,
+          data = exData,
+          main = "Histogram of Temperature Occurances",
+          sub = "Source: airquality dataset",
+          xlab = "Temperature",
+          ylab = "Frequency",
+          col = "gray",
+          type = "count")
 
-# Class Logical
+### Create a histogram of Temperature frequencies for the month of May
 
-c(TRUE,
-  TRUE,
-  FALSE)
+histogram(~ Temp | factor(Month),
+          data = exData,
+          main = "Histogram of Temperature Occurances",
+          sub = "Source: airquality dataset",
+          xlab = "Temperature",
+          ylab = "Frequency",
+          col = "gray",
+          type = "count",
+          layout = c(2,
+                     3))
 
-# Class Data Frame
+## Kernel Density
 
-exData <- mtcars # Example dataset already installed
+### Create a kernel density plot for observed Wind
 
-View(exData)
+densityplot(~ Wind,
+            data = exData,
+            main = "Kernel Density of Observed Wind",
+            col = "blue",
+            lwd = 3,
+            plot.points = FALSE)
 
-View(mtcars$mpg)
+### Create a kernel density plot for observed Wind for each month
 
-# Class Array
+densityplot(~ Wind | factor(Month),
+            data = exData,
+            main = "Kernel Density of Observed Wind",
+            col = "blue",
+            lwd = 3,
+            plot.points = FALSE,
+            layout = c(2,
+                       3))
 
-array(-9:9,
-      dim = c(3,
-              3,
-              2))
+## Scatterplot
 
-# Class List
+### Create a scatterplot plotting the relationship between Wind and Temperature
 
-exList <- list(c(1:5),
-               letters[1:5])
+xyplot(Wind ~ Temp,
+       data = exData,
+       main = "Relationship between Temperature and Wind",
+       xlab = "Temperature",
+       pch = 19,
+       col = "blue")
 
-exList
 
-exList[[2]]
+### Add a line of best fit
+
+xyplot(Wind ~ Temp,
+       data = exData,
+       main = "Relationship between Temperature and Wind",
+       xlab = "Temperature",
+       pch = 19,
+       col = "blue",
+       panel = function(x,
+                        y,
+                        ...) {
+               panel.xyplot(x,
+                            y,
+                            ...)
+               panel.lmline(x,
+                            y,
+                            ...)
+       })
+
+### Distinguish scatterplot by Month
+
+xyplot(Wind ~ Temp | factor(Month),
+       data = exData,
+       main = "Relationship between Temperature and Wind",
+       xlab = "Temperature",
+       pch = 19,
+       col = "blue",
+       panel = function(x,
+                        y,
+                        ...) {
+               panel.xyplot(x,
+                            y,
+                            ...)
+               panel.lmline(x,
+                            y,
+                            ...)
+       },
+       layout = c(2,
+                  3))
