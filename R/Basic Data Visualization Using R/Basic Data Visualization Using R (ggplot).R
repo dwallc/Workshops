@@ -17,10 +17,10 @@ ipak <- function(pkg){
 }
 
 packages <- c("datasets",
-              "tidyverse") # Will load ggplot2 package automatically
+              "ggplot2")
 
 ## datasets - Base R datasets
-## lattice - Create Elegant Data Visualisations Using the Grammar of Graphics
+## ggplot2 - Create Elegant Data Visualisations Using the Grammar of Graphics
 
 ipak(packages)
 
