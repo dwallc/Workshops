@@ -59,7 +59,7 @@ title(main = "Number of Days in Each Month (May Through September)",
       xlab = "Months",
       ylab = "Number of Days") # Add annotation layer
 
-legend(x = 5.5,
+legend(x = 7,
        y = 30,
        legend = names(exDataMonthsCounts),
        fill = rainbow(5),
@@ -178,6 +178,9 @@ hist(exData$Temp,
 ## Kernel Density
 
 ### Create a kernel density plot for observed Wind
+
+par(mfrow = c(1,
+              1))
 
 plot(density(exData$Wind),
      main = "Kernel Density of Observed Wind",
