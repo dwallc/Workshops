@@ -1,9 +1,9 @@
 #################################################################
-#       Name:   Basic Data Visualization Using R (base).R       #
-#       Date:   September 26, 2018                              #
+#       Name:   Basic Network Analysis Using R.R                #
+#       Date:   October 10, 2018                                #
 #       Author: Desmond D. Wallace                              #
-#       Purpose:        Create basic plots via base plotting    #
-#                       system.                                 #
+#       Purpose:        Create basic plots and and calculate    #
+#                       basic statistics of network data..      #
 #################################################################
 
 
@@ -16,27 +16,95 @@ ipak <- function(pkg){
         sapply(pkg, require, character.only = TRUE)
 }
 
-packages <- c("datasets")
+packages <- c("NetData",
+              "igraph")
 
-## datasets - Base R datasets
+## NetData - Data for Social Network Analysis labs
+## igraph - A library and R package for network analysis
 
 ipak(packages)
 
 
 # Set Working Directory
 
-## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Data Visualization Using R")
+## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Network Analysis Using R")
 
 
-# Load airquality dataset
+# Create network data
 
-## airquality - Daily air quality measurements in New York, May to September 1973.
+## Undirected Tree
 
-exData <- airquality
+### Undirected - Does tie exist between node_i and node_j (i->j/i<-j)?
+### Tree - Type of Graph
 
-str(exData) ## str - Compactly Display the Structure of an Arbitrary R Object
+exTree <- make_tree(40,
+                    children = 3,
+                    mode = "undirected") # Create a regular tree graph.
 
-View(airquality)
+windows()
+plot(exTree,
+     vertex.size = 10,
+     vertex.label = NA)
+
+### Because igraph utilizes the base plotting engine, resulting
+### plot can be annotated
+
+title(main = "Example Network I",
+      sub = "40 Nodes, Tree Graph, Undirected")
+
+## Directed Ring
+
+### Directed - Does tie exist between node_i and node_j (i->j or i<-j)?
+### Ring - Type of graph
+
+exRing <- make_ring(40,
+                    directed = TRUE)
+
+plot(exRing,
+     vertex.size = 10,
+     vertex.label = NA)
+
+title(main = "Example Network II",
+      sub = "40 Nodes, Ring Graph, Directed")
+
+## Erdos-Renyi Random Graph Model
+
+### Directed, No Loops
+
+exERnl <- sample_gnm(n = 100,
+                     m = 40,
+                     directed = TRUE)
+
+plot(exERnl,
+     vertex.size = 6,
+     vertex.label = NA)
+
+title(main = "Example Network III",
+      sub = "100 Nodes, 40 Ties, Erdos-Renyi Random Graph Model, Directed, No Loops")
+
+### Undirected, Loops
+
+exERl <- sample_gnm(n = 100,
+                    m = 40,
+                    loops = TRUE)
+
+plot(exERl,
+     vertex.size = 6,
+     vertex.label = NA)
+
+title(main = "Example Network IV",
+      sub = "100 Nodes, 40 Ties, Erdos-Renyi Random Graph Model, Undirected, Loops")
+
+# Load kracknets dataset
+
+data(kracknets,
+     package = "NetData")
+
+## Type ?NetData::krack_full_data_frame for description of dataset.
+
+str(krack_full_data_frame)
+
+View(krack_full_data_frame)
 
 
 # Create Graphs
