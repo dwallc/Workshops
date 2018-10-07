@@ -157,3 +157,71 @@ legend(x = 1.5,
 
 title(main = "Krackhardt's Data on Ties among High-Tech Workers",
       sub = "Advice, Friendship, and Reports To Networks")
+
+
+# Calculate Network Statistics
+
+## Centrality
+
+### Degree - Number of adjacent ties for a node
+
+degree(graph_from_data_frame(advice_data_frame),
+       mode = "in")
+
+degree(graph_from_data_frame(advice_data_frame),
+       mode = "out")
+
+#### According to the results above, every node is connected to every
+#### other node, which is incorrect.
+
+#### Remedy #1 - Use subset() to reduce edgelist to just existing ties
+
+degree(graph_from_data_frame(subset(advice_data_frame,
+                                    (advice_tie == 1))),
+       mode = "in")
+
+degree(graph_from_data_frame(subset(advice_data_frame,
+                                    (advice_tie == 1))),
+       mode = "out")
+
+##### Removes isolates from the network
+
+#### Remedy #2 - Use delete.edges() to remove non-existing ties
+
+adviceAll <- graph.data.frame(advice_data_frame)
+
+adviceThin <- delete.edges(adviceAll,
+                           E(adviceAll)[get.edge.attribute(adviceAll,
+                                                           name = "advice_tie") == 0])
+
+degree(adviceThin,
+       mode = "in")
+
+degree(adviceThin,
+       mode = "out")
+
+##### Removes ties that equal 0, but keeps all nodes
+
+### Betweenness - The number of geodesics (shortest paths) going through a node or a tie
+
+betweenness(graph.data.frame(subset(friendship_data_frame,
+                                    (friendship_tie > 0))),
+            directed = TRUE)
+
+betweenness(graph.data.frame(subset(friendship_data_frame,
+                                    (friendship_tie > 0))),
+            directed = FALSE)
+
+betweenness(graph.data.frame(subset(friendship_data_frame,
+                                    (friendship_tie > 0))),
+            directed = TRUE,
+            normalized = TRUE)
+
+#### betweenness() calculates node betweenness
+
+### Density - The ratio of the number of edges and the number of possible edges
+
+edge_density(adviceThin)
+
+edge_density(graph.data.frame(subset(friendship_data_frame,
+                                     (friendship_tie != 0))))
