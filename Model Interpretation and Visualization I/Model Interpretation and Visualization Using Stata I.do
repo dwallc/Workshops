@@ -115,25 +115,33 @@ ssc install coefplot, replace
 		/*	OLS Models	*/
 		
 coefplot ols1, title("OLS Model Results") xline(0) ///
-	rename(age = "Age" 1.female = "Gender" _cons = "Constant")
+	rename(age = "Age" 1.female = "Gender" _cons = "Constant") ///
+	xtitle("Coefficient Estimate")
 											  
 	graph export Graphs/MIVcoefplot01.png, as(png) replace
 				   
 coefplot ols1, title("OLS Model Results") xline(0) drop(_cons) ///
-	rename(age = "Age" 1.female = "Gender") /*	Remove constant	*/
+	rename(age = "Age" 1.female = "Gender")  ///
+	xtitle("Coefficient Estimate")	/*	Remove constant	*/
 
 	graph export Graphs/MIVcoefplot01b.png, as(png) replace
 	
 		/*	Binary Regression (BRM) Models	*/
 		
+			/*	Probit and Logit Results on Same Plot	*/
+		
 coefplot (probit1, label(Probit)) (logit1, label(Logit)), ///
 	title("Probit and Logit Model Results") xline(0) drop(_cons)  ///
-	rename(children = "Number of Children" 1.hsgrad = "High School Graduate")	/*	Includes probit and logit models on same graph.	*/
+	rename(children = "Number of Children" 1.hsgrad = "High School Graduate") ///
+	xtitle("Coefficient Estimate")	/*	Includes probit and logit models on same graph.	*/
 	
 	graph export Graphs/MIVcoefplot02.png, as(png) replace
 	
+			/*	Probit and Logit Results Side-by-Side	*/
+	
 coefplot probit1, bylabel(Probit) || logit1, bylabel(Logit) ||, xline(0) drop(_cons) ///
-	rename(children = "Number of Children" 1.hsgrad = "High School Graduate")
+	rename(children = "Number of Children" 1.hsgrad = "High School Graduate") ///
+	xtitle("Coefficient Estimate")
 	
 	graph export Graphs/MIVcoefplot02b.png, as(png) replace
 	

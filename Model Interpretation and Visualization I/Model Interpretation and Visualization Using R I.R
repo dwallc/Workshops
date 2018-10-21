@@ -9,6 +9,8 @@
 #                       Tables\MIVmodel01.tex,                                          #
 #                       Graphs\MIVcoefplot01.png,                                       #
 #                       Graphs\MIVcoefplot01b.png                                       #
+#                       Graphs\MIVcoefplot02.png,                                       #
+#                       Graphs\MIVcoefplot02b.png                                       #
 #########################################################################################
 
 
@@ -22,24 +24,31 @@ ipak <- function(pkg){
 }
 
 packages <- c("rio",
+              "dplyr",
+              "broom",
               "texreg",
               "dotwhisker",
               "margins")
 
 ## rio - A Swiss-Army Knife for Data I/O
+## dplyr - A Grammar of Data Manipulation
+## broom - Convert Statistical Analysis Objects into Tidy Data Frames
 ## texreg - Convert regression output to LaTeX or HTML tables
 ## dotwhisker - Dot-and-Whisker Plots of Regression Results
 ## margins - Marginal Effects Estimation
 
 ipak(packages)
 
+
 # Set Working Directory
 
 #setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/Model Interpretation and Visualization I")
+#
 
 # Import Dataset
 
 MIVdata <- import("./Data/MIVdata.dta")
+
 
 # Estimate Regression Models
 
@@ -166,3 +175,114 @@ texreg(list(ols01,
        caption = NULL,
        booktabs = TRUE,
        dcolumn = TRUE)
+
+### For more information on texreg: https://cran.r-project.org/web/packages/texreg/
+
+
+# Part II - Coefficient Plots
+
+## Create a folder called "Graphs" if it does not exist
+
+if (file.exists("./Graphs")) {
+        print("Sub-directory ./Graphs already exists!")
+} else {
+        dir.create("./Graphs")
+        print("Sub-directory ./Graphs created!")
+}
+
+## OLS Models
+
+dwplot(ols01,
+       show_intercept = TRUE) %>%
+        relabel_predictors(c("(Intercept)" = "Intercept",
+                             age = "Age",
+                             female1 = "Gender")) +
+        geom_vline(xintercept = 0,
+                   colour = "red") +
+        xlab("Coefficient Estimate") +
+        ggtitle("OLS Model Results") +
+        theme(plot.title = element_text(hjust = 0.5))
+
+ggsave("./Graphs/MIVcoefplot01.png")
+
+dwplot(ols01,
+       show_intercept = FALSE) %>%
+        relabel_predictors(c(age = "Age",
+                             female1 = "Gender")) +
+        geom_vline(xintercept = 0,
+                   colour = "red") +
+        xlab("Coefficient Estimate") +
+        ggtitle("OLS Model Results") +
+        theme(plot.title = element_text(hjust = 0.5))
+
+ggsave("./Graphs/MIVcoefplot01b.png")
+
+## Binary Regression (BRM) Models
+
+### Probit and Logit Results on Same Plot
+
+dwplot(list(probit01,
+            logit01),
+       show_intercept = TRUE) %>%
+        relabel_predictors(c("(Intercept)" = "Intercept",
+                             children = "Number of Children",
+                             hsgrad1 = "High School Grad")) +
+        geom_vline(xintercept = 0,
+                   colour = "red") +
+        xlab("Coefficient Estimate") +
+        ggtitle("BRM Model Results") +
+        scale_color_discrete(labels = c("Probit",
+                                        "Logit")) +
+        theme(plot.title = element_text(hjust = 0.5),
+              legend.position = "right",
+              legend.justification = c(0,
+                                       0),
+              legend.background = element_rect(colour = "grey80"),
+              legend.title = element_blank())
+
+ggsave("./Graphs/MIVcoefplot02.png")
+
+### Probit and Logit Results Side-by-Side
+
+brm01 <- bind_rows(tidy(probit01) %>%
+                           mutate(model = "Probit"),
+                   tidy(logit01) %>%
+                           mutate(model = "Logit"))
+
+dwplot(brm01,
+       show_intercept = TRUE) %>%
+        relabel_predictors(c("(Intercept)" = "Intercept",
+                             children = "Number of Children",
+                             hsgrad1 = "High School Grad")) +
+        facet_grid(. ~ model) +
+        geom_vline(xintercept = 0,
+                   colour = "red") +
+        xlab("Coefficient Estimate") +
+        ggtitle("BRM Model Results") +
+        theme(plot.title = element_text(hjust = 0.5),
+              legend.position = "none")
+
+ggsave("./Graphs/MIVcoefplot02b.png")
+
+### For more information on dotwhisker: https://cran.r-project.org/web/packages/dotwhisker/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
