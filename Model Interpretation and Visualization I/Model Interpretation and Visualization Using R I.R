@@ -22,9 +22,13 @@ ipak <- function(pkg){
 }
 
 packages <- c("rio",
+              "texreg",
+              "dotwhisker",
               "margins")
 
 ## rio - A Swiss-Army Knife for Data I/O
+## texreg - Convert regression output to LaTeX or HTML tables
+## dotwhisker - Dot-and-Whisker Plots of Regression Results
 ## margins - Marginal Effects Estimation
 
 ipak(packages)
@@ -67,3 +71,6 @@ logit01 <- glm(fepres ~ children + hsgrad,
                data = MIVdata)
 
 summary(logit01)
+
+
+# Part I - Regression Tables
