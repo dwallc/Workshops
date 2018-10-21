@@ -74,3 +74,95 @@ summary(logit01)
 
 
 # Part I - Regression Tables
+
+## Create a folder called "Tables" if it does not exist
+
+if (file.exists("./Tables")) {
+        print("Sub-directory ./Tables already exists!")
+} else {
+        dir.create("./Tables")
+        print("Sub-directory ./Tables created!")
+}
+
+screenreg(list(ols01,
+               probit01,
+               logit01),
+          custom.model.names = c("OLS",
+                                 "Probit",
+                                 "Logit"),
+          custom.coef.names = c("Constant",
+                                "Age",
+                                "Gender",
+                                "Number of Children",
+                                "High School Grad."),
+          reorder.coef = c(2,
+                           3,
+                           4,
+                           5,
+                           1),
+          stars = 0.05,
+          include.rsquared = FALSE,
+          include.adjrs = FALSE,
+          include.rmse = FALSE,
+          include.loglik = FALSE,
+          include.deviance = FALSE,
+          custom.gof.names = c("N",
+                               NA,
+                               NA))
+
+screenreg(list(ols01,
+               probit01,
+               logit01),
+          file = "./Tables/MIVmodel01.txt",
+          custom.model.names = c("OLS",
+                                 "Probit",
+                                 "Logit"),
+          custom.coef.names = c("Constant",
+                                "Age",
+                                "Gender",
+                                "Number of Children",
+                                "High School Grad."),
+          reorder.coef = c(2,
+                           3,
+                           4,
+                           5,
+                           1),
+          stars = 0.05,
+          include.rsquared = FALSE,
+          include.adjrs = FALSE,
+          include.rmse = FALSE,
+          include.loglik = FALSE,
+          include.deviance = FALSE,
+          custom.gof.names = c("N",
+                               NA,
+                               NA))
+
+texreg(list(ols01,
+            probit01,
+            logit01),
+       file = "./Tables/MIVmodel01.tex",
+       custom.model.names = c("OLS",
+                              "Probit",
+                              "Logit"),
+       custom.coef.names = c("Constant",
+                             "Age",
+                             "Gender",
+                             "Number of Children",
+                             "High School Grad."),
+       reorder.coef = c(2,
+                        3,
+                        4,
+                        5,
+                        1),
+       stars = 0.05,
+       include.rsquared = FALSE,
+       include.adjrs = FALSE,
+       include.rmse = FALSE,
+       include.loglik = FALSE,
+       include.deviance = FALSE,
+       custom.gof.names = c("N",
+                            NA,
+                            NA),
+       caption = NULL,
+       booktabs = TRUE,
+       dcolumn = TRUE)
