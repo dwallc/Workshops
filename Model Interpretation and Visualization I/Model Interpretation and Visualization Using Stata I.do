@@ -12,16 +12,16 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 	
 /*	*****************************************************************************/
 /*	File Name:	Model Interpretation and Visualization Using Stata I.do			*/
-/*	Date:   	October 20, 2018													*/
+/*	Date:   	October 20, 2018												*/
 /*	Author: 	Scott J. LaCombe												*/
-/*	Purpose:	Create tables and plots to report regression results, and	*/
-/*					introduce margins and marginsplot commands.										*/
+/*	Purpose:	Create tables and plots to report regression results, and		*/
+/*					introduce margins and marginsplot commands.					*/
 /*	Input Files:	Data\MIVdata.dta											*/
-/*	Output Files:	Model Interpretation and Visualization Using Stata I.log, 	*/
+/*	Output Files:	Model Interpretation and Visualization Using Stata I.log,	*/
 /*					Tables\MIVmodel01.txt,										*/
 /*					Tables\MIVmodel01.tex,										*/
-/*					Graphs\MIVcoefplot01.png,										*/
-/*					Graphs\MIVcoefplot01b.png,										*/
+/*					Graphs\MIVcoefplot01.png,									*/
+/*					Graphs\MIVcoefplot01b.png,									*/
 /*					Graphs\predOLS.png											*/
 /*	*****************************************************************************/
 
@@ -159,13 +159,13 @@ marginsplot /*	Graphs the result from the previously executed	*/
 			/*	margins command. NOTE: marginsplot must be		*/
 			/*	executed IMMEDIATELY after margins command,		*/
 			/*	or you will receive an error.					*/
-			
+
 		/*	Specific Values - Continuous Variable	*/
-						
+
 margins, at(age=18) atmeans /*	Predicted mean when age = 18, and	*/
 							/*	remaining independent variables		*/
 							/*	held to their mean values.			*/
-								
+
 marginsplot
 		
 margins, at(age=(33 47 61)) atmeans /*	Calculates predicted means at	*/
@@ -175,7 +175,7 @@ margins, at(age=(33 47 61)) atmeans /*	Calculates predicted means at	*/
 									/*	setting the remaining			*/
 									/*	independent variables at		*/
 									/*	their mean value. 				*/
-												
+
 marginsplot
 		
 marginsplot, recast(line) recastci(rarea) ///
@@ -185,7 +185,7 @@ marginsplot, recast(line) recastci(rarea) ///
 						/*	as a line, and the confidence		*/
 						/*	intervals are plotted as a shaded	*/
 						/*	area. 								*/
-									
+
 margins, at(age=(18(1)89)) ///
 	atmeans noatlegend	/*	Calculating predicted means for each	*/
 						/*	value of 'age' while holding the		*/
@@ -193,7 +193,7 @@ margins, at(age=(18(1)89)) ///
 						/*	value. In addition, I am not			*/
 						/*	producing the _at legend to				*/
 						/*	preserve space. 						*/
-									
+
 marginsplot, recast(line) recastci(rarea) ///
 	plotopts(color(black)) ///
 	ciopts(color(gs12))
@@ -203,26 +203,25 @@ marginsplot, recast(line) recastci(rarea) ///
 margins female, atmeans /*	Calculating the overall expected mean for	*/
 						/*	males and females, holding remaining		*/
 						/*	variables constant. 						*/
-		
-									
+
 marginsplot
 		
 marginsplot, recast(dot) ///
 	plotopts(color(gs12)) ///
 	ciopts(color(black))	/*	Changes the plot options so that the	*/
 							/*	predicted means are plotted as bars. 	*/
-									
+
 		/*	Specific Values - Continuous and Discrete Variables	*/
 			
 margins, at((mean) age female=1)	/*	Predicted mean for average	*/
 									/*	aged female.				*/
-													
+
 marginsplot
 		
 margins female, at(age=(18(1)89)) ///
 	atmeans noatlegend	/*	Predicted means for males and females for	*/
 						/*		each age. 								*/
-		
+
 marginsplot, recast(line) recastci(rarea) ///
 	ci1opts(color(ltblue)) ///
 	ci2opts(color(orange))
@@ -235,20 +234,36 @@ margins
 
 marginsplot
 
+		/*	Specific Values - Continuous Variable	*/
+
+margins, at(children=(0(1)8))
+
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12))
+	
 margins, at(children=(0(1)8)) atmeans
 
-	marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
-			ciopts(color(gs12))
-			
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12))
+
+		/*	Specific Values - Discrete Variables	*/
+
+margins hsgrad
+
+marginsplot, recast(dot) plotopts(color(gs12)) ///
+	ciopts(color(black))
+	
 margins hsgrad, atmeans
-									
-	marginsplot, recast(dot) plotopts(color(gs12)) ///
-			ciopts(color(black))
-					
-margins hsgrad, at(children=(0(1)8)) atmeans
-											 
-	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
-		ci2opts(color(orange))
+
+marginsplot, recast(dot) plotopts(color(gs12)) ///
+	ciopts(color(black))
+	
+		/*	Specific Values - Continuous and Discrete Variables	*/
+
+margins hsgrad, at(children=(0(1)8))
+
+marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+	ci2opts(color(orange))
 	
 
 	/********************************/
