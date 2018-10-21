@@ -21,8 +21,7 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 /*					Tables\MIVmodel01.txt,										*/
 /*					Tables\MIVmodel01.tex,										*/
 /*					Graphs\MIVcoefplot01.png,									*/
-/*					Graphs\MIVcoefplot01b.png,									*/
-/*					Graphs\predOLS.png											*/
+/*					Graphs\MIVcoefplot01b.png									*/
 /*	*****************************************************************************/
 
 
@@ -38,9 +37,9 @@ use Data\MIVdata, clear
 	Social Survey covering the period 1972 - 2010.	*/
 	
 	
-	/********************/
-	/* Estimate models.	*/
-	/********************/
+	/********************************/
+	/* Estimate regression models.	*/
+	/********************************/
 	
 	/*	Estimate an OLS regression models predicting a respondent's	*/
 	/*	income based on their age and gender.						*/
