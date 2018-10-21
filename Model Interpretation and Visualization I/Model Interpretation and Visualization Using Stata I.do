@@ -229,7 +229,7 @@ marginsplot, recast(line) recastci(rarea) ///
 		
 	/*	Part B - Probit/Logit Model	*/
 	
-		estimates restore logit1
+	estimates restore logit1
 		
 margins
 
@@ -249,4 +249,141 @@ margins hsgrad, at(children=(0(1)8)) atmeans
 											 
 	marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
 		ci2opts(color(orange))
-													
+	
+
+	/********************************/
+	/* Part IV - Marginal Effects	*/
+	/********************************/
+			
+	/*	Part A - OLS Model	*/
+		
+	estimates restore ols1
+	
+		/*	Marginal Change	*/
+			
+margins, dydx(age)	/*	Average marginal effect a one-unit increase	*/
+					/*	in age has on income, holding all other		*/
+					/*	variables at their mean value. Notice that	*/
+					/*	both the marginal effect and the standard	*/
+					/*	error are the same as the coefficient		*/
+					/*	estimate and standard error from the		*/
+					/*	regression output. 							*/	
+								
+marginsplot
+		
+margins female, dydx(age) /* Same as previous example. */
+		
+marginsplot, recast(dot) ///
+	plotopts(color(gs12)) ///
+	ciopts(color(black))
+			
+		/*	Discrete Change	*/
+			
+margins, dydx(female) atmeans	/*	Discrete change represents the	*/
+								/*	difference in predicted means	*/
+								/*	for males and females, holding	*/
+								/*	remaining variables at their	*/
+								/*	mean values. 					*/
+											
+marginsplot
+
+margins, dydx(female) atmeans continuous	/* Treat female as a continuous variable.	*/
+
+marginsplot
+		
+margins, dydx(female) at(age=(18(1)89)) ///
+	atmeans noatlegend	/*	Despite varying the highest year of	*/
+						/*	education completed, the effect		*/
+						/*	gender has on income does not 		*/
+						/*	change.								*/
+			
+marginsplot, recast(line) recastci(rarea) ///
+	plotopts(color(black)) ///
+	ciopts(color(gs12))
+	
+margins, dydx(female) at(age=(18(1)89)) ///
+	atmeans noatlegend continuous
+	
+marginsplot, recast(line) recastci(rarea) ///
+	plotopts(color(black)) ///
+	ciopts(color(gs12))
+	
+	/*	Part A - BRM Model	*/
+		
+	estimates restore logit1
+	
+		/*	Average Marginal Effects	*/
+			
+margins, dydx(children)
+
+marginsplot
+
+		/*	Average Conditional Marginal Effects	*/
+		
+margins hsgrad, dydx(children)
+										
+marginsplot, recast(dot) plotopts(color(gs12)) ///
+	ciopts(color(black))
+	
+margins, dydx(hsgrad) continuous
+
+marginsplot
+			
+		/*	Conditional Marginal Effects	*/
+			
+margins hsgrad, dydx(children) atmeans
+
+marginsplot, recast(dot) plotopts(color(gs12)) ///
+	ciopts(color(black))
+			
+margins hsgrad, dydx(children) at(children=(0(1)8))
+
+marginsplot, recast(line) recastci(rarea) ci1opts(color(ltblue)) ///
+	ci2opts(color(orange))
+	
+margins, dydx(hsgrad) atmeans continuous
+
+marginsplot
+
+margins, dydx(hsgrad) at(children=(0(1)8)) continuous
+
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12))
+						
+	/*	Calculate discrete changes.	*/
+	
+		/*	Average Discrete Effects	*/
+		
+margins, dydx(hsgrad)
+
+marginsplot
+
+		/*	Conditional Discrete Effects	*/
+		
+margins, dydx(hsgrad) atmeans
+
+marginsplot
+
+margins, dydx(hsgrad) at(children=(0(1)8))
+
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12))
+			
+margins hsgrad, at(children=(0 1)) post
+
+	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
+		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
+	
+	estimates restore logit1
+	
+margins hsgrad, at(children=(7 8)) post
+
+	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
+		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
+		
+		
+	/************/
+	/* Cleanup	*/
+	/************/
+	
+log close
