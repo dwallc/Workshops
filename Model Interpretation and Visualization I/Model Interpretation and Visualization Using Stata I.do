@@ -327,16 +327,16 @@ marginsplot, recast(line) recastci(rarea) ///
 		
 	estimates restore logit1
 	
-		/*	Average Marginal Effects	*/
+		/*	Average Marginal Change	*/
 			
 margins, dydx(children)
 
 marginsplot
 
-		/*	Average Conditional Marginal Effects	*/
+		/*	Average Conditional Marginal Change	*/
 		
 margins hsgrad, dydx(children)
-										
+
 marginsplot, recast(dot) plotopts(color(gs12)) ///
 	ciopts(color(black))
 	
@@ -344,7 +344,7 @@ margins, dydx(hsgrad) continuous
 
 marginsplot
 			
-		/*	Conditional Marginal Effects	*/
+		/*	Conditional Marginal Change	*/
 			
 margins hsgrad, dydx(children) atmeans
 
@@ -364,16 +364,14 @@ margins, dydx(hsgrad) at(children=(0(1)8)) continuous
 
 marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
 	ciopts(color(gs12))
-						
-	/*	Calculate discrete changes.	*/
-	
-		/*	Average Discrete Effects	*/
+
+		/*	Average Discrete Change	*/
 		
 margins, dydx(hsgrad)
 
 marginsplot
 
-		/*	Conditional Discrete Effects	*/
+		/*	Conditional Discrete Change	*/
 		
 margins, dydx(hsgrad) atmeans
 
