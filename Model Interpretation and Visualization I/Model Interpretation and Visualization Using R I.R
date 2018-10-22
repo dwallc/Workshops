@@ -55,23 +55,30 @@ MIVdata <- import("./Data/MIVdata.dta")
 ## Estimate an OLS regression models predicting a respondent's
 ## income based on their age and gender.
 
-MIVdata[["female"]] <- factor(MIVdata[["female"]],
-                              labels = c("Male",
-                                         "Female")) # Treat female as a factor variable
+### Estimate treating female as continuous
 
 ols01 <- lm(realrinc ~ age + female,
             data = MIVdata)
 
 summary(ols01)
 
+### Estimate treating female as a factor
+
+MIVdata[["female"]] <- factor(MIVdata[["female"]],
+                              labels = c("Male",
+                                         "Female")) # Treat female as a factor variable
+
+ols01Factor <- lm(realrinc ~ age + female,
+                  data = MIVdata)
+
+summary(ols01Factor)
+
 ## Estimate probit and logit regression models predicting
 ## whether a respondent is willing to vote for a female
 ## president based on their number of children and whether
 ## respondent graduated from high school.
 
-MIVdata[["hsgrad"]] <- factor(MIVdata[["hsgrad"]],
-                              labels = c("No",
-                                         "Yes"))
+### EStimate treating hsgrad as continuous
 
 probit01 <- glm(fepres ~ children + hsgrad,
                 family = binomial(link = "probit"),
@@ -84,6 +91,24 @@ logit01 <- glm(fepres ~ children + hsgrad,
                data = MIVdata)
 
 summary(logit01)
+
+### EStimate treating hsgrad as a factor
+
+MIVdata[["hsgrad"]] <- factor(MIVdata[["hsgrad"]],
+                              labels = c("No",
+                                         "Yes"))
+
+probit01Factor <- glm(fepres ~ children + hsgrad,
+                      family = binomial(link = "probit"),
+                      data = MIVdata)
+
+summary(probit01Factor)
+
+logit01Factor <- glm(fepres ~ children + hsgrad,
+                     family = "binomial",
+                     data = MIVdata)
+
+summary(logit01Factor)
 
 
 # Part I - Regression Tables
@@ -556,8 +581,127 @@ cplot(logit01,
 
 ### Marginal Change
 
+#### Printing predicted values for specific values of age
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(mean(ols01[["model"]]$age)),
+            what = "effect",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      mean(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            what = "effect",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "female",
+            xvals = c(mean(ols01[["model"]]$age)),
+            what = "effect",
+            dx = "age",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      mean(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            what = "effect",
+            dx = "age",
+            draw = FALSE))
+
+#### Plotting predicted values for age
+
+cplot(ols01,
+      x = "age",
+      what = "effect",
+      xlab = "Age",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+cplot(ols01,
+      x = "female",
+      what = "effect",
+      dx = "age",
+      xlab = "Gender",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
 ### Discrete Change
 
+### Printing predicted values for specific values of female
+
+print(cplot(ols01,
+            x = "female",
+            what = "effect",
+            xvals = c(0,
+                      1),
+            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
+
+print(cplot(ols01,
+            x = "female",
+            what = "effect",
+            data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
+            draw = FALSE))
+
+### Plotting predicted values for specific values of female
+
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
+      col = "blue",
+      xlab = "Gender",
+      ylab = "Fitted Values",
+      ylim = c(0,
+               50000),
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
+
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
+      col = "black",
+      rug = FALSE,
+      draw = "add")
+
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
+      col = "red",
+      rug = FALSE,
+      draw = "add")
+
+## Part B - BRM Model
+
+### Average Marginal Change
+
+### Average Conditional Marginal Change
+
+### Conditional Marginal Change
+
+### Average Discrete Change
+
+### Conditional Discrete Change
 
 
 
@@ -573,10 +717,6 @@ cplot(logit01,
 
 
 
-
-
-
-## Part B - BRM Models
 
 
 
