@@ -233,7 +233,7 @@ marginsplot, recast(line) recastci(rarea) ///
 	ci1opts(color(ltblue)) ///
 	ci2opts(color(orange))
 		
-	/*	Part B - Probit/Logit Model	*/
+	/*	Part B - BRM Models	*/
 	
 	estimates restore logit1
 		
@@ -330,7 +330,7 @@ marginsplot, recast(line) recastci(rarea) ///
 	plotopts(color(black)) ///
 	ciopts(color(gs12))
 	
-	/*	Part A - BRM Model	*/
+	/*	Part B - BRM Models	*/
 		
 	estimates restore logit1
 	

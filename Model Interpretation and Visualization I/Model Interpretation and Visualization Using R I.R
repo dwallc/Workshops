@@ -267,9 +267,121 @@ ggsave("./Graphs/MIVcoefplot02b.png")
 ### For more information on dotwhisker: https://cran.r-project.org/web/packages/dotwhisker/
 
 
+# Part III - Predicted (Fitted) Values
+
+## Part A - OLS Model
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01$model$age),
+                      mean(ols01$model$age),
+                      max(ols01$model$age)),
+            what = "prediction",
+            xlab = "Age",
+            ylab = "Fitted Values",
+            main = "Adjusted Predictions with 95% CIs",
+            rug = FALSE,
+            draw = FALSE))
+
+cplot(ols01,
+      x = "age",
+      what = "prediction",
+      xlab = "Age",
+      ylab = "Fitted Values",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
+
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            xlab = "Gender",
+            ylab = "Fitted Values",
+            main = "Adjusted Predictions with 95% CIs",
+            rug = FALSE,
+            draw = FALSE))
+
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      xlab = "Gender",
+      ylab = "Fitted Values",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Part B - BRM Models
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Part IV - Marginal Effects
+
+## Part A - OLS Model
+
+### Average Marginal Changes
+
+summary(margins(ols01))
+
+plot(margins(ols01),
+     xlab = "Variables",
+     main = "OLS Average Marginal Changes")
+
+axis(1,
+     at = 1:2,
+     labels = c("Age",
+                "Gender"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Part B - BRM Models
 
 
 
