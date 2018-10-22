@@ -43,7 +43,7 @@ ipak(packages)
 # Set Working Directory
 
 #setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/Model Interpretation and Visualization I")
-#
+
 
 # Import Dataset
 
@@ -55,7 +55,9 @@ MIVdata <- import("./Data/MIVdata.dta")
 ## Estimate an OLS regression models predicting a respondent's
 ## income based on their age and gender.
 
-MIVdata[["female"]] <- factor(MIVdata[["female"]]) # Treat female as a factor variable
+MIVdata[["female"]] <- factor(MIVdata[["female"]],
+                              labels = c("Male",
+                                         "Female")) # Treat female as a factor variable
 
 ols01 <- lm(realrinc ~ age + female,
             data = MIVdata)
@@ -67,7 +69,9 @@ summary(ols01)
 ## president based on their number of children and whether
 ## respondent graduated from high school.
 
-MIVdata[["hsgrad"]] <- factor(MIVdata[["hsgrad"]])
+MIVdata[["hsgrad"]] <- factor(MIVdata[["hsgrad"]],
+                              labels = c("No",
+                                         "Yes"))
 
 probit01 <- glm(fepres ~ children + hsgrad,
                 family = binomial(link = "probit"),
@@ -271,97 +275,288 @@ ggsave("./Graphs/MIVcoefplot02b.png")
 
 ## Part A - OLS Model
 
+### Printing predicted values for specific values of age
+
 print(cplot(ols01,
             x = "age",
-            xvals = c(min(ols01$model$age),
-                      mean(ols01$model$age),
-                      max(ols01$model$age)),
+            xvals = c(mean(ols01[["model"]]$age)),
             what = "prediction",
-            xlab = "Age",
-            ylab = "Fitted Values",
-            main = "Adjusted Predictions with 95% CIs",
-            rug = FALSE,
+            draw = FALSE)) # Default is to set female = "No
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(mean(ols01[["model"]]$age)),
+            data = ols01[["model"]][ols01[["model"]]$female == "No",],
+            what = "prediction",
             draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(mean(ols01[["model"]]$age)),
+            data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+            what = "prediction",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      mean(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            data = ols01[["model"]][ols01[["model"]]$female == "No",],
+            what = "prediction",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      mean(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+            what = "prediction",
+            draw = FALSE))
+
+### Plotting predicted values for age
+
+#### Separate Plots
 
 cplot(ols01,
       x = "age",
       what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$female == "No",],
       xlab = "Age",
       ylab = "Fitted Values",
       main = "Adjusted Predictions with 95% CIs",
       rug = FALSE)
 
-print(cplot(ols01,
-            x = "female",
-            what = "prediction",
-            xlab = "Gender",
-            ylab = "Fitted Values",
-            main = "Adjusted Predictions with 95% CIs",
-            rug = FALSE,
-            draw = FALSE))
-
 cplot(ols01,
-      x = "female",
+      x = "age",
       what = "prediction",
-      xlab = "Gender",
+      data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+      xlab = "Age",
       ylab = "Fitted Values",
       main = "Adjusted Predictions with 95% CIs",
       rug = FALSE)
 
+#### Single Plot
 
+cplot(ols01,
+      x = "age",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$female == "No",],
+      col = "blue",
+      xlab = "Age",
+      ylab = "Fitted Values",
+      ylim = c(0,
+               50000),
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
+cplot(ols01,
+      x = "age",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+      col = "red",
+      rug = FALSE,
+      draw = "add")
 
+### Printing predicted values for specific values of female
 
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
 
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
+            draw = FALSE))
 
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
+            draw = FALSE))
 
+print(cplot(ols01,
+            x = "female",
+            what = "prediction",
+            data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
+            draw = FALSE))
 
+### Plotting predicted values for specific values of female
 
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
+      col = "blue",
+      xlab = "Gender",
+      ylab = "Fitted Values",
+      ylim = c(0,
+               50000),
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
+      col = "black",
+      rug = FALSE,
+      draw = "add")
 
-
-
-
-
-
-
-
-
+cplot(ols01,
+      x = "female",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
+      col = "red",
+      rug = FALSE,
+      draw = "add")
 
 ## Part B - BRM Models
 
+### Printing predicted values for specific values of children
 
+print(cplot(logit01,
+            x = "children",
+            xvals = c(mean(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+            what = "prediction",
+            draw = FALSE)) # Default is to set hsgrad = "Yes"
 
+print(cplot(logit01,
+            x = "children",
+            xvals = c(mean(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+            what = "prediction",
+            draw = FALSE))
 
+print(cplot(logit01,
+            x = "children",
+            xvals = c(min(logit01[["model"]]$children),
+                      mean(logit01[["model"]]$children),
+                      max(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+            what = "prediction",
+            draw = FALSE))
 
+print(cplot(logit01,
+            x = "children",
+            xvals = c(min(logit01[["model"]]$children),
+                      mean(logit01[["model"]]$children),
+                      max(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+            what = "prediction",
+            draw = FALSE))
 
+### Plotting predicted values for children
 
+#### Separate Plots
 
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+      xlab = "Number of Children",
+      ylab = "Predicted Probability",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+      xlab = "Number of Children",
+      ylab = "Predicted Probability",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
+#### Single Plot
 
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+      col = "blue",
+      xlab = "Number of Children",
+      ylab = "Predicted Probability",
+      ylim = c(0.6,
+               1),
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
 
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+      col = "red",
+      rug = FALSE,
+      draw = "add")
 
+### Printing predicted values for specific values of hsgrad
 
+print(cplot(logit01,
+            x = "hsgrad",
+            what = "prediction",
+            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
 
+print(cplot(logit01,
+            x = "hsgrad",
+            what = "prediction",
+            data = logit01[["model"]][logit01[["model"]]$children == min(logit01[["model"]]$children),],
+            draw = FALSE))
+
+print(cplot(logit01,
+            x = "hsgrad",
+            what = "prediction",
+            data = logit01[["model"]][logit01[["model"]]$children == median(logit01[["model"]]$children),],
+            draw = FALSE))
+
+print(cplot(logit01,
+            x = "hsgrad",
+            what = "prediction",
+            data = logit01[["model"]][logit01[["model"]]$children == max(logit01[["model"]]$children),],
+            draw = FALSE))
+
+### Plotting predicted values for specific values of female
+
+cplot(logit01,
+      x = "hsgrad",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$children == min(logit01[["model"]]$children),],
+      col = "blue",
+      xlab = "High School Grad.",
+      ylab = "Predicted Probability",
+      ylim = c(0.6,
+               1),
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
+
+cplot(logit01,
+      x = "hsgrad",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$children == median(logit01[["model"]]$children),],
+      col = "black",
+      rug = FALSE,
+      draw = "add")
+
+cplot(logit01,
+      x = "hsgrad",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$children == max(logit01[["model"]]$children),],
+      col = "red",
+      rug = FALSE,
+      draw = "add") # Notice that the probabilities are plotted in the wrong location!
 
 
 # Part IV - Marginal Effects
 
 ## Part A - OLS Model
 
-### Average Marginal Changes
+### Marginal Change
 
-summary(margins(ols01))
-
-plot(margins(ols01),
-     xlab = "Variables",
-     main = "OLS Average Marginal Changes")
-
-axis(1,
-     at = 1:2,
-     labels = c("Age",
-                "Gender"))
+### Discrete Change
 
 
 

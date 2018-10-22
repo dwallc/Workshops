@@ -12,7 +12,7 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 	
 /*	*****************************************************************************/
 /*	File Name:	Model Interpretation and Visualization Using Stata I.do			*/
-/*	Date:   	October 20, 2018												*/
+/*	Date:   	October 22, 2018												*/
 /*	Author: 	Scott J. LaCombe												*/
 /*	Purpose:	Create tables and plots to report regression results, and		*/
 /*					introduce margins and marginsplot commands.					*/
