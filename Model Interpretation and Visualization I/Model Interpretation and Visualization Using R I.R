@@ -793,33 +793,193 @@ cplot(ols01,
 
 ### Discrete Change
 
-summary(margins(ols01Factor,
-                change = "dydx")) # Numerical approximation of the derivative
+#### Numerical approximation of the derivative
 
 summary(margins(ols01Factor,
-                change = "minmax")) # Discrete change moving from min(x) to max(x)
+                change = "dydx"))
+
+plot(margins(ols01Factor,
+             change = "dydx"),
+     main = "OLS Average Marginal Effects (AMEs) - Numerical Derivative (dydx)",
+     ylab = "AME")
 
 summary(margins(ols01Factor,
-                change = "iqr")) # Discrete change moving from the 1st quartile to 3rd quartile of x
+                change = "dydx",
+                at = list(age = c(25,
+                                  75))))
 
 summary(margins(ols01Factor,
-                change = "sd")) # Discrete change moving from mean(x) - sd(x) to mean(x) + sd(x)
+                change = "dydx",
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = "dydx",
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
+
+#### Moving from min(x) to max(x)
+
+summary(margins(ols01Factor,
+                change = "minmax"))
+
+plot(margins(ols01Factor,
+             change = "minmax"),
+     main = "OLS Average Marginal Effects (AMEs) - Minimum to Maximum (MinMax)",
+     ylab = "AME")
+
+summary(margins(ols01Factor,
+                change = "minmax",
+                at = list(age = c(25,
+                                  75)))) # ZMEs are zero because age is treated as a constant
+
+summary(margins(ols01Factor,
+                change = "minmax",
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = "minmax",
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
+
+#### Moving from the 1st quartile to 3rd quartile of x
+
+summary(margins(ols01Factor,
+                change = "iqr"))
+
+plot(margins(ols01Factor,
+             change = "iqr"),
+     main = "OLS Average Marginal Effects (AMEs) - Inter-quartile Range (IQR)",
+     ylab = "AME")
+
+summary(margins(ols01Factor,
+                change = "iqr",
+                at = list(age = c(25,
+                                  75))))
+
+summary(margins(ols01Factor,
+                change = "iqr",
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = "iqr",
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
+
+#### Moving from mean(x) - sd(x) to mean(x) + sd(x)
+
+summary(margins(ols01Factor,
+                change = "sd"))
+
+plot(margins(ols01Factor,
+             change = "sd"),
+     main = "OLS Average Marginal Effects (AMEs) - 1 Standard Deviation (SD)",
+     ylab = "AME")
+
+summary(margins(ols01Factor,
+                change = "sd",
+                at = list(age = c(25,
+                                  75))))
+
+summary(margins(ols01Factor,
+                change = "sd",
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = "sd",
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
+
+#### Moving from specified values
+
+##### Going from age 30 to age 31
 
 summary(margins(ols01Factor,
                 change = c(30,
-                           31))) # Discrete change moving from specified values
+                           31)))
 
+plot(margins(ols01Factor,
+             change = c(30,
+                        31)),
+     main = "OLS Average Marginal Effects (AMEs) - Specific Change (Age 30 to Age 31)",
+     ylab = "AME")
 
+summary(margins(ols01Factor,
+                change = c(30,
+                           31),
+                at = list(age = c(25,
+                                  75)))) # Ignoring specified at values for age
+
+summary(margins(ols01Factor,
+                change = c(30,
+                           31),
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = c(30,
+                           31),
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
+
+##### Going from age 50 to age 51
+
+summary(margins(ols01Factor,
+                change = c(50,
+                           51)))
+
+plot(margins(ols01Factor,
+             change = c(50,
+                        51)),
+     main = "OLS Average Marginal Effects (AMEs) - Specific Change (Age 50 to Age 51)",
+     ylab = "AME")
+
+summary(margins(ols01Factor,
+                change = c(50,
+                           51),
+                at = list(age = c(25,
+                                  75)))) # Ignoring specified at values for age
+
+summary(margins(ols01Factor,
+                change = c(50,
+                           51),
+                at = list(female = c("Male",
+                                     "Female"))))
+
+summary(margins(ols01Factor,
+                change = c(50,
+                           51),
+                at = list(age = c(25,
+                                  75),
+                          female = c("Male",
+                                     "Female"))))
 
 ## Part B - BRM Model
 
 ### Average Marginal Change
+
+
 
 ### Average Conditional Marginal Change
 
 ### Conditional Marginal Change
 
 ### Average Discrete Change
+
+### Average Conditional Discrete Change
 
 ### Conditional Discrete Change
 
