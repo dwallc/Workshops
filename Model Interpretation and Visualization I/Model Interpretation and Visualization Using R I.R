@@ -667,12 +667,13 @@ cplot(logit01Factor,
 
 ### Marginal Change
 
-#### Printing predicted values for specific values of age
+#### Printing marginal changes for specific values of age
 
 print(cplot(ols01,
             x = "age",
             xvals = c(mean(ols01[["model"]]$age)),
             what = "effect",
+            data = ols01[["model"]],
             draw = FALSE))
 
 print(cplot(ols01,
@@ -681,101 +682,134 @@ print(cplot(ols01,
                       mean(ols01[["model"]]$age),
                       max(ols01[["model"]]$age)),
             what = "effect",
+            data = ols01[["model"]],
             draw = FALSE))
 
 print(cplot(ols01,
             x = "female",
-            xvals = c(mean(ols01[["model"]]$age)),
+            xvals = c(mean(ols01[["model"]]$female)),
             what = "effect",
+            data = ols01[["model"]],
             dx = "age",
             draw = FALSE))
-
-print(cplot(ols01,
-            x = "age",
-            xvals = c(min(ols01[["model"]]$age),
-                      mean(ols01[["model"]]$age),
-                      max(ols01[["model"]]$age)),
-            what = "effect",
-            dx = "age",
-            draw = FALSE))
-
-#### Plotting predicted values for age
-
-cplot(ols01,
-      x = "age",
-      what = "effect",
-      xlab = "Age",
-      ylab = "Effects on Linear Prediction",
-      main = "Conditional Marginal Effects with 95% CIs",
-      rug = FALSE)
-
-cplot(ols01,
-      x = "female",
-      what = "effect",
-      dx = "age",
-      xlab = "Gender",
-      ylab = "Effects on Linear Prediction",
-      main = "Conditional Marginal Effects with 95% CIs",
-      rug = FALSE)
-
-### Discrete Change
-
-### Printing predicted values for specific values of female
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(min(ols01[["model"]]$female),
+                      median(ols01[["model"]]$female),
+                      max(ols01[["model"]]$female)),
             what = "effect",
+            data = ols01[["model"]],
+            dx = "age",
+            draw = FALSE))
+
+#### Printing marginal changes for specific values of female
+
+print(cplot(ols01,
+            x = "female",
             xvals = c(0,
                       1),
-            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
+            what = "effect",
+            data = ols01[["model"]],
+            draw = FALSE)) # Default is to set age = mean(ols01[["model"]]$age)
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(0,
+                      1),
             what = "effect",
             data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
             draw = FALSE))
 
 print(cplot(ols01,
             x = "female",
-            what = "prediction",
+            xvals = c(0,
+                      1),
+            what = "effect",
             data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
             draw = FALSE))
 
 print(cplot(ols01,
             x = "female",
-            what = "prediction",
+            xvals = c(0,
+                      1),
+            what = "effect",
             data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
             draw = FALSE))
 
-### Plotting predicted values for specific values of female
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      median(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            what = "effect",
+            data = ols01[["model"]],
+            dx = "female",
+            draw = FALSE))
+
+#### Plotting marginal changes for age
+
+cplot(ols01,
+      x = "age",
+      what = "effect",
+      data = ols01[["model"]],
+      xlab = "Age",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+cplot(ols01Factor,
+      x = "female",
+      what = "effect",
+      data = ols01Factor[["model"]],
+      dx = "age",
+      xlab = "Gender",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+#### Plotting marginal changes for female
 
 cplot(ols01,
       x = "female",
-      what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
-      col = "blue",
+      xvals = c(0,
+                1),
+      what = "effect",
+      data = ols01[["model"]],
       xlab = "Gender",
-      ylab = "Fitted Values",
-      ylim = c(0,
-               50000),
-      main = "Adjusted Predictions with 95% CIs",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
       rug = FALSE)
 
 cplot(ols01,
-      x = "female",
-      what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
-      col = "black",
-      rug = FALSE,
-      draw = "add")
+      x = "age",
+      what = "effect",
+      data = ols01[["model"]],
+      dx = "female",
+      xlab = "Age",
+      ylab = "Effects on Linear Prediction",
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
 
-cplot(ols01,
-      x = "female",
-      what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
-      col = "red",
-      rug = FALSE,
-      draw = "add")
+### Discrete Change
+
+summary(margins(ols01Factor,
+                change = "dydx")) # Numerical approximation of the derivative
+
+summary(margins(ols01Factor,
+                change = "minmax")) # Discrete change moving from min(x) to max(x)
+
+summary(margins(ols01Factor,
+                change = "iqr")) # Discrete change moving from the 1st quartile to 3rd quartile of x
+
+summary(margins(ols01Factor,
+                change = "sd")) # Discrete change moving from mean(x) - sd(x) to mean(x) + sd(x)
+
+summary(margins(ols01Factor,
+                change = c(30,
+                           31))) # Discrete change moving from specified values
+
+
 
 ## Part B - BRM Model
 
