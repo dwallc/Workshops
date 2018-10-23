@@ -1038,6 +1038,72 @@ for (child in sort(unique(logit01[["model"]]$children))[2:9]) {
 
 ### Average Discrete Change
 
+#### Numerical approximation of the derivative
+
+summary(margins(logit01Factor,
+                change = "dydx"))
+
+plot(margins(logit01Factor,
+             change = "dydx"),
+     main = "Logit Average Marginal Effects (AMEs) - Numerical Derivative (dydx)",
+     ylab = "AME")
+
+#### Moving from min(x) to max(x)
+
+summary(margins(logit01Factor,
+                change = "minmax"))
+
+plot(margins(logit01Factor,
+             change = "minmax"),
+     main = "Logit Average Marginal Effects (AMEs) - Minimum to Maximum (MinMax)",
+     ylab = "AME")
+
+#### Moving from the 1st quartile to 3rd quartile of x
+
+summary(margins(logit01Factor,
+                change = "iqr"))
+
+plot(margins(logit01Factor,
+             change = "iqr"),
+     main = "Logit Average Marginal Effects (AMEs) - Inter-quartile Range (IQR)",
+     ylab = "AME")
+
+#### Moving from mean(x) - sd(x) to mean(x) + sd(x)
+
+summary(margins(logit01Factor,
+                change = "sd"))
+
+plot(margins(logit01Factor,
+             change = "sd"),
+     main = "Logit Average Marginal Effects (AMEs) - 1 Standard Deviation (SD)",
+     ylab = "AME")
+
+#### Moving from specified values
+
+##### Going from 2 children to 3 children
+
+summary(margins(logit01Factor,
+                change = c(2,
+                           3)))
+
+plot(margins(logit01Factor,
+             change = c(2,
+                        3)),
+     main = "Logit Average Marginal Effects (AMEs) - Specific Change (Age 30 to Age 31)",
+     ylab = "AME")
+
+##### Going from 6 children to 7 children
+
+summary(margins(logit01Factor,
+                change = c(6,
+                           7)))
+
+plot(margins(logit01Factor,
+             change = c(6,
+                        7)),
+     main = "Logit Average Marginal Effects (AMEs) - Specific Change (Age 50 to Age 51)",
+     ylab = "AME")
+
 ### Average Conditional Discrete Change
 
 ### Conditional Discrete Change
