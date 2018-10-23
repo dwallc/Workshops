@@ -685,24 +685,6 @@ print(cplot(ols01,
             data = ols01[["model"]],
             draw = FALSE))
 
-print(cplot(ols01,
-            x = "female",
-            xvals = c(mean(ols01[["model"]]$female)),
-            what = "effect",
-            data = ols01[["model"]],
-            dx = "age",
-            draw = FALSE))
-
-print(cplot(ols01,
-            x = "female",
-            xvals = c(min(ols01[["model"]]$female),
-                      median(ols01[["model"]]$female),
-                      max(ols01[["model"]]$female)),
-            what = "effect",
-            data = ols01[["model"]],
-            dx = "age",
-            draw = FALSE))
-
 #### Printing marginal changes for specific values of female
 
 print(cplot(ols01,
@@ -737,16 +719,6 @@ print(cplot(ols01,
             data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
             draw = FALSE))
 
-print(cplot(ols01,
-            x = "age",
-            xvals = c(min(ols01[["model"]]$age),
-                      median(ols01[["model"]]$age),
-                      max(ols01[["model"]]$age)),
-            what = "effect",
-            data = ols01[["model"]],
-            dx = "female",
-            draw = FALSE))
-
 #### Plotting marginal changes for age
 
 cplot(ols01,
@@ -754,16 +726,6 @@ cplot(ols01,
       what = "effect",
       data = ols01[["model"]],
       xlab = "Age",
-      ylab = "Effects on Linear Prediction",
-      main = "Conditional Marginal Effects with 95% CIs",
-      rug = FALSE)
-
-cplot(ols01Factor,
-      x = "female",
-      what = "effect",
-      data = ols01Factor[["model"]],
-      dx = "age",
-      xlab = "Gender",
       ylab = "Effects on Linear Prediction",
       main = "Conditional Marginal Effects with 95% CIs",
       rug = FALSE)
@@ -777,16 +739,6 @@ cplot(ols01,
       what = "effect",
       data = ols01[["model"]],
       xlab = "Gender",
-      ylab = "Effects on Linear Prediction",
-      main = "Conditional Marginal Effects with 95% CIs",
-      rug = FALSE)
-
-cplot(ols01,
-      x = "age",
-      what = "effect",
-      data = ols01[["model"]],
-      dx = "female",
-      xlab = "Age",
       ylab = "Effects on Linear Prediction",
       main = "Conditional Marginal Effects with 95% CIs",
       rug = FALSE)
@@ -969,13 +921,120 @@ summary(margins(ols01Factor,
 
 ## Part B - BRM Model
 
-### Average Marginal Change
-
-
-
 ### Average Conditional Marginal Change
 
+#### Printing and plotting marginal changes for specific values of children
+
+print(cplot(logit01,
+            x = "children",
+            xvals = c(unique(logit01[["model"]]$children)),
+            what = "effect",
+            data = logit01[["model"]],
+            draw = FALSE))
+
+cplot(logit01,
+      x = "children",
+      xvals = c(unique(logit01[["model"]]$children)),
+      what = "effect",
+      data = logit01[["model"]],
+      xlab = "Number of Children",
+      ylab = "Effects on Pr(Vote for Female President)",
+      main = "Average Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+#### Printing and plotting marginal changes for specific values of hsgrad
+
+print(cplot(logit01,
+            x = "hsgrad",
+            xvals = c(unique(logit01[["model"]]$hsgrad)),
+            what = "effect",
+            data = logit01[["model"]],
+            draw = FALSE))
+
+cplot(logit01,
+      x = "hsgrad",
+      xvals = c(unique(logit01[["model"]]$hsgrad)),
+      what = "effect",
+      data = logit01[["model"]],
+      xlab = "High School Grad.",
+      ylab = "Effects on Pr(Vote for Female President)",
+      main = "Average Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
 ### Conditional Marginal Change
+
+#### Printing and plotting marginal changes for specific values of children
+
+print(cplot(logit01,
+            x = "children",
+            xvals = c(unique(logit01[["model"]]$children)),
+            what = "effect",
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+            draw = FALSE))
+
+cplot(logit01,
+      x = "children",
+      xvals = c(unique(logit01[["model"]]$children)),
+      what = "effect",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+      col = "blue",
+      xlab = "Number of Children",
+      ylab = "Effects on Pr(Vote for Female President)",
+      ylim = c(-0.03,
+               0),
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+print(cplot(logit01,
+            x = "children",
+            xvals = c(unique(logit01[["model"]]$children)),
+            what = "effect",
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
+            draw = FALSE))
+
+cplot(logit01,
+      x = "children",
+      xvals = c(unique(logit01[["model"]]$children)),
+      what = "effect",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
+      col = "red",
+      rug = FALSE,
+      draw = "add")
+
+#### Printing and plotting marginal changes for specific values of hsgrad
+
+for (child in sort(unique(logit01[["model"]]$children))) {
+        print(cplot(logit01,
+                    x = "hsgrad",
+                    xvals = c(unique(logit01[["model"]]$hsgrad)),
+                    what = "effect",
+                    data = logit01[["model"]][logit01[["model"]]$children == child,],
+                    draw = FALSE))
+}
+
+cplot(logit01,
+      x = "hsgrad",
+      xvals = c(unique(logit01[["model"]]$hsgrad)),
+      what = "effect",
+      data = logit01[["model"]][logit01[["model"]]$children == 0,],
+      col = "blue",
+      xlab = "High School Grad.",
+      ylab = "Effects on Pr(Vote for Female President)",
+      ylim = c(0.05,
+               0.25),
+      main = "Conditional Marginal Effects with 95% CIs",
+      rug = FALSE)
+
+for (child in sort(unique(logit01[["model"]]$children))[2:9]) {
+        cplot(logit01,
+              x = "hsgrad",
+              xvals = c(unique(logit01[["model"]]$hsgrad)),
+              what = "effect",
+              data = logit01[["model"]][logit01[["model"]]$children == child,],
+              col = "blue",
+              rug = FALSE,
+              draw = "add")
+}
 
 ### Average Discrete Change
 
