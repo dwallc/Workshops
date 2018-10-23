@@ -225,9 +225,9 @@ dwplot(ols01,
        show_intercept = TRUE) %>%
         relabel_predictors(c("(Intercept)" = "Intercept",
                              age = "Age",
-                             female1 = "Gender")) +
+                             female = "Gender")) +
         geom_vline(xintercept = 0,
-                   colour = "red") +
+                   colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("OLS Model Results") +
         theme(plot.title = element_text(hjust = 0.5))
@@ -237,9 +237,9 @@ ggsave("./Graphs/MIVcoefplot01.png")
 dwplot(ols01,
        show_intercept = FALSE) %>%
         relabel_predictors(c(age = "Age",
-                             female1 = "Gender")) +
+                             female = "Gender")) +
         geom_vline(xintercept = 0,
-                   colour = "red") +
+                   colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("OLS Model Results") +
         theme(plot.title = element_text(hjust = 0.5))
@@ -255,9 +255,9 @@ dwplot(list(probit01,
        show_intercept = TRUE) %>%
         relabel_predictors(c("(Intercept)" = "Intercept",
                              children = "Number of Children",
-                             hsgrad1 = "High School Grad")) +
+                             hsgrad = "High School Grad")) +
         geom_vline(xintercept = 0,
-                   colour = "red") +
+                   colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("BRM Model Results") +
         scale_color_discrete(labels = c("Probit",
@@ -282,10 +282,10 @@ dwplot(brm01,
        show_intercept = TRUE) %>%
         relabel_predictors(c("(Intercept)" = "Intercept",
                              children = "Number of Children",
-                             hsgrad1 = "High School Grad")) +
+                             hsgrad = "High School Grad")) +
         facet_grid(. ~ model) +
         geom_vline(xintercept = 0,
-                   colour = "red") +
+                   colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("BRM Model Results") +
         theme(plot.title = element_text(hjust = 0.5),
@@ -305,20 +305,21 @@ ggsave("./Graphs/MIVcoefplot02b.png")
 print(cplot(ols01,
             x = "age",
             xvals = c(mean(ols01[["model"]]$age)),
+            data = ols01[["model"]],
             what = "prediction",
-            draw = FALSE)) # Default is to set female = "No
+            draw = FALSE)) # Default is to set female = mean(ols01[["model"]]$female)
 
 print(cplot(ols01,
             x = "age",
             xvals = c(mean(ols01[["model"]]$age)),
-            data = ols01[["model"]][ols01[["model"]]$female == "No",],
+            data = ols01[["model"]][ols01[["model"]]$female == 0,],
             what = "prediction",
             draw = FALSE))
 
 print(cplot(ols01,
             x = "age",
             xvals = c(mean(ols01[["model"]]$age)),
-            data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+            data = ols01[["model"]][ols01[["model"]]$female == 1,],
             what = "prediction",
             draw = FALSE))
 
@@ -327,7 +328,7 @@ print(cplot(ols01,
             xvals = c(min(ols01[["model"]]$age),
                       mean(ols01[["model"]]$age),
                       max(ols01[["model"]]$age)),
-            data = ols01[["model"]][ols01[["model"]]$female == "No",],
+            data = ols01[["model"]],
             what = "prediction",
             draw = FALSE))
 
@@ -336,7 +337,16 @@ print(cplot(ols01,
             xvals = c(min(ols01[["model"]]$age),
                       mean(ols01[["model"]]$age),
                       max(ols01[["model"]]$age)),
-            data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+            data = ols01[["model"]][ols01[["model"]]$female == 0,],
+            what = "prediction",
+            draw = FALSE))
+
+print(cplot(ols01,
+            x = "age",
+            xvals = c(min(ols01[["model"]]$age),
+                      mean(ols01[["model"]]$age),
+                      max(ols01[["model"]]$age)),
+            data = ols01[["model"]][ols01[["model"]]$female == 1,],
             what = "prediction",
             draw = FALSE))
 
@@ -347,7 +357,7 @@ print(cplot(ols01,
 cplot(ols01,
       x = "age",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$female == "No",],
+      data = ols01[["model"]],
       xlab = "Age",
       ylab = "Fitted Values",
       main = "Adjusted Predictions with 95% CIs",
@@ -356,7 +366,16 @@ cplot(ols01,
 cplot(ols01,
       x = "age",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+      data = ols01[["model"]][ols01[["model"]]$female == 0,],
+      xlab = "Age",
+      ylab = "Fitted Values",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
+
+cplot(ols01,
+      x = "age",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$female == 1,],
       xlab = "Age",
       ylab = "Fitted Values",
       main = "Adjusted Predictions with 95% CIs",
@@ -367,8 +386,8 @@ cplot(ols01,
 cplot(ols01,
       x = "age",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$female == "No",],
-      col = "blue",
+      data = ols01[["model"]],
+      col = "black",
       xlab = "Age",
       ylab = "Fitted Values",
       ylim = c(0,
@@ -379,7 +398,15 @@ cplot(ols01,
 cplot(ols01,
       x = "age",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$female == "Yes",],
+      data = ols01[["model"]][ols01[["model"]]$female == 0,],
+      col = "blue",
+      rug = FALSE,
+      draw = "add")
+
+cplot(ols01,
+      x = "age",
+      what = "prediction",
+      data = ols01[["model"]][ols01[["model"]]$female == 1,],
       col = "red",
       rug = FALSE,
       draw = "add")
@@ -388,33 +415,46 @@ cplot(ols01,
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(min(ols01[["model"]]$female),
+                      mean(ols01[["model"]]$female),
+                      max(ols01[["model"]]$female)),
             what = "prediction",
-            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
+            data = ols01[["model"]],
+            draw = FALSE)) # Default is to set age = mean(ols01[["model"]]$age)
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(min(ols01[["model"]]$female),
+                      mean(ols01[["model"]]$female),
+                      max(ols01[["model"]]$female)),
             what = "prediction",
             data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
             draw = FALSE))
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(min(ols01[["model"]]$female),
+                      mean(ols01[["model"]]$female),
+                      max(ols01[["model"]]$female)),
             what = "prediction",
             data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
             draw = FALSE))
 
 print(cplot(ols01,
             x = "female",
+            xvals = c(min(ols01[["model"]]$female),
+                      mean(ols01[["model"]]$female),
+                      max(ols01[["model"]]$female)),
             what = "prediction",
             data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
             draw = FALSE))
 
 ### Plotting predicted values for specific values of female
 
-cplot(ols01,
+cplot(ols01Factor,
       x = "female",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == min(ols01[["model"]]$age),],
+      data = ols01Factor[["model"]][ols01Factor[["model"]]$age == min(ols01Factor[["model"]]$age),],
       col = "blue",
       xlab = "Gender",
       ylab = "Fitted Values",
@@ -423,18 +463,18 @@ cplot(ols01,
       main = "Adjusted Predictions with 95% CIs",
       rug = FALSE)
 
-cplot(ols01,
+cplot(ols01Factor,
       x = "female",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == median(ols01[["model"]]$age),],
+      data = ols01Factor[["model"]][ols01Factor[["model"]]$age == median(ols01Factor[["model"]]$age),],
       col = "black",
       rug = FALSE,
       draw = "add")
 
-cplot(ols01,
+cplot(ols01Factor,
       x = "female",
       what = "prediction",
-      data = ols01[["model"]][ols01[["model"]]$age == max(ols01[["model"]]$age),],
+      data = ols01Factor[["model"]][ols01Factor[["model"]]$age == max(ols01Factor[["model"]]$age),],
       col = "red",
       rug = FALSE,
       draw = "add")
@@ -446,14 +486,21 @@ cplot(ols01,
 print(cplot(logit01,
             x = "children",
             xvals = c(mean(logit01[["model"]]$children)),
-            data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+            data = logit01[["model"]],
             what = "prediction",
-            draw = FALSE)) # Default is to set hsgrad = "Yes"
+            draw = FALSE)) # Default is to set hsgrad = mean(logit01[["model"]]$hsgrad)
 
 print(cplot(logit01,
             x = "children",
             xvals = c(mean(logit01[["model"]]$children)),
-            data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+            what = "prediction",
+            draw = FALSE))
+
+print(cplot(logit01,
+            x = "children",
+            xvals = c(mean(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
             what = "prediction",
             draw = FALSE))
 
@@ -462,7 +509,7 @@ print(cplot(logit01,
             xvals = c(min(logit01[["model"]]$children),
                       mean(logit01[["model"]]$children),
                       max(logit01[["model"]]$children)),
-            data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+            data = logit01[["model"]],
             what = "prediction",
             draw = FALSE))
 
@@ -471,7 +518,16 @@ print(cplot(logit01,
             xvals = c(min(logit01[["model"]]$children),
                       mean(logit01[["model"]]$children),
                       max(logit01[["model"]]$children)),
-            data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+            what = "prediction",
+            draw = FALSE))
+
+print(cplot(logit01,
+            x = "children",
+            xvals = c(min(logit01[["model"]]$children),
+                      mean(logit01[["model"]]$children),
+                      max(logit01[["model"]]$children)),
+            data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
             what = "prediction",
             draw = FALSE))
 
@@ -482,7 +538,7 @@ print(cplot(logit01,
 cplot(logit01,
       x = "children",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
+      data = logit01[["model"]],
       xlab = "Number of Children",
       ylab = "Predicted Probability",
       main = "Adjusted Predictions with 95% CIs",
@@ -491,7 +547,16 @@ cplot(logit01,
 cplot(logit01,
       x = "children",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+      xlab = "Number of Children",
+      ylab = "Predicted Probability",
+      main = "Adjusted Predictions with 95% CIs",
+      rug = FALSE)
+
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
       xlab = "Number of Children",
       ylab = "Predicted Probability",
       main = "Adjusted Predictions with 95% CIs",
@@ -502,8 +567,8 @@ cplot(logit01,
 cplot(logit01,
       x = "children",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$hsgrad == "No",],
-      col = "blue",
+      data = logit01[["model"]],
+      col = "black",
       xlab = "Number of Children",
       ylab = "Predicted Probability",
       ylim = c(0.6,
@@ -514,7 +579,15 @@ cplot(logit01,
 cplot(logit01,
       x = "children",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$hsgrad == "Yes",],
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 0,],
+      col = "blue",
+      rug = FALSE,
+      draw = "add")
+
+cplot(logit01,
+      x = "children",
+      what = "prediction",
+      data = logit01[["model"]][logit01[["model"]]$hsgrad == 1,],
       col = "red",
       rug = FALSE,
       draw = "add")
@@ -523,33 +596,46 @@ cplot(logit01,
 
 print(cplot(logit01,
             x = "hsgrad",
+            xvals = c(min(logit01[["model"]]$hsgrad),
+                      mean(logit01[["model"]]$hsgrad),
+                      max(logit01[["model"]]$hsgrad)),
             what = "prediction",
-            draw = FALSE)) # Default is to set age = mean(ols01$model$age)
+            data = logit01[["model"]],
+            draw = FALSE)) # Default is to set children = mean(logit01[["model"]]$children)
 
 print(cplot(logit01,
             x = "hsgrad",
             what = "prediction",
+            xvals = c(min(logit01[["model"]]$hsgrad),
+                      mean(logit01[["model"]]$hsgrad),
+                      max(logit01[["model"]]$hsgrad)),
             data = logit01[["model"]][logit01[["model"]]$children == min(logit01[["model"]]$children),],
             draw = FALSE))
 
 print(cplot(logit01,
             x = "hsgrad",
+            xvals = c(min(logit01[["model"]]$hsgrad),
+                      mean(logit01[["model"]]$hsgrad),
+                      max(logit01[["model"]]$hsgrad)),
             what = "prediction",
             data = logit01[["model"]][logit01[["model"]]$children == median(logit01[["model"]]$children),],
             draw = FALSE))
 
 print(cplot(logit01,
             x = "hsgrad",
+            xvals = c(min(logit01[["model"]]$hsgrad),
+                      mean(logit01[["model"]]$hsgrad),
+                      max(logit01[["model"]]$hsgrad)),
             what = "prediction",
             data = logit01[["model"]][logit01[["model"]]$children == max(logit01[["model"]]$children),],
             draw = FALSE))
 
 ### Plotting predicted values for specific values of female
 
-cplot(logit01,
+cplot(logit01Factor,
       x = "hsgrad",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$children == min(logit01[["model"]]$children),],
+      data = logit01Factor[["model"]][logit01Factor[["model"]]$children == min(logit01Factor[["model"]]$children),],
       col = "blue",
       xlab = "High School Grad.",
       ylab = "Predicted Probability",
@@ -558,18 +644,18 @@ cplot(logit01,
       main = "Adjusted Predictions with 95% CIs",
       rug = FALSE)
 
-cplot(logit01,
+cplot(logit01Factor,
       x = "hsgrad",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$children == median(logit01[["model"]]$children),],
+      data = logit01Factor[["model"]][logit01Factor[["model"]]$children == median(logit01Factor[["model"]]$children),],
       col = "black",
       rug = FALSE,
       draw = "add")
 
-cplot(logit01,
+cplot(logit01Factor,
       x = "hsgrad",
       what = "prediction",
-      data = logit01[["model"]][logit01[["model"]]$children == max(logit01[["model"]]$children),],
+      data = logit01Factor[["model"]][logit01Factor[["model"]]$children == max(logit01Factor[["model"]]$children),],
       col = "red",
       rug = FALSE,
       draw = "add") # Notice that the probabilities are plotted in the wrong location!
