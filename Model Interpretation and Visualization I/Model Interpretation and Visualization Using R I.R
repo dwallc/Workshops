@@ -782,23 +782,6 @@ plot(margins(ols01Factor,
      main = "OLS Average Marginal Effects (AMEs) - Minimum to Maximum (MinMax)",
      ylab = "AME")
 
-summary(margins(ols01Factor,
-                change = "minmax",
-                at = list(age = c(25,
-                                  75)))) # ZMEs are zero because age is treated as a constant
-
-summary(margins(ols01Factor,
-                change = "minmax",
-                at = list(female = c("Male",
-                                     "Female"))))
-
-summary(margins(ols01Factor,
-                change = "minmax",
-                at = list(age = c(25,
-                                  75),
-                          female = c("Male",
-                                     "Female"))))
-
 #### Moving from the 1st quartile to 3rd quartile of x
 
 summary(margins(ols01Factor,
@@ -809,23 +792,6 @@ plot(margins(ols01Factor,
      main = "OLS Average Marginal Effects (AMEs) - Inter-quartile Range (IQR)",
      ylab = "AME")
 
-summary(margins(ols01Factor,
-                change = "iqr",
-                at = list(age = c(25,
-                                  75))))
-
-summary(margins(ols01Factor,
-                change = "iqr",
-                at = list(female = c("Male",
-                                     "Female"))))
-
-summary(margins(ols01Factor,
-                change = "iqr",
-                at = list(age = c(25,
-                                  75),
-                          female = c("Male",
-                                     "Female"))))
-
 #### Moving from mean(x) - sd(x) to mean(x) + sd(x)
 
 summary(margins(ols01Factor,
@@ -835,23 +801,6 @@ plot(margins(ols01Factor,
              change = "sd"),
      main = "OLS Average Marginal Effects (AMEs) - 1 Standard Deviation (SD)",
      ylab = "AME")
-
-summary(margins(ols01Factor,
-                change = "sd",
-                at = list(age = c(25,
-                                  75))))
-
-summary(margins(ols01Factor,
-                change = "sd",
-                at = list(female = c("Male",
-                                     "Female"))))
-
-summary(margins(ols01Factor,
-                change = "sd",
-                at = list(age = c(25,
-                                  75),
-                          female = c("Male",
-                                     "Female"))))
 
 #### Moving from specified values
 
@@ -1106,35 +1055,51 @@ plot(margins(logit01Factor,
 
 ### Average Conditional Discrete Change
 
+#### Numerical approximation of the derivative
+
+summary(margins(logit01Factor,
+                change = "dydx",
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)))))
+
+#### Moving from specified values
+
+##### Going from 2 children to 3 children
+
+summary(margins(logit01Factor,
+                change = c(2,
+                           3),
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)))))
+
+##### Going from 6 children to 7 children
+
+summary(margins(logit01Factor,
+                change = c(6,
+                           7),
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)))))
+
 ### Conditional Discrete Change
 
+#### Numerical approximation of the derivative
 
+summary(margins(logit01Factor,
+                change = "dydx",
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)),
+                          hsgrad = sort(unique(logit01Factor[["model"]]$hsgrad)))))
 
+#### Moving from specified values
 
+##### Going from 2 children to 3 children
 
+summary(margins(logit01Factor,
+                change = c(2,
+                           3),
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)),
+                          hsgrad = sort(unique(logit01Factor[["model"]]$hsgrad)))))
 
+##### Going from 6 children to 7 children
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+summary(margins(logit01Factor,
+                change = c(6,
+                           7),
+                at = list(children = sort(unique(logit01Factor[["model"]]$children)),
+                          hsgrad = sort(unique(logit01Factor[["model"]]$hsgrad)))))
