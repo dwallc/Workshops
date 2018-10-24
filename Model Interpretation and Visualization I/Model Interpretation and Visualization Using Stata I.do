@@ -74,14 +74,14 @@ ssc install estout, replace
 		
 	capture mkdir Tables	/*	Create a folder called "Tables" if it does not exist.	*/
 	
-estout ols1 probit1 logit1, cells(b(star fmt(3)) se(par)) eqlabels(none) ///
+estout probit1 logit1, cells(b(star fmt(3)) se(par)) eqlabels(none) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) starlevels(* 0.05) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
 	children "Number of Children" 1.hsgrad "High School Grad.") ///
 	drop(0.female 0.hsgrad) modelwidth(16) varwidth(45) ///
 	legend collabels(, none) mlabels(OLS Probit Logit)
 		
-estout ols1 probit1 logit1 using Tables\MIVtable01.txt, ///
+estout probit1 logit1 using Tables\MIVtable01.txt, ///
 	replace cells(b(star fmt(3)) se(par)) eqlabels(none) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
@@ -89,7 +89,7 @@ estout ols1 probit1 logit1 using Tables\MIVtable01.txt, ///
 	drop(0.female 0.hsgrad) modelwidth(16) starlevels(* 0.05) ///
 	legend varwidth(45) collabels(, none) mlabels(OLS Probit Logit)
 	
-estout ols1 probit1 logit1 using Tables\MIVtable01.tex, ///
+estout probit1 logit1 using Tables\MIVtable01.tex, ///
 	replace style(tex) cells(b(star fmt(3)) se(par)) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) eqlabels(none) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
@@ -213,10 +213,17 @@ margins female, atmeans /*	Calculating the overall expected mean for	*/
 
 marginsplot
 		
-marginsplot, recast(dot) ///
+marginsplot, recast(bar) ///
 	plotopts(color(gs12)) ///
-	ciopts(color(black))	/*	Changes the plot options so that the	*/
+	ciopts(color(black))   /*	Changes the plot options so that the	*/
 							/*	predicted means are plotted as bars. 	*/
+							/* but, misleading graph */
+							
+marginsplot, recast(bar) ///   /*let's correct the y-axis to make for a better */
+	plotopts(color(gs12)) /// /* comparison  */
+	ciopts(color(black)) ///
+	yscale(range(0 25000)) ///
+	ylabel(0(5000)30000)
 
 		/*	Specific Values - Continuous and Discrete Variables	*/
 			
@@ -231,9 +238,17 @@ margins female, at(age=(18(1)89)) ///
 
 marginsplot, recast(line) recastci(rarea) ///
 	ci1opts(color(ltblue)) ///
-	ci2opts(color(orange))
+	ci2opts(color(orange)) 
+	
+	/// again, let's rescale the variables 
+	
+marginsplot, recast(line) recastci(rarea) ///
+	ci1opts(color(ltblue)) ///
+	ci2opts(color(orange)) ///
+	yscale(range(0 50000)) ///
+	ylabel(0(10000)50000)
 		
-	/*	Part B - BRM Models	*/
+	/*	Part B - Binary DV Models	*/
 	
 	estimates restore logit1
 		
@@ -252,7 +267,15 @@ margins, at(children=(0(1)8)) atmeans
 
 marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
 	ciopts(color(gs12))
+/* let's alter the scale, see what changes */
 
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12)) yscale(range(0 1)) ylabel(0(.1)1)
+
+/* 0 to 1, may be to big, masking real differences, let's try .7 to 1 */
+marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
+	ciopts(color(gs12)) yscale(range(.7 1)) ylabel(.7(.1)1)
+	
 		/*	Specific Values - Discrete Variables	*/
 
 margins hsgrad
@@ -312,12 +335,12 @@ marginsplot
 margins, dydx(female) atmeans continuous	/* Treat female as a continuous variable.	*/
 
 marginsplot
+
+reg realrinc c.age##i.female
+
 		
 margins, dydx(female) at(age=(18(1)89)) ///
-	atmeans noatlegend	/*	Despite varying the highest year of	*/
-						/*	education completed, the effect		*/
-						/*	gender has on income does not 		*/
-						/*	change.								*/
+	atmeans noatlegend
 			
 marginsplot, recast(line) recastci(rarea) ///
 	plotopts(color(black)) ///
@@ -330,7 +353,7 @@ marginsplot, recast(line) recastci(rarea) ///
 	plotopts(color(black)) ///
 	ciopts(color(gs12))
 	
-	/*	Part B - BRM Models	*/
+	/*	Part B 	*/
 		
 	estimates restore logit1
 	
@@ -389,18 +412,6 @@ margins, dydx(hsgrad) at(children=(0(1)8))
 marginsplot, recast(line) recastci(rarea) plotopts(color(black)) ///
 	ciopts(color(gs12))
 			
-margins hsgrad, at(children=(0 1)) post
-
-	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
-		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
-	
-	estimates restore logit1
-	
-margins hsgrad, at(children=(7 8)) post
-
-	nlcom (_b[1._at#0.hsgrad] - _b[2._at#0.hsgrad]) ///
-		(_b[1._at#1.hsgrad] - _b[2._at#1.hsgrad])
-		
 		
 	/************/
 	/* Cleanup	*/
