@@ -27,7 +27,41 @@
  \titlepage
 \end{frame}
 
-\section{OLS Marginal Effects}
+\section{OLS Regression}
+
+\subsection{OLS Predicted Values}
+
+\begin{frame}
+	\frametitle{OLS Predicted Values Introduction}
+		\begin{itemize}
+			\item Definition -- The value predicted for $Y$ when $X$ takes on a specific value, or set of values.
+			\item Formula -- $E[Y|x^{*}]=x^{*}\beta$
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{OLS Predicted Values Types}
+		\begin{itemize}
+			\item Average Predicted Value (APV) -- The predicted value $E[Y|X]$ for each observation at specified value(s) $x^{*}$, and taking the average of these values.
+				\begin{itemize}
+					\item $\overline{E[Y|X=x^{*}]}=\frac{1}{N}\sum_{i=1}^{N}x^{*}\beta$
+					\item \textit{The average expected value of $Y$ is...}
+				\end{itemize}
+			\item Predicted Value at the Mean (PVM) -- The predicted value $E[Y|X]$ for each observation at its mean values.
+				\begin{itemize}
+					\item $E[Y|X=\bar{x}]=\bar{x}\beta$
+					\item \textit{For someone who is average on all characteristics, the expected value of $Y$ is...}
+				\end{itemize}
+			\item Predicted Value at Representative Values (PVR) -- The predicted value of $E[Y|X]$ for each observation at specified value(s) $x^{*}$.
+				\begin{itemize}
+					\item Specify values that are instructive for the substantive questions under consideration.
+					\item PVM is a special case of PVR.
+					\item If not all variables are specified, PVRs will be calculated for the variables specified, and averaged across the values for the unspecified variables.
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\subsection{OLS Marginal Effects}
 
 \begin{frame}
 	\frametitle{OLS Marginal Effects Definitions}
@@ -67,7 +101,51 @@
 		\end{figure}
 \end{frame}
 
-\section{BRM Marginal Effects}
+\section{BRM Regression}
+
+\subsection{BRM Predicted Probabilities}
+
+\begin{frame}
+\frametitle{BRM Predicted Probabilities Introduction}
+	\begin{itemize}
+		\item Definition -- The probability predicted for $Pr\left(y=1|X\right)$ when $X$ takes on a specific value, or set of values.
+		\item Formula -- $Pr\left(y=1|X=x^{*}\right)=F\left(x^{*}\beta\right)$
+			\begin{itemize}
+				\item Probit -- $F=\mbox{Normal CDF}$
+				\item Logit -- $F=\mbox{Logistic CDF}$
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{BRM Predicted Probabilities Types}
+		\begin{itemize}
+			\item Average Predicted Probability (APP) -- The predicted probability $Pr\left(y=1|X\right)$ for each observation at specified value(s) $x^{*}$, and taking the average of these probabilities.
+				\begin{itemize}
+					\item $\overline{Pr\left(y=1|X=x^{*}\right)}=\frac{1}{N}\sum_{i=1}^{N}F\left(x^{*}\beta\right)$
+					\item \textit{The average predicted probability of $Y$ is...}
+				\end{itemize}
+			\item Predicted Probability at the Mean (PPM) -- The predicted probability $Pr\left(y=1|X\right)$ for each observation at its mean values.
+				\begin{itemize}
+					\item $Pr\left(y=1|X=\bar{x}\right)=F\left(\bar{x}\beta\right)$
+					\item \textit{For someone who is average on all characteristics, the predicted probability of $Y$ is...}
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{BRM Predicted Probabilities Types}
+		\begin{itemize}
+			\item Predicted Probability at Representative Values (PPR) -- The predicted probability of $Pr\left(y=1|X\right)$ for each observation at specified value(s) $x^{*}$.
+				\begin{itemize}
+					\item Specify values that are instructive for the substantive questions under consideration.
+					\item PPM is a special case of PPR.
+					\item If not all variables are specified, PPRs will be calculated for the variables specified, and averaged across the values for the unspecified variables.
+				\end{itemize}
+		\end{itemize}
+\end{frame}
+
+\subsection{BRM Marginal Effects}
 
 \begin{frame}
 	\frametitle{BRM Marginal Effects Definitions}
@@ -93,10 +171,6 @@
 					\item Logit only: $\frac{\partial Pr\left(y=1|X=x^{*}\right)}{\partial x_{k}}=Pr\left(y=1|X=x^{*}\right)\left[1-Pr\left(y=1|X=x^{*}\right)\right]\beta_{k}$
 				\end{itemize}
 			\item Discrete Change: $\frac{\Delta Pr\left(y=1|X=x\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}=Pr\left(y=1|X=x, x_{k}=x^{end}_{k}\right)-Pr\left(y=1|X=x, x_{k}=x^{start}_{k}\right)=F(X\beta, x_{k}=x^{end}_{k})-F(X\beta, x_{k}=x^{start}_{k})$
-				\begin{itemize}
-					\item Probit -- $F=\mbox{Normal CDF}$
-					\item Logit -- $F=\mbox{Logistic CDF}$
-				\end{itemize}
 		\end{itemize}
 \end{frame}
 
@@ -120,16 +194,16 @@
 \begin{frame}
 	\frametitle{BRM Marginal Effects Types}
 		\begin{itemize}
-			\item Average Marginal Effect (AME) -- The marginal effect of $x_{k}$ for each observation at its observed values $x_{i}$, and taking the average of these effects.
+			\item Average Marginal Effect (AME) -- The marginal effect of $x_{k}$ for each observation at specified values $x^{*}$, and taking the average of these effects.
 				\begin{itemize}
 					\item Marginal Change
 						\begin{itemize}
-							\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\partial Pr\left(y=1|X=x_{i}\right)}{\partial x_{k}}$
+							\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\partial Pr\left(y=1|X=x^{*}\right)}{\partial x_{k}}$
 							\item \textit{The average marginal effect of $x_{k}$ is...}
 						\end{itemize}
 					\item Discrete Change
 						\begin{itemize}
-							\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\Delta Pr\left(y=1|X=x_{i}\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}$
+							\item $\frac{1}{N}\sum_{i=1}^{N}\frac{\Delta Pr\left(y=1|X=x^{*}\right)}{\Delta x_{k}\left(x^{start}_{k}\rightarrow x^{end}_{k}\right)}$
 							\item \textit{On average, increasing $x_{k}$ by $\delta$ increases the probability by...}
 							\item \textit{On average, increasing $x_{k}$ from \underline{start-value} to \underline{end-value} increases the probability by...}
 						\end{itemize}
