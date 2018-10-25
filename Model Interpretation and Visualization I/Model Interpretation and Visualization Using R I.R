@@ -220,7 +220,7 @@ if (file.exists("./Graphs")) {
 }
 
 ## OLS Models
-
+windows() # quartz() if using Mac
 dwplot(ols01,
        show_intercept = TRUE) %>%
         relabel_predictors(c("(Intercept)" = "Intercept",
@@ -230,6 +230,7 @@ dwplot(ols01,
                    colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("OLS Model Results") +
+        theme_bw() +
         theme(plot.title = element_text(hjust = 0.5))
 
 ggsave("./Graphs/MIVcoefplot01.png")
@@ -242,6 +243,7 @@ dwplot(ols01,
                    colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("OLS Model Results") +
+        theme_bw() +
         theme(plot.title = element_text(hjust = 0.5))
 
 ggsave("./Graphs/MIVcoefplot01b.png")
@@ -260,6 +262,7 @@ dwplot(list(probit01,
                    colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("BRM Model Results") +
+        theme_bw() +
         scale_color_discrete(labels = c("Probit",
                                         "Logit")) +
         theme(plot.title = element_text(hjust = 0.5),
@@ -288,6 +291,7 @@ dwplot(brm01,
                    colour = "black") +
         xlab("Coefficient Estimate") +
         ggtitle("BRM Model Results") +
+        theme_bw() +
         theme(plot.title = element_text(hjust = 0.5),
               legend.position = "none")
 

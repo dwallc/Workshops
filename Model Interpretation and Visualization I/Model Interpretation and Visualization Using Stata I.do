@@ -74,14 +74,14 @@ ssc install estout, replace
 		
 	capture mkdir Tables	/*	Create a folder called "Tables" if it does not exist.	*/
 	
-estout probit1 logit1, cells(b(star fmt(3)) se(par)) eqlabels(none) ///
+estout ols1 probit1 logit1, cells(b(star fmt(3)) se(par)) eqlabels(none) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) starlevels(* 0.05) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
 	children "Number of Children" 1.hsgrad "High School Grad.") ///
 	drop(0.female 0.hsgrad) modelwidth(16) varwidth(45) ///
 	legend collabels(, none) mlabels(OLS Probit Logit)
 		
-estout probit1 logit1 using Tables\MIVtable01.txt, ///
+estout ols1 probit1 logit1 using Tables\MIVtable01.txt, ///
 	replace cells(b(star fmt(3)) se(par)) eqlabels(none) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
@@ -89,7 +89,7 @@ estout probit1 logit1 using Tables\MIVtable01.txt, ///
 	drop(0.female 0.hsgrad) modelwidth(16) starlevels(* 0.05) ///
 	legend varwidth(45) collabels(, none) mlabels(OLS Probit Logit)
 	
-estout probit1 logit1 using Tables\MIVtable01.tex, ///
+estout ols1 probit1 logit1 using Tables\MIVtable01.tex, ///
 	replace style(tex) cells(b(star fmt(3)) se(par)) ///
 	stats(N aic bic, fmt(0 2) labels(N AIC BIC)) eqlabels(none) ///
 	varlabel(age "Age" 1.female "Gender" _cons Constant ///
