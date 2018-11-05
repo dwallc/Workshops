@@ -4,7 +4,7 @@
 #       Author: Desmond D. Wallace                                                      #
 #       Purpose:        Create tables and plots to report regression results, and       #
 #                               introduce margins project.                              #
-#       Input Files:    Data\MIVdata.dta                                                #
+#       Input File:    Data\MIVdata.dta                                                 #
 #       Output Files:   Tables\MIVmodel01.txt,                                          #
 #                       Tables\MIVmodel01.tex,                                          #
 #                       Graphs\MIVcoefplot01.png,                                       #

@@ -16,7 +16,7 @@ log using "Model Interpretation and Visualization Using Stata I.log", ///
 /*	Author: 	Scott J. LaCombe												*/
 /*	Purpose:	Create tables and plots to report regression results, and		*/
 /*					introduce margins and marginsplot commands.					*/
-/*	Input Files:	Data\MIVdata.dta											*/
+/*	Input File:	Data\MIVdata.dta												*/
 /*	Output Files:	Model Interpretation and Visualization Using Stata I.log,	*/
 /*					Tables\MIVmodel01.txt,										*/
 /*					Tables\MIVmodel01.tex,										*/
