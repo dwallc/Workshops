@@ -2,7 +2,7 @@
 #       Name:   Basic Data Visualization Using R (ggplot).R     #
 #       Date:   September 26, 2018                              #
 #       Author: Desmond D. Wallace                              #
-#       Purpose:        Create basic plots via ggplor plotting  #
+#       Purpose:        Create basic plots via ggplot plotting  #
 #                       system.                                 #
 #################################################################
 
