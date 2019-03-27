@@ -25,8 +25,7 @@ packages <- c("gridExtra",
               "tidyverse",
               "rio",
               "lme4",
-              "sjstats",
-              "sjPlot")
+              "sjstats")
 
 ipak(packages)
 
@@ -119,7 +118,7 @@ grid.arrange(plotHSB4,
              plotHSB6)
 
 
-# Example II: Null Model (MLM)
+# Example II: Random Intercept Model (Null Model)
 
 ## Estimate the model with individual- and group-level variation
 
@@ -189,3 +188,77 @@ plotHSB9 <- ggplot(data = dataHSB[dataHSB$idGrp == 1296, ],
 grid.arrange(plotHSB7,
              plotHSB8,
              plotHSB9)
+
+
+# Example III: Random Intercept Model (Level-1 Covariates)
+
+## Estimate a random intercept model with level-1 variables
+
+modelHSB3 <- lmer(mathach ~ ses + as.factor(minority) + as.factor(female) +
+                          (1|idGrp),
+                  data = dataHSB,
+                  REML = FALSE)
+
+summary(modelHSB3)
+
+icc(modelHSB3)
+
+## Create data object featuring group-specific effects
+
+grpEffHSB <- ranef(modelHSB3)
+
+grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]],
+                                var = "idGrp") %>%
+             transmute(idGrp = as.numeric(idGrp),
+                       idGrpEffect = `(Intercept)`)
+
+## Calculate the group means
+
+dataHSB <- dataHSB %>%
+           mutate(GrandMean = predict(modelHSB3,
+                                      re.form = NA),
+                  predMathAch = predict(modelHSB3),
+                  idGrpEffect2 = predMathAch - GrandMean) %>%
+           inner_join(grpEffHSB,
+                      by = "idGrp")
+
+## Plot fixed effects depending on group levels
+
+plotHSB10 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 0, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+            geom_line() +
+            ggtitle("White Males") +
+            theme(legend.position = "none")
+
+plotHSB11 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 1, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("White Females") +
+             theme(legend.position = "none")
+
+plotHSB12 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 0, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("Minority Males") +
+             theme(legend.position = "none")
+
+plotHSB13 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 1, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("Minority Females") +
+             theme(legend.position = "none")
+
+### Place individual plots on same page
+
+grid.arrange(plotHSB10,
+             plotHSB11,
+             plotHSB12,
+             plotHSB13)
