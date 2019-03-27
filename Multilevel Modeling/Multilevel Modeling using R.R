@@ -32,7 +32,8 @@ ipak(packages)
 
 # Import the HSB All.xlsx dataset
 
-dataHSB <- import("./Data/HSB All R.xlsx")
+dataHSB <- import("./Data/HSB All R.xlsx") %>%
+           mutate(sizeScaled = size / 100)
 
 
 # Visually explore the 'mathach' variable
@@ -132,6 +133,8 @@ icc(modelHSB2)
 
 ## Create data object featuring group-specific effects
 
+fixEffHSB <- fixef(modelHSB2)
+
 grpEffHSB <- ranef(modelHSB2)
 
 grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]],
@@ -145,10 +148,11 @@ dataHSB <- dataHSB %>%
            select(-GrandMean) %>%
            mutate(GrandMean = predict(modelHSB2,
                                       re.form = NA),
-                  idGrpMean = predict(modelHSB2),
-                  idGrpEffect2 = idGrpMean - GrandMean) %>%
+                  idGrpMean = predict(modelHSB2)) %>%
            inner_join(grpEffHSB,
-                      by = "idGrp")
+                      by = "idGrp") %>%
+           mutate(idGrpMeanCheck = fixEffHSB[1] +
+                          idGrpEffect)
 
 #### Plot #7 - idGrp = 1224
 
@@ -205,6 +209,8 @@ icc(modelHSB3)
 
 ## Create data object featuring group-specific effects
 
+fixEffHSB <- fixef(modelHSB3)
+
 grpEffHSB <- ranef(modelHSB3)
 
 grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]],
@@ -215,12 +221,17 @@ grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]],
 ## Calculate the group means
 
 dataHSB <- dataHSB %>%
-           mutate(GrandMean = predict(modelHSB3,
-                                      re.form = NA),
-                  predMathAch = predict(modelHSB3),
-                  idGrpEffect2 = predMathAch - GrandMean) %>%
+           select(-idGrpMean,
+                  -idGrpEffect,
+                  -idGrpMeanCheck) %>%
+           mutate(predMathAch = predict(modelHSB3)) %>%
            inner_join(grpEffHSB,
-                      by = "idGrp")
+                      by = "idGrp") %>%
+           mutate(predMathAchCheck = fixEffHSB[1] +
+                          idGrpEffect +
+                          fixEffHSB[2]*ses +
+                          fixEffHSB[3]*minority +
+                          fixEffHSB[4]*female)
 
 ## Plot fixed effects depending on group levels
 
@@ -230,7 +241,8 @@ plotHSB10 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 0, ],
                         colour = factor(idGrp))) +
             geom_line() +
             ggtitle("White Males") +
-            theme(legend.position = "none")
+            theme(plot.title = element_text(hjust = 0.5),
+                  legend.position = "none")
 
 plotHSB11 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 1, ],
                     aes(ses,
@@ -238,7 +250,8 @@ plotHSB11 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 1, ],
                         colour = factor(idGrp))) +
              geom_line() +
              ggtitle("White Females") +
-             theme(legend.position = "none")
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
 
 plotHSB12 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 0, ],
                     aes(ses,
@@ -246,7 +259,8 @@ plotHSB12 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 0, ],
                         colour = factor(idGrp))) +
              geom_line() +
              ggtitle("Minority Males") +
-             theme(legend.position = "none")
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
 
 plotHSB13 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 1, ],
                     aes(ses,
@@ -254,7 +268,8 @@ plotHSB13 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 1, ],
                         colour = factor(idGrp))) +
              geom_line() +
              ggtitle("Minority Females") +
-             theme(legend.position = "none")
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
 
 ### Place individual plots on same page
 
@@ -262,3 +277,99 @@ grid.arrange(plotHSB10,
              plotHSB11,
              plotHSB12,
              plotHSB13)
+
+
+# Example IV: Random Slope Model (Level-1 Covariates)
+
+## Estimate a random slope model with level-1 variables
+
+modelHSB4 <- lmer(mathach ~ ses + as.factor(minority) + as.factor(female) +
+                          (1 + ses|idGrp),
+                  data = dataHSB,
+                  REML = FALSE)
+
+summary(modelHSB4)
+
+## Create data object featuring group-specific effects
+
+fixEffHSB <- fixef(modelHSB4)
+
+grpEffHSB <- ranef(modelHSB4)
+
+grpEffHSB <- rownames_to_column(grpEffHSB[["idGrp"]]) %>%
+             transmute(idGrp = as.numeric(rowname),
+                       idGrpEffect = `(Intercept)`,
+                       sesEffect = ses)
+
+## Calculate the group means and slopes
+
+dataHSB <- dataHSB %>%
+           select(-predMathAch,
+                  -idGrpEffect,
+                  -predMathAchCheck) %>%
+           mutate(predMathAch = predict(modelHSB4)) %>%
+           inner_join(grpEffHSB,
+                      by = "idGrp") %>%
+           mutate(predMathAchCheck = fixEffHSB[1] +
+                          idGrpEffect +
+                          (fixEffHSB[2] +
+                          sesEffect)*ses +
+                          fixEffHSB[3]*minority +
+                          fixEffHSB[4]*female)
+
+## Plot fixed effects depending on group levels
+
+plotHSB14 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 0, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("White Males") +
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
+
+plotHSB15 <- ggplot(dataHSB[dataHSB$minority == 0 & dataHSB$female == 1, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("White Females") +
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
+
+plotHSB16 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 0, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("Minority Males") +
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
+
+plotHSB17 <- ggplot(dataHSB[dataHSB$minority == 1 & dataHSB$female == 1, ],
+                    aes(ses,
+                        predMathAch,
+                        colour = factor(idGrp))) +
+             geom_line() +
+             ggtitle("Minority Females") +
+             theme(plot.title = element_text(hjust = 0.5),
+                   legend.position = "none")
+
+### Place individual plots on same page
+
+grid.arrange(plotHSB14,
+             plotHSB15,
+             plotHSB16,
+             plotHSB17)
+
+
+# Example V: Random Slope Model (Level-1 and Level-2 Covariates)
+
+## Estimate a random slope model with level-1 and level-2 variables
+
+modelHSB5 <- lmer(mathach ~ ses*sizeScaled + minority + female +
+                          sector + (1 + ses|idGrp),
+                  data = dataHSB,
+                  REML = FALSE)
+
+summary(modelHSB5)
