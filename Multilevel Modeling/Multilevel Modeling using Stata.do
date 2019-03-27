@@ -38,7 +38,7 @@ import excel "Data\HSB All.xlsx", sheet("HSB All") firstrow clear
 
 	describe
 	
-	bro
+	///bro
 	
 	/*	Visually explore the 'mathach' variable.	*/
 	
