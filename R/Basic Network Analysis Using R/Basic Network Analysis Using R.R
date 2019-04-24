@@ -3,7 +3,7 @@
 #       Date:   October 10, 2018                                #
 #       Author: Desmond D. Wallace                              #
 #       Purpose:        Create basic plots and and calculate    #
-#                       basic statistics of network data..      #
+#                       basic statistics of network data.       #
 #################################################################
 
 
