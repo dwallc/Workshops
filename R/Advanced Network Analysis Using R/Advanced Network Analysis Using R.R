@@ -213,3 +213,19 @@ reportsCugTestRecip <- cug.test(netReports,
 print.cug.test(reportsCugTestRecip)
 
 plot.cug.test(reportsCugTestRecip)
+
+
+# Quadratic Assignment Procedure (QAP) Hypothesis Tests
+
+qapFriendsReports <- qaptest(list(netFriendship,
+                                  netReports),
+                             gcor,
+                             g1 = 1,
+                             g2 = 2,
+                             reps = 1000)
+
+summary.qaptest(qapFriendsReports)
+
+plot.qaptest(qapFriendsReports)
+
+
