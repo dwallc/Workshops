@@ -72,66 +72,144 @@ summary(netReports)
 
 # Calculate Network Statistics
 
-## Centrality
+## Density - The ratio of the number of edges and the number of possible edges
 
-### Degree - Number of adjacent ties for a node
+gden(netAdvice,
+     mode = "digraph")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "indegree")
+gden(netFriendship,
+     mode = "digraph")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "outdegree")
+gden(netReports,
+     mode = "digraph")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "freeman") # total degree (indegree + outdegree)
+## Transitivity - Situation where actor i is tied to actor j, actor j is tied
+## to actor k, and actor i is likewise tied to actor k. In other words, "a
+## friend of my friend is also my friend."
 
-#### Normalized degree
+gtrans(netAdvice,
+       mode = "digraph",
+       measure = "weak")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "indegree",
-       rescale = TRUE)
+gtrans(netFriendship,
+       mode = "digraph",
+       measure = "weak")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "outdegree",
-       rescale = TRUE)
+gtrans(netReports,
+       mode = "digraph",
+       measure = "weak")
 
-degree(netAdvice,
-       gmode = "digraph",
-       cmode = "freeman",
-       rescale = TRUE)
+## Reciprocity - proportion of dyads which are symmetric
 
-### Betweenness - The number of geodesics (shortest paths) going through a node or a tie
+grecip(netAdvice,
+       measure = "dyadic")
 
-betweenness(netAdvice,
-            gmode = "digraph",
-            cmode = "directed",
-            rescale = TRUE)
+grecip(netFriendship,
+       measure = "dyadic")
 
-betweenness(netFriendship,
-            gmode = "digraph",
-            cmode = "directed",
-            rescale = TRUE)
-
-betweenness(netReports,
-            gmode = "digraph",
-            cmode = "directed",
-            rescale = TRUE)
-
-### Density - The ratio of the number of edges and the number of possible edges
-
-network.density(netAdvice)
-
-network.density(netFriendship)
-
-network.density(netReports)
+grecip(netReports,
+       measure = "dyadic")
 
 
 # Univariate hypothesis testing
 
 ## Question: Are the network statistics we observed above different from what
 ## would be expected if the ties were randomly assigned?
+
+## Univariate Conditional Uniform Graph Tests
+
+### Density
+
+adviceCugTestDen <- cug.test(netAdvice,
+                             gden,
+                             mode = "digraph",
+                             cmode = "edges",
+                             reps = 1000)
+
+print.cug.test(adviceCugTestDen)
+
+plot.cug.test(adviceCugTestDen)
+
+friendshipCugTestDen <- cug.test(netFriendship,
+                                 gden,
+                                 mode = "digraph",
+                                 cmode = "edges",
+                                 reps = 1000)
+
+print.cug.test(friendshipCugTestDen)
+
+plot.cug.test(friendshipCugTestDen)
+
+reportsCugTestDen <- cug.test(netReports,
+                              gden,
+                              mode = "digraph",
+                              cmode = "edges",
+                              reps = 1000)
+
+print.cug.test(reportsCugTestDen)
+
+plot.cug.test(reportsCugTestDen)
+
+### Transitivity
+
+adviceCugTestTrans <- cug.test(netAdvice,
+                               gtrans,
+                               mode = "digraph",
+                               cmode = "edges",
+                               reps = 1000)
+
+print.cug.test(adviceCugTestTrans)
+
+plot.cug.test(adviceCugTestTrans)
+
+friendshipCugTestTrans <- cug.test(netFriendship,
+                                   gtrans,
+                                   mode = "digraph",
+                                   cmode = "edges",
+                                   reps = 1000)
+
+print.cug.test(friendshipCugTestTrans)
+
+plot.cug.test(friendshipCugTestTrans)
+
+reportsCugTestTrans <- cug.test(netReports,
+                                gtrans,
+                                mode = "digraph",
+                                cmode = "edges",
+                                reps = 1000)
+
+print.cug.test(reportsCugTestTrans)
+
+plot.cug.test(reportsCugTestTrans)
+
+### Reciprocity
+
+adviceCugTestRecip <- cug.test(netAdvice,
+                               grecip,
+                               mode = "digraph",
+                               cmode = "edges",
+                               reps = 1000)
+
+print.cug.test(adviceCugTestRecip)
+
+plot.cug.test(adviceCugTestRecip)
+
+friendshipCugTestRecip <- cug.test(netFriendship,
+                                   grecip,
+                                   mode = "digraph",
+                                   cmode = "edges",
+                                   reps = 1000)
+
+print.cug.test(friendshipCugTestRecip)
+
+plot.cug.test(friendshipCugTestRecip)
+
+reportsCugTestRecip <- cug.test(netReports,
+                                grecip,
+                                mode = "digraph",
+                                cmode = "edges",
+                                reps = 1000)
+
+print.cug.test(reportsCugTestRecip)
+
+plot.cug.test(reportsCugTestRecip)
