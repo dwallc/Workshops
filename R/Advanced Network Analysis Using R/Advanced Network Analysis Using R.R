@@ -16,7 +16,7 @@ ipak <- function(pkg){
         sapply(pkg, require, character.only = TRUE)
 }
 
-packages <- c("NetData",
+packages <- c("rio",
               "network",
               "sna")
 
@@ -29,42 +29,51 @@ ipak(packages)
 
 # Set Working Directory
 
-## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Basic Network Analysis Using R")
+## setwd("E:/Desmond's Files/Cloud Storage/Dropbox/GitHub/Workshops/R/Advanced Network Analysis Using R")
 
 
-# Load kracknets dataset
+# Load adjacency matrices into memory
 
-data(kracknets,
-     package = "NetData")
+## Advice
 
-## Type ?NetData::krack_full_data_frame for description of dataset.
+adjAdvice <- import("./Data/advice.csv",
+                    header = TRUE,
+                    select = 2:22)
 
-str(krack_full_data_frame)
+## Friends
 
-View(krack_full_data_frame)
+adjFriends <- import("./Data/friends.csv",
+                     header = TRUE,
+                     select = 2:22)
+
+## Reports
+
+adjReports <- import("./Data/reports.csv",
+                     header = TRUE,
+                     select = 2:22)
 
 ## Create a network graph objects from the data frame
 
 ### Advice Network
 
-netAdvice <- as.network.matrix(advice_data_frame[advice_data_frame[["advice_tie"]] == 1,],
-                               matrix.type = "edgelist",
+netAdvice <- as.network.matrix(adjAdvice,
+                               matrix.type = "adjacency",
                                directed = TRUE)
 
 summary(netAdvice) # reports basic properties and attributes of igraph object
 
 ### Friendship Network
 
-netFriendship <- as.network.matrix(friendship_data_frame[friendship_data_frame[["friendship_tie"]] == 1,],
-                                   matrix.type = "edgelist",
-                                   directed = TRUE)
+netFriends <- as.network.matrix(adjFriends,
+                                matrix.type = "adjacency",
+                                directed = TRUE)
 
-summary(netFriendship)
+summary(netFriends)
 
 ### Reports Network
 
-netReports <- as.network.matrix(reports_to_data_frame[reports_to_data_frame[["reports_to_tie"]] == 1,],
-                                matrix.type = "edgelist",
+netReports <- as.network.matrix(adjReports,
+                                matrix.type = "adjacency",
                                 directed = TRUE)
 
 summary(netReports)
@@ -77,7 +86,7 @@ summary(netReports)
 gden(netAdvice,
      mode = "digraph")
 
-gden(netFriendship,
+gden(netFriends,
      mode = "digraph")
 
 gden(netReports,
@@ -91,7 +100,7 @@ gtrans(netAdvice,
        mode = "digraph",
        measure = "weak")
 
-gtrans(netFriendship,
+gtrans(netFriends,
        mode = "digraph",
        measure = "weak")
 
@@ -104,7 +113,7 @@ gtrans(netReports,
 grecip(netAdvice,
        measure = "dyadic")
 
-grecip(netFriendship,
+grecip(netFriends,
        measure = "dyadic")
 
 grecip(netReports,
