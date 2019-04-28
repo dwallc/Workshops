@@ -129,52 +129,59 @@ grecip(netReports,
 
 ### Density
 
-adviceCugTestDen <- cug.test(netAdvice,
-                             gden,
-                             mode = "digraph",
-                             cmode = "edges",
-                             reps = 1000)
+#### Conditioning on network size
 
-print.cug.test(adviceCugTestDen)
-
-plot.cug.test(adviceCugTestDen)
-
-friendshipCugTestDen <- cug.test(netFriendship,
+adviceCugTestDenSize <- cug.test(netAdvice,
                                  gden,
                                  mode = "digraph",
-                                 cmode = "edges",
+                                 cmode = "size",
                                  reps = 1000)
 
-print.cug.test(friendshipCugTestDen)
+print.cug.test(adviceCugTestDenSize)
 
-plot.cug.test(friendshipCugTestDen)
+windows()
+plot.cug.test(adviceCugTestDenSize)
 
-reportsCugTestDen <- cug.test(netReports,
-                              gden,
-                              mode = "digraph",
-                              cmode = "edges",
-                              reps = 1000)
+#### Conditioning on number of edges
 
-print.cug.test(reportsCugTestDen)
+adviceCugTestDenEdges <- cug.test(netAdvice,
+                                  gden,
+                                  mode = "digraph",
+                                  cmode = "edges",
+                                  reps = 1000)
 
-plot.cug.test(reportsCugTestDen)
+print.cug.test(adviceCugTestDenEdges)
+
+plot.cug.test(adviceCugTestDenEdges)
+
+#### Conditioning on distribution of dyads
+
+adviceCugTestDenCensus <- cug.test(netAdvice,
+                                   gden,
+                                   mode = "digraph",
+                                   cmode = "dyad.census",
+                                   reps = 1000)
+
+print.cug.test(adviceCugTestDenCensus)
+
+plot.cug.test(adviceCugTestDenCensus)
 
 ### Transitivity
 
 adviceCugTestTrans <- cug.test(netAdvice,
                                gtrans,
                                mode = "digraph",
-                               cmode = "edges",
+                               cmode = "size",
                                reps = 1000)
 
 print.cug.test(adviceCugTestTrans)
 
 plot.cug.test(adviceCugTestTrans)
 
-friendshipCugTestTrans <- cug.test(netFriendship,
+friendshipCugTestTrans <- cug.test(netFriends,
                                    gtrans,
                                    mode = "digraph",
-                                   cmode = "edges",
+                                   cmode = "size",
                                    reps = 1000)
 
 print.cug.test(friendshipCugTestTrans)
@@ -184,7 +191,7 @@ plot.cug.test(friendshipCugTestTrans)
 reportsCugTestTrans <- cug.test(netReports,
                                 gtrans,
                                 mode = "digraph",
-                                cmode = "edges",
+                                cmode = "size",
                                 reps = 1000)
 
 print.cug.test(reportsCugTestTrans)
@@ -196,17 +203,17 @@ plot.cug.test(reportsCugTestTrans)
 adviceCugTestRecip <- cug.test(netAdvice,
                                grecip,
                                mode = "digraph",
-                               cmode = "edges",
+                               cmode = "size",
                                reps = 1000)
 
 print.cug.test(adviceCugTestRecip)
 
 plot.cug.test(adviceCugTestRecip)
 
-friendshipCugTestRecip <- cug.test(netFriendship,
+friendshipCugTestRecip <- cug.test(netFriends,
                                    grecip,
                                    mode = "digraph",
-                                   cmode = "edges",
+                                   cmode = "size",
                                    reps = 1000)
 
 print.cug.test(friendshipCugTestRecip)
@@ -216,7 +223,7 @@ plot.cug.test(friendshipCugTestRecip)
 reportsCugTestRecip <- cug.test(netReports,
                                 grecip,
                                 mode = "digraph",
-                                cmode = "edges",
+                                cmode = "size",
                                 reps = 1000)
 
 print.cug.test(reportsCugTestRecip)
@@ -226,7 +233,35 @@ plot.cug.test(reportsCugTestRecip)
 
 # Quadratic Assignment Procedure (QAP) Hypothesis Tests
 
-qapFriendsReports <- qaptest(list(netFriendship,
+## Advice and Friends networks
+
+qapAdviceFriends <- qaptest(list(netAdvice,
+                                 netFriends),
+                             gcor,
+                             g1 = 1,
+                             g2 = 2,
+                             reps = 1000)
+
+summary.qaptest(qapAdviceFriends)
+
+plot.qaptest(qapAdviceFriends)
+
+## Advice and Reports nwtworks
+
+qapAdviceReports <- qaptest(list(netAdvice,
+                                 netReports),
+                            gcor,
+                            g1 = 1,
+                            g2 = 2,
+                            reps = 1000)
+
+summary.qaptest(qapAdviceReports)
+
+plot.qaptest(qapAdviceReports)
+
+## Friends and Reports networks
+
+qapFriendsReports <- qaptest(list(netFriends,
                                   netReports),
                              gcor,
                              g1 = 1,
@@ -240,3 +275,32 @@ plot.qaptest(qapFriendsReports)
 
 # Network Regression
 
+## Null Hypothesis: Classical (tests based on classical asymptotics)
+
+modClass <- netlogit(netAdvice,
+                     list(netFriends,
+                          netReports),
+                     nullhyp = "classical",
+                     reps = 1000)
+
+summary(modClass)
+
+## Null Hypothesis: Cugden (conditional uniform graph test, controlling for order and density)
+
+modCug <- netlogit(netAdvice,
+                   list(netFriends,
+                        netReports),
+                   nullhyp = "cugden",
+                   reps = 1000)
+
+summary(modCug)
+
+## Null Hypothesis: Qap (QAP permutation test)
+
+modQap <- netlogit(netAdvice,
+                   list(netFriends,
+                        netReports),
+                   nullhyp = "qap",
+                   reps = 1000)
+
+summary(modQap)
