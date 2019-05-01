@@ -88,6 +88,14 @@ summary(netReports)
 
 library(igraph)
 
+## Calculate degree centrality
+
+degree(netAdvice)
+
+### If you want to detach a package, run the following code
+### detach(package:packagename)
+### example for detaching igraph detach(package:igraph)
+
 
 ## Density - The ratio of the number of edges and the number of possible edges
 
