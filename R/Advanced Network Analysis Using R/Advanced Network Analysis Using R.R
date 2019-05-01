@@ -81,6 +81,14 @@ summary(netReports)
 
 # Calculate Network Statistics
 
+## Degree Centrality
+
+# NOTE: Important not to load igraph and sna packages together
+# What happens when igraph and sna are loaded together?
+
+library(igraph)
+
+
 ## Density - The ratio of the number of edges and the number of possible edges
 
 gden(netAdvice,
@@ -144,91 +152,19 @@ plot.cug.test(adviceCugTestDenSize)
 
 #### Conditioning on number of edges
 
-adviceCugTestDenEdges <- cug.test(netAdvice,
-                                  gden,
-                                  mode = "digraph",
-                                  cmode = "edges",
-                                  reps = 1000)
 
-print.cug.test(adviceCugTestDenEdges)
-
-plot.cug.test(adviceCugTestDenEdges)
 
 #### Conditioning on distribution of dyads
 
-adviceCugTestDenCensus <- cug.test(netAdvice,
-                                   gden,
-                                   mode = "digraph",
-                                   cmode = "dyad.census",
-                                   reps = 1000)
 
-print.cug.test(adviceCugTestDenCensus)
-
-plot.cug.test(adviceCugTestDenCensus)
 
 ### Transitivity
 
-adviceCugTestTrans <- cug.test(netAdvice,
-                               gtrans,
-                               mode = "digraph",
-                               cmode = "size",
-                               reps = 1000)
 
-print.cug.test(adviceCugTestTrans)
-
-plot.cug.test(adviceCugTestTrans)
-
-friendshipCugTestTrans <- cug.test(netFriends,
-                                   gtrans,
-                                   mode = "digraph",
-                                   cmode = "size",
-                                   reps = 1000)
-
-print.cug.test(friendshipCugTestTrans)
-
-plot.cug.test(friendshipCugTestTrans)
-
-reportsCugTestTrans <- cug.test(netReports,
-                                gtrans,
-                                mode = "digraph",
-                                cmode = "size",
-                                reps = 1000)
-
-print.cug.test(reportsCugTestTrans)
-
-plot.cug.test(reportsCugTestTrans)
 
 ### Reciprocity
 
-adviceCugTestRecip <- cug.test(netAdvice,
-                               grecip,
-                               mode = "digraph",
-                               cmode = "size",
-                               reps = 1000)
 
-print.cug.test(adviceCugTestRecip)
-
-plot.cug.test(adviceCugTestRecip)
-
-friendshipCugTestRecip <- cug.test(netFriends,
-                                   grecip,
-                                   mode = "digraph",
-                                   cmode = "size",
-                                   reps = 1000)
-
-print.cug.test(friendshipCugTestRecip)
-
-plot.cug.test(friendshipCugTestRecip)
-
-reportsCugTestRecip <- cug.test(netReports,
-                                grecip,
-                                mode = "digraph",
-                                cmode = "size",
-                                reps = 1000)
-
-print.cug.test(reportsCugTestRecip)
-
-plot.cug.test(reportsCugTestRecip)
 
 
 # Quadratic Assignment Procedure (QAP) Hypothesis Tests
@@ -248,29 +184,11 @@ plot.qaptest(qapAdviceFriends)
 
 ## Advice and Reports nwtworks
 
-qapAdviceReports <- qaptest(list(netAdvice,
-                                 netReports),
-                            gcor,
-                            g1 = 1,
-                            g2 = 2,
-                            reps = 1000)
 
-summary.qaptest(qapAdviceReports)
-
-plot.qaptest(qapAdviceReports)
 
 ## Friends and Reports networks
 
-qapFriendsReports <- qaptest(list(netFriends,
-                                  netReports),
-                             gcor,
-                             g1 = 1,
-                             g2 = 2,
-                             reps = 1000)
 
-summary.qaptest(qapFriendsReports)
-
-plot.qaptest(qapFriendsReports)
 
 
 # Network Regression
@@ -287,20 +205,8 @@ summary(modClass)
 
 ## Null Hypothesis: Cugden (conditional uniform graph test, controlling for order and density)
 
-modCug <- netlogit(netAdvice,
-                   list(netFriends,
-                        netReports),
-                   nullhyp = "cugden",
-                   reps = 1000)
 
-summary(modCug)
 
 ## Null Hypothesis: Qap (QAP permutation test)
 
-modQap <- netlogit(netAdvice,
-                   list(netFriends,
-                        netReports),
-                   nullhyp = "qap",
-                   reps = 1000)
 
-summary(modQap)
